@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "38208650817",
+    "project_id": "mewg-lk",
+    "storage_bucket": "mewg-lk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38208650817:android:dc112ea0e3e8577442d0c0",
+        "android_client_info": {
+          "package_name": "com.ninponix.mewg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38208650817-8crs3a8417nuvjfemkshqurnd3cc2n1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAMe96YNMXnYGLXjErq7WPPL3yeqpz4tc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38208650817-8crs3a8417nuvjfemkshqurnd3cc2n1p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
