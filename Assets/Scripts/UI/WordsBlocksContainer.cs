@@ -2,16 +2,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class WordsBlocksContainer : MonoBehaviour
 {
     public LetterBlockItem LetterBlock;
     public float LetterSpacing = 10f;
+    public Transform Centerer;
 
     List<RenderedWordBlock> Words = new List<RenderedWordBlock>();
 
-    public void RenderWords(string[] words)
+    public IEnumerator RenderWords(string[] words)
     {
+        Words = new List<RenderedWordBlock>();
+
+        // clear the parent
+        foreach (Transform child in Centerer.transform)
+            Destroy(child.gameObject);
+
+        yield return new WaitForSeconds(0.25f);
+
         // First word goes brrr
         var fword = new RenderedWordBlock
         {
@@ -22,7 +32,7 @@ public class WordsBlocksContainer : MonoBehaviour
 
         for (var i = 0; i < words[0].Length; i ++)
         {
-            var lblock = Instantiate(LetterBlock, Vector3.zero, Quaternion.Euler(0, 0, 0), transform);
+            var lblock = Instantiate(LetterBlock, Vector3.zero, Quaternion.Euler(0, 0, 0), Centerer.transform);
             lblock.Letter = words[0][i].ToString();
             lblock.Visible = true; // DEV PURPOSES
             lblock.UpdateValues();
@@ -65,12 +75,14 @@ public class WordsBlocksContainer : MonoBehaviour
                 // Update the crossword params on the end word
                 Words[connection.wordIndex].Letters[connection.letterIndex].CrosswordUsed = true;
 
+                var letters = new List<RenderedLetterBlock>();
+
                 // TODO: Render the word
                 for (var k = 0; k < word.Length; k++)
                 {
                     if (k != connection.connectionIndex)
                     {
-                        var lblock = Instantiate(LetterBlock, Vector3.zero, Quaternion.Euler(0, 0, 0), transform);
+                        var lblock = Instantiate(LetterBlock, Vector3.zero, Quaternion.Euler(0, 0, 0), Centerer.transform);
                         lblock.Letter = word[k].ToString();
                         lblock.Visible = true; // DEV PURPOSES
                         lblock.UpdateValues();
@@ -82,29 +94,33 @@ public class WordsBlocksContainer : MonoBehaviour
                         var ci = k - connection.connectionIndex;
 
                         var connectedLetterAnchoredPosition = Words[connection.wordIndex].Letters[connection.letterIndex].Object.GetComponent<RectTransform>().anchoredPosition;
-                        var currentLetterOffset = (((currentDirection == Direction.Vertical) ? new Vector2(0, blockHeight + LetterSpacing) : new Vector2(blockWidth + LetterSpacing, 0)) * -ci);
+                        var currentLetterOffset = (((currentDirection == Direction.Vertical) ? new Vector2(0, blockHeight + LetterSpacing) : new Vector2(-blockWidth + -LetterSpacing, 0)) * -ci);
                         lblockrect.anchoredPosition = connectedLetterAnchoredPosition + currentLetterOffset;
+
+                        letters.Add(new RenderedLetterBlock
+                        {
+                            CrosswordUsed = false,
+                            Index = k,
+                            Object = lblockrect
+                        });
                     }
-                }
-
-                var letters = new List<RenderedLetterBlock>();
-
-                // Add the letter connections
-                for (var k = 0; k < words[j].Length; k++)
-                {
-                    letters.Add(new RenderedLetterBlock
+                    else
                     {
-                        CrosswordUsed = true,
-                        Index = k,
-                        Object = null
-                    });
+                        letters.Add(new RenderedLetterBlock
+                        {
+                            CrosswordUsed = true,
+                            Index = k,
+                            Object = null
+                        });
+                    }
                 }
 
                 // Add the word the list
                 Words.Add(new RenderedWordBlock
                 {
                     Word = word,
-                    Letters = letters
+                    Letters = letters,
+                    _Direction = currentDirection
                 });
             }
             else
@@ -112,6 +128,35 @@ public class WordsBlocksContainer : MonoBehaviour
                 print("Connection has not been made");
             }
         }
+
+        // Center the rendered blocks
+        var center = GetCenterOfObjects();
+        Centerer.GetComponent<RectTransform>().anchoredPosition = -center;
+    }
+
+    Vector3 GetCenterOfObjects()
+    {
+        float minX = 0;
+        float minY = 0;
+        float maxX = 0;
+        float maxY = 0;
+
+        foreach (Transform child in Centerer)
+        {
+            var anchor = child.GetComponent<RectTransform>().anchoredPosition;
+
+            if (anchor.x < minX)
+                minX = anchor.x;
+            if (anchor.y < minY)
+                minY = anchor.y;
+
+            if (anchor.x > maxX)
+                maxX = anchor.x;
+            if (anchor.y > maxY)
+                maxY = anchor.y;
+        }
+
+        return new Vector3((maxX + minX) / 2, (maxY + minY) / 2, 0);
     }
 
     WordLetterConnection FindMatchingConnection(string word, RenderedWordBlock[] previouslyAddedWords)
@@ -126,7 +171,7 @@ public class WordsBlocksContainer : MonoBehaviour
             var letter = word[i];
 
             // check every word for the letter
-            for (var j = 0; j < previouslyAddedWords.Length; j ++)
+            for (var j = 0; j < previouslyAddedWords.Length; j++)
             {
                 var w = previouslyAddedWords[j];
 
@@ -136,13 +181,33 @@ public class WordsBlocksContainer : MonoBehaviour
                     // Find the first letter equivalence
                     var index = w.Word.IndexOf(letter);
 
-                    if (!w.Letters[index].CrosswordUsed)
+                    var CONSEQUETIVE_INVALIDANCE = false;
+
+                    // consequtive ones aren't used
+                    if (index > 0)
+                        if (w.Letters[index - 1].CrosswordUsed)
+                            CONSEQUETIVE_INVALIDANCE = true;
+                    if (w.Letters.Count > index + 1)
+                        if (w.Letters[index + 1].CrosswordUsed)
+                            CONSEQUETIVE_INVALIDANCE = true;
+
+                    // COMPLEXITY CALCULATION
+                    var complex = CalculateComplexity(w);
+                    var GRAPH_COMPLEXITY = (complex < (w.Word.Length / 2f));
+
+                    if (!w.Letters[index].CrosswordUsed && !CONSEQUETIVE_INVALIDANCE && GRAPH_COMPLEXITY)
                     {
                         foundConnectionIndex = i;
                         foundWordIndex = j;
                         foundLetterIndex = index;
                         break;
                     }
+
+                    print(w.Word + " contains " + letter.ToString());
+                }
+                else
+                {
+                    print(w.Word + " does not contain " + letter.ToString());
                 }
             }
 
@@ -152,6 +217,12 @@ public class WordsBlocksContainer : MonoBehaviour
         }
 
         return new WordLetterConnection { set = (foundLetterIndex != -1 && foundWordIndex != -1), letterIndex = foundLetterIndex, wordIndex = foundWordIndex, connectionIndex = foundConnectionIndex };
+    }
+
+    float CalculateComplexity(RenderedWordBlock w)
+    {
+        var crosswordedCount = w.Letters.Count(x => x.CrosswordUsed);
+        return ((float)crosswordedCount);
     }
 
     public struct WordLetterConnection
@@ -164,10 +235,23 @@ public class WordsBlocksContainer : MonoBehaviour
 
     private void Start()
     {
-        RenderWords(new string[] {
-            "BIGGER", "MEAN", "BLACK", "KAK"
-        });
+        StartCoroutine(RenderWords(new string[] {
+            "BIGGER", "BLACK", "KHAKI", "TRY", "ANT", "LIGMA", "AS", "MANGO"
+        }));
     }
+
+    [TextArea]
+    public string WordsDEV;
+
+    private void LateUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            StartCoroutine(RenderWords(WordsDEV.Split(',')));
+        }
+    }
+
+    public Vector3 Offset;
 }
 
 public class RenderedWordBlock
