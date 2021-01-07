@@ -202,12 +202,6 @@ public class WordsBlocksContainer : MonoBehaviour
                         foundLetterIndex = index;
                         break;
                     }
-
-                    print(w.Word + " contains " + letter.ToString());
-                }
-                else
-                {
-                    print(w.Word + " does not contain " + letter.ToString());
                 }
             }
 
