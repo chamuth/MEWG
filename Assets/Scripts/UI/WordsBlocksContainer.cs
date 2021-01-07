@@ -45,7 +45,7 @@ public class WordsBlocksContainer : MonoBehaviour
         // Add first word to the collection
         Words.Add(fword);
 
-        var currentDirection = Direction.Horizontal;
+        var currentDirection = Direction.Vertical;
         
         // Render the other words
         for (var j = 1; j < words.Length; j ++)
@@ -53,19 +53,39 @@ public class WordsBlocksContainer : MonoBehaviour
             var word = words[j];
 
             // Switch the current direction
-            currentDirection = DirectionSwitcher.Switch(currentDirection);
 
             var connection = FindMatchingConnection(word,  Words.GetRange(0, j).ToArray());
 
             if (connection.set)
             {
-                print("CONNECTION HAS BEEN MADE FROM " + word[connection.connectionIndex] + " of " + word + " to " + word[connection.connectionIndex] + " in " + Words[connection.wordIndex].Word);
+                print("Connection has been made " + word[connection.connectionIndex] + " of " + word + " to " + word[connection.connectionIndex] + " in " + Words[connection.wordIndex].Word);
+
+                currentDirection = DirectionSwitcher.Switch(Words[connection.wordIndex]._Direction);
 
                 // Update the crossword params on the end word
                 Words[connection.wordIndex].Letters[connection.letterIndex].CrosswordUsed = true;
 
                 // TODO: Render the word
+                for (var k = 0; k < word.Length; k++)
+                {
+                    if (k != connection.connectionIndex)
+                    {
+                        var lblock = Instantiate(LetterBlock, Vector3.zero, Quaternion.Euler(0, 0, 0), transform);
+                        lblock.Letter = word[k].ToString();
+                        lblock.Visible = true; // DEV PURPOSES
+                        lblock.UpdateValues();
 
+                        var lblockrect = lblock.gameObject.GetComponent<RectTransform>();
+                        var blockWidth = lblockrect.rect.width;
+                        var blockHeight = lblockrect.rect.height;
+
+                        var ci = k - connection.connectionIndex;
+
+                        var connectedLetterAnchoredPosition = Words[connection.wordIndex].Letters[connection.letterIndex].Object.GetComponent<RectTransform>().anchoredPosition;
+                        var currentLetterOffset = (((currentDirection == Direction.Vertical) ? new Vector2(0, blockHeight + LetterSpacing) : new Vector2(blockWidth + LetterSpacing, 0)) * -ci);
+                        lblockrect.anchoredPosition = connectedLetterAnchoredPosition + currentLetterOffset;
+                    }
+                }
 
                 var letters = new List<RenderedLetterBlock>();
 
@@ -89,7 +109,7 @@ public class WordsBlocksContainer : MonoBehaviour
             }
             else
             {
-                print("CONNECTION HAS NOT BEEN MADE");
+                print("Connection has not been made");
             }
         }
     }
@@ -121,11 +141,6 @@ public class WordsBlocksContainer : MonoBehaviour
                         foundConnectionIndex = i;
                         foundWordIndex = j;
                         foundLetterIndex = index;
-                        
-                        print("CONNECTION INDEX : " + foundConnectionIndex.ToString());
-                        print("FOUND WORD INDEX : " + foundWordIndex.ToString());
-                        print("FOUND LETTER INDEX : " + foundLetterIndex.ToString());
-
                         break;
                     }
                 }
@@ -150,7 +165,7 @@ public class WordsBlocksContainer : MonoBehaviour
     private void Start()
     {
         RenderWords(new string[] {
-            "BIGGER", "MEAN", "BLACK", "NEGATIVE"
+            "BIGGER", "MEAN", "BLACK", "KAK"
         });
     }
 }
