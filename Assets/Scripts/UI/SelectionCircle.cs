@@ -138,6 +138,11 @@ public class SelectionCircle : MonoBehaviour
             mouseLineRenderer.Points = points.ToArray();
         }
     }
+
+    public void RandomizeLetters()
+    {
+        
+    }
 }
 
 public class LetterConnection

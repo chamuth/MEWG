@@ -23,6 +23,10 @@ public class WinningProgressBar : MonoBehaviour
             myWidth = GetComponent<RectTransform>().rect.width;
             side1Text = transform.GetChild(0).GetChild(0).gameObject.GetComponent<TMPro.TextMeshProUGUI>();
             side2Text = transform.GetChild(1).GetChild(0).gameObject.GetComponent<TMPro.TextMeshProUGUI>();
+
+            // Set some values to rerender on start
+            Score1 = 0;
+            Score2 = 0;
         }
         catch (Exception) { }
     }

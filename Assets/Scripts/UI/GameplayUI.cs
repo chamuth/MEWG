@@ -1,18 +1,28 @@
-﻿using System.Collections;
+﻿using Coffee.UIEffects;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameplayUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public UITransitionEffect MatchStatusUI;
+
+    private void Start()
     {
-        
+        StartCoroutine(HideVersusScreen());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator HideVersusScreen()
     {
-        
+        yield return new WaitForSeconds(5f);
+
+        while (MatchStatusUI.effectFactor > 0)
+        {
+            MatchStatusUI.effectFactor -= Time.deltaTime * 2f;
+            yield return null;
+        }
+
+        // Hide the match status UI for good
+        MatchStatusUI.gameObject.SetActive(false);
     }
 }
