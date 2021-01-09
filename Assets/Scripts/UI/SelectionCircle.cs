@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Linq;
 using UnityEngine.UI.Extensions;
+using System;
 
 public class SelectionCircle : MonoBehaviour
 {
@@ -19,9 +20,35 @@ public class SelectionCircle : MonoBehaviour
     public List<LetterConnection> LetterConnections = new List<LetterConnection>();
 
     List<string> CurrentlyFormingWord = new List<string>();
+    List<string> CurrentlyFormingWord_IDs = new List<string>();
 
-    private void Start()
+    public void Render(string[] words)
     {
+        #region Generate Letters for the Words List
+        var _letters = new List<string>();
+        var _wordLetters = new Dictionary<string, int>();
+
+        foreach(var word in words)
+        {
+            foreach(var letter in word)
+            {
+                var amount = word.Count(x => x.ToString() == letter.ToString());
+
+                if (_wordLetters.ContainsKey(letter.ToString()) && _wordLetters[letter.ToString()] < amount)
+                    _wordLetters[letter.ToString()] = amount;
+
+                if (!_wordLetters.ContainsKey(letter.ToString()))
+                    _wordLetters.Add(letter.ToString(), amount);
+            }
+        }
+
+        foreach(var l in _wordLetters)
+            for (var i = 0; i < l.Value; i++)
+                _letters.Add(l.Key);
+
+        Letters = _letters.ToArray();
+        #endregion
+
         StartCoroutine(RenderLetters());
     }
 
@@ -36,13 +63,24 @@ public class SelectionCircle : MonoBehaviour
         // Render the selectable text item
         for (var i = 0; i < Letters.Length; i++)
         {
+            var _id = Letters[i].ToString();
+
+            // for multiple occurances of the same letter
+            var occurancesCount = 0;
+
+            if (i > 0)
+                occurancesCount = Letters.Take(i).Count(x => x == Letters[i]);
+
+            _id = _id + occurancesCount.ToString();
+            
             var letter = Letters[i];
             var letterGO = Instantiate(SelectableTextItem, Vector3.zero, Quaternion.Euler(0, 0, 0), SelectionCircleContainer);
             letterGO.GetComponent<TMPro.TextMeshProUGUI>().text = letter.ToString();
+            letterGO.GetComponent<LetterID>().ID = _id;
 
             var letterRect = letterGO.GetComponent<RectTransform>();
             var angle = 2 * Mathf.PI * ((float)i / (float)Letters.Length);
-            print(angle);
+
             letterRect.anchoredPosition = Vector3.right * Mathf.Cos(angle) * LetterRadius + Vector3.up * Mathf.Sin(angle) * LetterRadius;
 
             var pointerDown = new EventTrigger.Entry();
@@ -50,6 +88,7 @@ public class SelectionCircle : MonoBehaviour
             pointerDown.callback.AddListener((e) =>
             {
                 CurrentlyFormingWord.Add(letter);
+                CurrentlyFormingWord_IDs.Add(_id);
                 Instantiate(SelectedCircle, letterGO.transform.position, Quaternion.Euler(0, 0, 0), SelectedCircleContainer);
             });
 
@@ -59,9 +98,13 @@ public class SelectionCircle : MonoBehaviour
             {
                 if (CurrentlyFormingWord.Count > 0)
                 {
-                    print(string.Join("", CurrentlyFormingWord.ToArray()));
+                    var word = string.Join("", CurrentlyFormingWord.ToArray());
+
+                    Game.MatchWord(word);
+
                     // Reset the currently formed word
                     CurrentlyFormingWord.Clear();
+                    CurrentlyFormingWord_IDs.Clear();
 
                     foreach (Transform child in SelectedCircleContainer)
                         Destroy(child.gameObject);
@@ -77,14 +120,16 @@ public class SelectionCircle : MonoBehaviour
             pointerEnter.eventID = EventTriggerType.PointerEnter;
             pointerEnter.callback.AddListener((e) =>
             {
-                if (CurrentlyFormingWord.Count > 0 && !CurrentlyFormingWord.Contains(letter))
+                if (CurrentlyFormingWord.Count > 0 && !CurrentlyFormingWord_IDs.Contains(_id))
                 {
                     CurrentlyFormingWord.Add(letter);
+                    CurrentlyFormingWord_IDs.Add(_id);
+
                     Instantiate(SelectedCircle, letterGO.transform.position, Quaternion.Euler(0, 0, 0), SelectedCircleContainer);
 
                     // Render the connecting lines
-                    var prevLetter = CurrentlyFormingWord[CurrentlyFormingWord.Count - 2];
-                    var nowLetter = CurrentlyFormingWord[CurrentlyFormingWord.Count - 1];
+                    var prevLetter = CurrentlyFormingWord_IDs[CurrentlyFormingWord_IDs.Count - 2];
+                    var nowLetter = CurrentlyFormingWord_IDs[CurrentlyFormingWord_IDs.Count - 1];
                     var prevPos = GetPositionForLetter(prevLetter);
                     var nowPos = GetPositionForLetter(nowLetter);
 
@@ -105,14 +150,15 @@ public class SelectionCircle : MonoBehaviour
             LetterConnections.Add(new LetterConnection
             {
                 Letter = Letters[i].ToString(),
+                Id = _id,
                 Target = letterGO.transform
             });
         }
     }
 
-    Vector2 GetPositionForLetter(string letter)
+    Vector2 GetPositionForLetter(string id)
     {
-        return LetterConnections.Where(x => x.Letter == letter).FirstOrDefault().Target.position;
+        return LetterConnections.Where(x => x.Id == id).FirstOrDefault().Target.position;
     }
 
     UILineRenderer mouseLineRenderer = null;
@@ -121,7 +167,7 @@ public class SelectionCircle : MonoBehaviour
     {
         if (CurrentlyFormingWord.Count > 0)
         {
-            var nowLetter = CurrentlyFormingWord[CurrentlyFormingWord.Count - 1];
+            var nowLetter = CurrentlyFormingWord_IDs[CurrentlyFormingWord_IDs.Count - 1];
             var nowPos = GetPositionForLetter(nowLetter);
 
             // Some word is forming right now
@@ -148,5 +194,6 @@ public class SelectionCircle : MonoBehaviour
 public class LetterConnection
 {
     public string Letter;
+    public string Id;
     public Transform Target;
 }

@@ -9,6 +9,7 @@ public class WordsBlocksContainer : MonoBehaviour
     public LetterBlockItem LetterBlock;
     public float LetterSpacing = 10f;
     public Transform Centerer;
+    public string[] _Words { get; set; }
 
     List<RenderedWordBlock> Words = new List<RenderedWordBlock>();
 
@@ -34,7 +35,7 @@ public class WordsBlocksContainer : MonoBehaviour
         {
             var lblock = Instantiate(LetterBlock, Vector3.zero, Quaternion.Euler(0, 0, 0), Centerer.transform);
             lblock.Letter = words[0][i].ToString();
-            lblock.Visible = true; // DEV PURPOSES
+            lblock.Visible = false;
             lblock.UpdateValues();
 
             var lblockrect = lblock.gameObject.GetComponent<RectTransform>();
@@ -68,8 +69,6 @@ public class WordsBlocksContainer : MonoBehaviour
 
             if (connection.set)
             {
-                print("Connection has been made " + word[connection.connectionIndex] + " of " + word + " to " + word[connection.connectionIndex] + " in " + Words[connection.wordIndex].Word);
-
                 currentDirection = DirectionSwitcher.Switch(Words[connection.wordIndex]._Direction);
 
                 // Update the crossword params on the end word
@@ -84,7 +83,7 @@ public class WordsBlocksContainer : MonoBehaviour
                     {
                         var lblock = Instantiate(LetterBlock, Vector3.zero, Quaternion.Euler(0, 0, 0), Centerer.transform);
                         lblock.Letter = word[k].ToString();
-                        lblock.Visible = true; // DEV PURPOSES
+                        lblock.Visible = false;
                         lblock.UpdateValues();
 
                         var lblockrect = lblock.gameObject.GetComponent<RectTransform>();
@@ -132,6 +131,11 @@ public class WordsBlocksContainer : MonoBehaviour
         // Center the rendered blocks
         var center = GetCenterOfObjects();
         Centerer.GetComponent<RectTransform>().anchoredPosition = -center;
+    }
+
+    public void MarkWord()
+    {
+
     }
 
     Vector3 GetCenterOfObjects()
@@ -227,11 +231,12 @@ public class WordsBlocksContainer : MonoBehaviour
         public int letterIndex;
     }
 
-    private void Start()
+    /// <summary>
+    /// Renders the given words
+    /// </summary>
+    public void Render()
     {
-        StartCoroutine(RenderWords(new string[] {
-            "BIGGER", "BLACK", "KHAKI", "TRY", "ANT", "LIGMA", "AS", "MANGO"
-        }));
+        StartCoroutine(RenderWords(_Words));
     }
 
     [TextArea]
