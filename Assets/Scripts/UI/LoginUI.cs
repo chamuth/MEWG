@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoginUI : MonoBehaviour
@@ -87,8 +88,8 @@ public class LoginUI : MonoBehaviour
                     }
 
                     FirebaseUser newUser = task.Result;
-                    Debug.LogFormat("User signed in successfully: {0} ({1})",
-                        newUser.DisplayName, newUser.UserId);
+                    Debug.LogFormat("User signed in successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
+                    SceneManager.LoadScene(1);
                 });
             }
             else

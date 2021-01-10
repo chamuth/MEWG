@@ -3,6 +3,7 @@ using Firebase.Auth;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuUI : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class MainMenuUI : MonoBehaviour
             print(string.Format("Signed in as : {0} ({1})", auth.CurrentUser.DisplayName, auth.CurrentUser.PhotoUrl.ToString()));
 
             // Load the main menu
-            
+            SceneManager.LoadScene(1);
         }
         else
         {

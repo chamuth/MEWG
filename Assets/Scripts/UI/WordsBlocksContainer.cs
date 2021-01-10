@@ -24,7 +24,7 @@ public class WordsBlocksContainer : MonoBehaviour
         foreach (Transform child in Centerer.transform)
             Destroy(child.gameObject);
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.05f);
 
         // First word goes brrr
         var fword = new RenderedWordBlock
@@ -138,6 +138,21 @@ public class WordsBlocksContainer : MonoBehaviour
         // Center the rendered blocks
         var center = GetCenterOfObjects();
         Centerer.GetComponent<RectTransform>().anchoredPosition = -center;
+
+        yield return new WaitForSeconds(5.5f);
+
+        StartCoroutine(FadeInBlocks());
+    }
+
+    IEnumerator FadeInBlocks()
+    {
+        var cg = Centerer.gameObject.GetComponent<CanvasGroup>();
+
+        while (cg.alpha < 1)
+        {
+            cg.alpha += Time.deltaTime * 2f;
+            yield return null;
+        }
     }
 
     public void MarkCorrectWords()
@@ -148,13 +163,19 @@ public class WordsBlocksContainer : MonoBehaviour
             
             if (wItem != null)
             {
-                var index = Words.FindIndex(x => x.Word == wordMatch.word);
-                var connection = Connections.Find(x => x._2ndWordIndex == index);
+                int index = -1;
+                index = Words.FindIndex(x => x.Word == wordMatch.word);
+                WordWordConnection connection = null;
+                connection = Connections.Find(x => x._2ndWordIndex == index);
 
-                ShowLetter(
-                    Words[connection._1stWordIndex].Letters[connection._1stWordLetterIndex].Object.GetComponent<LetterBlockItem>(),
-                    wordMatch.owner
-                );
+                if (index != -1 && connection != null)
+                    if (Words[connection._1stWordIndex].Letters[connection._1stWordLetterIndex].Object != null)
+                    {
+                        ShowLetter(
+                            Words[connection._1stWordIndex].Letters[connection._1stWordLetterIndex].Object.GetComponent<LetterBlockItem>(),
+                            wordMatch.owner
+                        );
+                    }
 
                 foreach(var letter in wItem.Letters)
                 {

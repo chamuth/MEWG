@@ -161,6 +161,21 @@ public class SelectionCircle : MonoBehaviour
                 Target = letterGO.transform
             });
         }
+
+        yield return new WaitForSeconds(5.5f);
+
+        StartCoroutine(FadeInLetters());
+    }
+
+    IEnumerator FadeInLetters()
+    {
+        var cg = SelectionCircleContainer.gameObject.GetComponent<CanvasGroup>();
+
+        while (cg.alpha < 1)
+        {
+            cg.alpha += Time.deltaTime * 2f;
+            yield return null;
+        }
     }
 
     Vector2 GetPositionForLetter(string id)
