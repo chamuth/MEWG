@@ -13,10 +13,12 @@ public class WordsBlocksContainer : MonoBehaviour
 
     List<RenderedWordBlock> Words = new List<RenderedWordBlock>();
     public List<ProcessedWordMatch> WordMatches = new List<ProcessedWordMatch>();
+    public List<WordWordConnection> Connections = new List<WordWordConnection>();
 
     public IEnumerator RenderWords(string[] words)
     {
         Words = new List<RenderedWordBlock>();
+        Connections = new List<WordWordConnection>();
 
         // clear the parent
         foreach (Transform child in Centerer.transform)
@@ -57,16 +59,20 @@ public class WordsBlocksContainer : MonoBehaviour
         // Add first word to the collection
         Words.Add(fword);
 
-        var currentDirection = Direction.Vertical;
+        Direction currentDirection = Direction.Vertical;
         
         // Render the other words
         for (var j = 1; j < words.Length; j ++)
         {
             var word = words[j];
 
-            // Switch the current direction
-
             var connection = FindMatchingConnection(word,  Words.GetRange(0, j).ToArray());
+            Connections.Add(new WordWordConnection
+            {
+                _2ndWordIndex = j,
+                _1stWordIndex = connection.wordIndex,
+                _1stWordLetterIndex = connection.letterIndex
+            });
 
             if (connection.set)
             {
@@ -136,26 +142,37 @@ public class WordsBlocksContainer : MonoBehaviour
 
     public void MarkCorrectWords()
     {
-        print("Marking Matched Words");
-
         foreach (var wordMatch in WordMatches)
         {
             var wItem = Words.Find(x => x.Word == wordMatch.word);
             
             if (wItem != null)
             {
+                var index = Words.FindIndex(x => x.Word == wordMatch.word);
+                var connection = Connections.Find(x => x._2ndWordIndex == index);
+
+                ShowLetter(
+                    Words[connection._1stWordIndex].Letters[connection._1stWordLetterIndex].Object.GetComponent<LetterBlockItem>(),
+                    wordMatch.owner
+                );
+
                 foreach(var letter in wItem.Letters)
                 {
                     if (letter.Object != null)
                     {
                         var block = letter.Object.GetComponent<LetterBlockItem>();
-                        block._Ownership = (wordMatch.owner);
-                        block.Visible = true;
-                        block.UpdateValues();
+                        ShowLetter(block, wordMatch.owner);
                     }
                 }
             }
         }
+    }
+
+    void ShowLetter(LetterBlockItem block, Ownership owner)
+    {
+        block._Ownership = (owner);
+        block.Visible = true;
+        block.UpdateValues();
     }
 
     Vector3 GetCenterOfObjects()
@@ -291,6 +308,13 @@ public class RenderedLetterBlock
     public int Index;
     public RectTransform Object;
     public bool CrosswordUsed = false;
+}
+
+public class WordWordConnection
+{
+    public int _2ndWordIndex;
+    public int _1stWordIndex;
+    public int _1stWordLetterIndex;
 }
 
 public enum Direction { Horizontal, Vertical }

@@ -32,6 +32,8 @@ public static class Game
         });
 
         MatchReference.ValueChanged += MatchReference_ValueChanged;
+
+        UpdateMatchedWords();
     }
 
     private static void MatchReference_ValueChanged(object sender, ValueChangedEventArgs e)
@@ -41,6 +43,19 @@ public static class Game
         if (CurrentMatchData.matches != null)
         {
             if (previousWordMatch != CurrentMatchData.matches)
+            {
+                UpdateMatchedWords();
+            }
+        }
+
+        OnMatchDataChanged?.Invoke();
+    }
+
+    static void UpdateMatchedWords()
+    {
+        if (CurrentMatchData != null)
+        {
+            if (CurrentMatchData.matches != null)
             {
                 var list = new List<ProcessedWordMatch>();
 
@@ -73,8 +88,6 @@ public static class Game
                 previousWordMatch = CurrentMatchData.matches;
             }
         }
-
-        OnMatchDataChanged?.Invoke();
     }
 
     public static void MatchWord(string word)

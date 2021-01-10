@@ -34,7 +34,6 @@ public class MatchManager : MonoBehaviour
 
         Game.OnMatchedWordsChanged += (List<ProcessedWordMatch> List) =>
         {
-            print("On Matched Words Change");
             _WordsBlockContainer.WordMatches = List;
             _WordsBlockContainer.MarkCorrectWords();
         };
