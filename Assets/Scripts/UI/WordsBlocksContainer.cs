@@ -12,6 +12,7 @@ public class WordsBlocksContainer : MonoBehaviour
     public string[] _Words { get; set; }
 
     List<RenderedWordBlock> Words = new List<RenderedWordBlock>();
+    public List<ProcessedWordMatch> WordMatches = new List<ProcessedWordMatch>();
 
     public IEnumerator RenderWords(string[] words)
     {
@@ -133,9 +134,28 @@ public class WordsBlocksContainer : MonoBehaviour
         Centerer.GetComponent<RectTransform>().anchoredPosition = -center;
     }
 
-    public void MarkWord()
+    public void MarkCorrectWords()
     {
+        print("Marking Matched Words");
 
+        foreach (var wordMatch in WordMatches)
+        {
+            var wItem = Words.Find(x => x.Word == wordMatch.word);
+            
+            if (wItem != null)
+            {
+                foreach(var letter in wItem.Letters)
+                {
+                    if (letter.Object != null)
+                    {
+                        var block = letter.Object.GetComponent<LetterBlockItem>();
+                        block._Ownership = (wordMatch.owner);
+                        block.Visible = true;
+                        block.UpdateValues();
+                    }
+                }
+            }
+        }
     }
 
     Vector3 GetCenterOfObjects()
@@ -231,12 +251,18 @@ public class WordsBlocksContainer : MonoBehaviour
         public int letterIndex;
     }
 
+    bool RenderedOnce = false;
+
     /// <summary>
     /// Renders the given words
     /// </summary>
     public void Render()
     {
-        StartCoroutine(RenderWords(_Words));
+        if (!RenderedOnce)
+        {
+            StartCoroutine(RenderWords(_Words));
+            RenderedOnce = true;
+        }
     }
 
     [TextArea]

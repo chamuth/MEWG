@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Firebase.Extensions;
+using UnityEngine.UI;
 
 public class MatchManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class MatchManager : MonoBehaviour
     void Start()
     {
         Game.CurrentMatchID = "abcd1234";
+        
         Game.OnMatchDataChanged += () =>
         {
             // Render the things first time only
@@ -19,16 +21,24 @@ public class MatchManager : MonoBehaviour
             _WordsBlockContainer.Render();
             _SelectionCircle.Render(Game.CurrentMatchData.content.words);
         };
-        Game.WordMatched += (correct, word) =>
-        {
-            if (correct)
-            {
-                CorrectAnswerAnimator.Play("Sucess");
-                CorrectAnswerAnimator.transform.GetChild(0).gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = word;
 
-                _WordsBlockContainer.MarkWord();
-            }
+        Game.OnNewWordMatched += (Ownership owner, WordMatch wordMatch) =>
+        {
+            CorrectAnswerAnimator.Play("Success");
+
+            CorrectAnswerAnimator.gameObject.GetComponent<Image>().color 
+                = ColorManager.Instance.GetColor((owner == Ownership.Ours) ? "FRIENDLY_COLOR" : "ENEMY_COLOR");
+
+            CorrectAnswerAnimator.transform.GetChild(0).gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = wordMatch.word;
         };
+
+        Game.OnMatchedWordsChanged += (List<ProcessedWordMatch> List) =>
+        {
+            print("On Matched Words Change");
+            _WordsBlockContainer.WordMatches = List;
+            _WordsBlockContainer.MarkCorrectWords();
+        };
+
         Game.Watch();
     }
 
@@ -36,6 +46,8 @@ public class MatchManager : MonoBehaviour
     {
         Game.OnMatchDataChanged = null;
         Game.OnFirstData = null;
+        Game.OnMatchedWordsChanged = null;
+        Game.OnNewWordMatched = null;
     }
 
 }

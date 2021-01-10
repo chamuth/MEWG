@@ -86,7 +86,7 @@ public class LoginUI : MonoBehaviour
                         return;
                     }
 
-                    Firebase.Auth.FirebaseUser newUser = task.Result;
+                    FirebaseUser newUser = task.Result;
                     Debug.LogFormat("User signed in successfully: {0} ({1})",
                         newUser.DisplayName, newUser.UserId);
                 });

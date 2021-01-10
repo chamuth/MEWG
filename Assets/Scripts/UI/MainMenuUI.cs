@@ -18,6 +18,7 @@ public class MainMenuUI : MonoBehaviour
             print(string.Format("Signed in as : {0} ({1})", auth.CurrentUser.DisplayName, auth.CurrentUser.PhotoUrl.ToString()));
 
             // Load the main menu
+            
         }
         else
         {

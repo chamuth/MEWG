@@ -1,0 +1,30 @@
+{
+    "match" : 
+    {
+        "abcd1234" : 
+        {
+            "content" : 
+            {
+                "words" : 
+                [
+                    "TEACH", "TEACHER", "CREATE", "TEAR"
+                ]
+            },
+            "matches" : 
+            [
+                {
+                    "uid" : "F8YzGhvVbSNiGPVskTk2q83W50C2",
+                    "words" : 
+                    [
+                        
+                    ]
+                }
+            ],
+            "players" : 
+            [
+                "F8YzGhvVbSNiGPVskTk2q83W50C2",
+                "UID1"
+            ]
+        }
+    }   
+}

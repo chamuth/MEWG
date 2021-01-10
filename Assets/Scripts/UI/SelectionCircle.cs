@@ -22,34 +22,41 @@ public class SelectionCircle : MonoBehaviour
     List<string> CurrentlyFormingWord = new List<string>();
     List<string> CurrentlyFormingWord_IDs = new List<string>();
 
+    bool RenderedOnce = false;
+
     public void Render(string[] words)
     {
-        #region Generate Letters for the Words List
-        var _letters = new List<string>();
-        var _wordLetters = new Dictionary<string, int>();
-
-        foreach(var word in words)
+        if (!RenderedOnce)
         {
-            foreach(var letter in word)
+            #region Generate Letters for the Words List
+            var _letters = new List<string>();
+            var _wordLetters = new Dictionary<string, int>();
+
+            foreach (var word in words)
             {
-                var amount = word.Count(x => x.ToString() == letter.ToString());
+                foreach (var letter in word)
+                {
+                    var amount = word.Count(x => x.ToString() == letter.ToString());
 
-                if (_wordLetters.ContainsKey(letter.ToString()) && _wordLetters[letter.ToString()] < amount)
-                    _wordLetters[letter.ToString()] = amount;
+                    if (_wordLetters.ContainsKey(letter.ToString()) && _wordLetters[letter.ToString()] < amount)
+                        _wordLetters[letter.ToString()] = amount;
 
-                if (!_wordLetters.ContainsKey(letter.ToString()))
-                    _wordLetters.Add(letter.ToString(), amount);
+                    if (!_wordLetters.ContainsKey(letter.ToString()))
+                        _wordLetters.Add(letter.ToString(), amount);
+                }
             }
+
+            foreach (var l in _wordLetters)
+                for (var i = 0; i < l.Value; i++)
+                    _letters.Add(l.Key);
+
+            Letters = _letters.ToArray();
+            #endregion
+
+            StartCoroutine(RenderLetters());
+
+            RenderedOnce = true;
         }
-
-        foreach(var l in _wordLetters)
-            for (var i = 0; i < l.Value; i++)
-                _letters.Add(l.Key);
-
-        Letters = _letters.ToArray();
-        #endregion
-
-        StartCoroutine(RenderLetters());
     }
 
     IEnumerator RenderLetters()
