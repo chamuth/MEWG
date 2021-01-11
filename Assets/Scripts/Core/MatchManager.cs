@@ -9,6 +9,7 @@ public class MatchManager : MonoBehaviour
     public WordsBlocksContainer _WordsBlockContainer;
     public SelectionCircle _SelectionCircle;
     public Animator CorrectAnswerAnimator;
+    public WinningProgressBar _WinningProgressBar;
 
     void Start()
     {
@@ -36,6 +37,22 @@ public class MatchManager : MonoBehaviour
         {
             _WordsBlockContainer.WordMatches = List;
             _WordsBlockContainer.MarkCorrectWords();
+
+            #region Update the Scoreboard
+            var side1 = 0;
+            var side2 = 0;
+
+            foreach (var word in List)
+            {
+                if (word.owner == Ownership.Ours)
+                    side1++;
+                else
+                    side2++;
+            }
+
+            _WinningProgressBar.Score1 = side1;
+            _WinningProgressBar.Score2 = side2;
+            #endregion
         };
 
         Game.Watch();
