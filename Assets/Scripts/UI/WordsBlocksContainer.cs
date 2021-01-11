@@ -139,7 +139,7 @@ public class WordsBlocksContainer : MonoBehaviour
         var center = GetCenterOfObjects();
         Centerer.GetComponent<RectTransform>().anchoredPosition = -center;
 
-        yield return new WaitForSeconds(5.5f);
+        yield return new WaitForSeconds(5f);
 
         StartCoroutine(FadeInBlocks());
     }

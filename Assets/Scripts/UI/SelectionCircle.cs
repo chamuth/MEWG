@@ -65,6 +65,8 @@ public class SelectionCircle : MonoBehaviour
         foreach (Transform child in SelectionCircleContainer)
             Destroy(child.gameObject);
 
+        LetterConnections.Clear();
+
         yield return new WaitForSeconds(0.05f);
 
         // Render the selectable text item
@@ -162,7 +164,7 @@ public class SelectionCircle : MonoBehaviour
             });
         }
 
-        yield return new WaitForSeconds(5.5f);
+        yield return new WaitForSeconds(5f);
 
         StartCoroutine(FadeInLetters());
     }
@@ -174,6 +176,17 @@ public class SelectionCircle : MonoBehaviour
         while (cg.alpha < 1)
         {
             cg.alpha += Time.deltaTime * 2f;
+            yield return null;
+        }
+    }
+
+    IEnumerator FadeOutLetters()
+    {
+        var cg = SelectionCircleContainer.gameObject.GetComponent<CanvasGroup>();
+
+        while (cg.alpha > 0)
+        {
+            cg.alpha -= Time.deltaTime * 4f;
             yield return null;
         }
     }
@@ -209,7 +222,22 @@ public class SelectionCircle : MonoBehaviour
 
     public void RandomizeLetters()
     {
-        
+        StartCoroutine(FadeOutLetters());
+        StartCoroutine(_RandomizeLetters());
+    }
+
+    IEnumerator _RandomizeLetters()
+    {
+        yield return new WaitForSeconds(0.3f);
+
+        var rnd = new System.Random();
+        Letters = Letters.OrderBy(x => rnd.Next()).ToArray();
+
+        StartCoroutine(RenderLetters());
+
+        yield return new WaitForSeconds(0.3f);
+
+        StartCoroutine(FadeInLetters());
     }
 }
 
