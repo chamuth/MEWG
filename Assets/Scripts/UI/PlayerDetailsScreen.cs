@@ -35,13 +35,9 @@ public class PlayerDetailsScreen : MonoBehaviour
 
     IEnumerator RenderEnemyUser()
     {
-        print("Rendering current enemy");
-
         // wait until the current enemy details are loaded
         while (Game.CurrentEnemy == null)
             yield return null;
-
-        print("Current enemy loaded");
 
         StartCoroutine(RenderUser(Game.CurrentEnemy));
     }

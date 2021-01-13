@@ -143,10 +143,13 @@ public class SelectionCircle : MonoBehaviour
                     var nowPos = GetPositionForLetter(nowLetter);
 
                     var line = Instantiate(SelectionLine, prevPos, Quaternion.Euler(0, 0, 0), SelectionLineContainer).GetComponent<UILineRenderer>();
+
+                    line.transform.localScale = Vector3.one;
+
                     var points = new List<Vector2>();
 
                     points.Add(Vector3.zero);
-                    points.Add(nowPos - prevPos);
+                    points.Add((nowPos - prevPos));
 
                     line.Points = points.ToArray();
                 }
@@ -212,9 +215,10 @@ public class SelectionCircle : MonoBehaviour
             var points = new List<Vector2>();
 
             mouseLineRenderer.transform.position = nowPos;
-
             points.Add(Vector2.zero);
-            points.Add((Vector2)Input.mousePosition - nowPos);
+            points.Add(((Vector2)Input.mousePosition - nowPos));
+
+            print(Input.mousePosition);
 
             mouseLineRenderer.Points = points.ToArray();
         }
