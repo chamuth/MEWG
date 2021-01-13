@@ -11,9 +11,19 @@ public class MatchManager : MonoBehaviour
     public Animator CorrectAnswerAnimator;
     public WinningProgressBar _WinningProgressBar;
 
+    public TMPro.TextMeshProUGUI OurPlayerName;
+    public TMPro.TextMeshProUGUI TheirPlayerName;
+
+    public ProfileItem OurProfileItem;
+    public ProfileItem TheirProfileItem;
+
+    public TimeCounter MatchTimeCounter;
+
     void Start()
     {
         Game.CurrentMatchID = "abcd1234";
+
+        OurPlayerName.text = Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.DisplayName;
         
         Game.OnMatchDataChanged += () =>
         {
@@ -21,6 +31,8 @@ public class MatchManager : MonoBehaviour
             _WordsBlockContainer._Words = Game.CurrentMatchData.content.words;
             _WordsBlockContainer.Render();
             _SelectionCircle.Render(Game.CurrentMatchData.content.words);
+
+            // Set the timecounter
         };
 
         Game.OnNewWordMatched += (Ownership owner, WordMatch wordMatch) =>
@@ -55,6 +67,7 @@ public class MatchManager : MonoBehaviour
             #endregion
         };
 
+        // Start the match
         Game.Watch();
     }
 

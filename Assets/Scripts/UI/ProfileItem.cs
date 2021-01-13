@@ -11,6 +11,11 @@ public class ProfileItem : MonoBehaviour
 
     private void Start()
     {
+        UpdateDetails();
+    }
+
+    public void UpdateDetails()
+    {
         var levelText = transform.GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<TMPro.TextMeshProUGUI>();
         levelText.text = Level.ToString();
 

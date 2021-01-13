@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.Networking;
+using Firebase.Auth;
 
 public static class Game
 {
@@ -15,10 +16,13 @@ public static class Game
     public static Action OnFirstData;
     public static Action<List<ProcessedWordMatch>> OnMatchedWordsChanged;
     public static Action<Ownership, WordMatch> OnNewWordMatched;
+    public static Action OnEnemyDataLoaded;
 
     static DatabaseReference MatchReference;
 
     static WordMatch[] previousWordMatch = new WordMatch[] { };
+
+    public static User CurrentEnemy = null;
 
     public static void Watch()
     { 
@@ -28,6 +32,13 @@ public static class Game
         MatchReference.GetValueAsync().ContinueWith((snapshot) =>
         {
             CurrentMatchData = JsonUtility.FromJson<MatchRef>(snapshot.Result.GetRawJsonValue());
+
+            // Load enemy player details
+            User.GetUser(CurrentMatchData.players.First(x => x != FirebaseAuth.DefaultInstance.CurrentUser.UserId)).ContinueWith((x) =>
+            {
+                CurrentEnemy = x.Result;
+            });
+
             OnFirstData?.Invoke();
         });
 
