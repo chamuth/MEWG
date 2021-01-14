@@ -15,6 +15,9 @@ public class User
 
     public static User CurrentUser = null;
     public static Action OnUserDataUpdated;
+    public static Action OnLevelUp;
+
+    static int previousLevel = -1;
 
     /// <summary>
     /// Updates information about the current user (use if XP is most likely changed)
@@ -28,6 +31,15 @@ public class User
         {
             CurrentUser = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(e.Snapshot.GetRawJsonValue());
             OnUserDataUpdated?.Invoke();
+
+            var currentLevel = XP.XPToLevel(CurrentUser.xp);
+
+            if (previousLevel != -1 && previousLevel < currentLevel)
+            {
+                OnLevelUp?.Invoke();
+            }
+
+            previousLevel = currentLevel;
         };
     }
 
