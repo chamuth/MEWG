@@ -67,6 +67,17 @@ public class MainMenuUI : MonoBehaviour
         print("STARTING MATCHMAKING");
         // Show the Matchmaking UI
         SwitchMenu("MATCHMAKING");
+
+        StartCoroutine(StartTestMatch());
+    }
+
+    IEnumerator StartTestMatch()
+    {
+        yield return new WaitForSeconds(4);
+
+        // Set test match id
+        Game.CurrentMatchID = "abcd1234";
+        SceneManager.LoadScene(1);
     }
 
     IEnumerator AnimateUI(UITransitionEffect menu, bool set)
