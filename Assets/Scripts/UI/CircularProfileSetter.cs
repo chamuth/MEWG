@@ -24,10 +24,20 @@ public class CircularProfileSetter : MonoBehaviour
 
     XPReturner xpreturner;
 
+    private void OnDestroy()
+    {
+        // Reset event listeners
+        User.OnUserDataUpdated = null;
+    }
+
     IEnumerator ReadLocalUser()
     {
+        GetComponent<CanvasGroup>().alpha = 0;
+
         while (User.CurrentUser == null)
             yield return null;
+
+        GetComponent<CanvasGroup>().alpha = 1;
 
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(User.CurrentUser.profile);
 
