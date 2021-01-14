@@ -10,11 +10,18 @@ public class MainMenuUI : MonoBehaviour
 {
     public UITransitionEffect LoginUI;
     public UITransitionEffect MainMenu;
+    public UITransitionEffect MatchmakingUI;
 
     public static MainMenuUI Instance;
 
     private void Start()
     {
+        foreach(var x in (new UITransitionEffect[] { LoginUI, MainMenu, MatchmakingUI }))
+        {
+            // Hide everything in the start
+            x.effectFactor = 0;
+        }
+
         // Set singleton instance
         Instance = this;
 
@@ -24,9 +31,6 @@ public class MainMenuUI : MonoBehaviour
         if (auth.CurrentUser != null)
         {
             print(string.Format("Signed in as : {0} ({1})", auth.CurrentUser.DisplayName, auth.CurrentUser.PhotoUrl.ToString()));
-
-            // Update user information
-            User.UpdateCurrentUser();
 
             // Load the main menu
             SwitchMenu("MAIN MENU");
@@ -47,13 +51,28 @@ public class MainMenuUI : MonoBehaviour
                 StartCoroutine(AnimateUI(LoginUI, true));
                 break;
             case "MAIN MENU":
+                // Successfully logged in load the main menu
+                User.UpdateCurrentUser();
+
                 StartCoroutine(AnimateUI(MainMenu, true));
                 break;
+            case "MATCHMAKING":
+                StartCoroutine(AnimateUI(MatchmakingUI, true));
+                break;
         }
+    }
+    
+    public void StartMatchmaking()
+    {
+        print("STARTING MATCHMAKING");
+        // Show the Matchmaking UI
+        SwitchMenu("MATCHMAKING");
     }
 
     IEnumerator AnimateUI(UITransitionEffect menu, bool set)
     {
+        menu.gameObject.SetActive(true);
+
         while ((set && menu.effectFactor < 1) || (!set && menu.effectFactor > 0))
         {
             menu.effectFactor += ((set) ? (+1) : (-1)) * Time.deltaTime * 2f;

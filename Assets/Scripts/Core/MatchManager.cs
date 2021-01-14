@@ -21,8 +21,6 @@ public class MatchManager : MonoBehaviour
 
     void Start()
     {
-        Game.CurrentMatchID = "abcd1234";
-
         OurPlayerName.text = Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.DisplayName;
         
         Game.OnMatchDataChanged += () =>

@@ -14,6 +14,7 @@ public class User
     public UserStatistics statistics;
 
     public static User CurrentUser = null;
+    public static Action OnUserDataUpdated;
 
     /// <summary>
     /// Updates information about the current user (use if XP is most likely changed)
@@ -23,10 +24,11 @@ public class User
         var uid = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
         var userRef = FirebaseDatabase.DefaultInstance.RootReference.Child("user").Child(uid);
 
-        userRef.GetValueAsync().ContinueWith((snapshot) =>
+        userRef.ValueChanged += (x, e) =>
         {
-            CurrentUser = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(snapshot.Result.GetRawJsonValue());
-        });
+            CurrentUser = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(e.Snapshot.GetRawJsonValue());
+            OnUserDataUpdated?.Invoke();
+        };
     }
 
     public static async Task<User> GetUser(string uid)
