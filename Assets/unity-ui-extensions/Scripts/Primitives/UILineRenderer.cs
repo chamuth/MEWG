@@ -160,7 +160,6 @@ namespace UnityEngine.UI.Extensions
 			}
 			if (BezierMode == BezierType.Catenary && pointsToDraw.Length == 2) {
 				CableCurve cable = new CableCurve (pointsToDraw);
-				cable.slack = Resoloution;
 				cable.steps = BezierSegmentsPerCurve;
 				pointsToDraw = cable.Points ();
 			}
@@ -188,8 +187,7 @@ namespace UnityEngine.UI.Extensions
 						segments.Add (CreateLineCap (start, end, SegmentType.Start));
 					}
 
-					//segments.Add(CreateLineSegment(start, end, SegmentType.Full));
-					segments.Add (CreateLineSegment (start, end, SegmentType.Middle));
+					segments.Add(CreateLineSegment(start, end, SegmentType.Middle, segments.Count > 1 ? segments[segments.Count - 2] : null));
 
 					if (lineCaps) {
 						segments.Add (CreateLineCap (start, end, SegmentType.End));
@@ -207,7 +205,6 @@ namespace UnityEngine.UI.Extensions
 					}
 
 					segments.Add (CreateLineSegment (start, end, SegmentType.Middle));
-					//segments.Add(CreateLineSegment(start, end, SegmentType.Full));
 
 					if (lineCaps && i == pointsToDraw.Length - 1) {
 						segments.Add (CreateLineCap (start, end, SegmentType.End));
@@ -262,7 +259,7 @@ namespace UnityEngine.UI.Extensions
 				vh.AddUIVertexQuad (segments [i]);
 			}
 			if (vh.currentVertCount > 64000) {
-				Debug.LogError ("Max Verticies size is 64000, current mesh vertcies count is [" + vh.currentVertCount + "] - Cannot Draw");
+				Debug.LogError ("Max Verticies size is 64000, current mesh verticies count is [" + vh.currentVertCount + "] - Cannot Draw");
 				vh.Clear ();
 				return;
 			}
@@ -308,12 +305,20 @@ namespace UnityEngine.UI.Extensions
 			return null;
 		}
 
-		private UIVertex[] CreateLineSegment(Vector2 start, Vector2 end, SegmentType type)
+		private UIVertex[] CreateLineSegment(Vector2 start, Vector2 end, SegmentType type, UIVertex[] previousVert = null)
 		{
 			Vector2 offset = new Vector2((start.y - end.y), end.x - start.x).normalized * lineThickness / 2;
 
-			var v1 = start - offset;
-			var v2 = start + offset;
+			Vector2 v1 = Vector2.zero;
+			Vector2 v2 = Vector2.zero;
+			if (previousVert != null) {
+				v1 = new Vector2(previousVert[3].position.x, previousVert[3].position.y);
+				v2 = new Vector2(previousVert[2].position.x, previousVert[2].position.y);
+			} else {
+				v1 = start - offset;
+				v2 = start + offset;
+			}
+
 			var v3 = end + offset;
 			var v4 = end - offset;
             //Return the VDO with the correct uvs
@@ -371,6 +376,87 @@ namespace UnityEngine.UI.Extensions
                 m_Resolution = distance / (activeSprite.rect.width / pixelsPerUnit);
                 lineThickness = activeSprite.rect.height / pixelsPerUnit;
             }
+        }
+
+        private int GetSegmentPointCount()
+        {
+            if (Segments?.Count > 0)
+            {
+                int pointCount = 0;
+                foreach (var segment in Segments)
+                {
+                    pointCount += segment.Length;
+                }
+                return pointCount;
+            }
+            return Points.Length;
+        }
+
+        /// <summary>
+        /// Get the Vector2 position of a line index
+        /// </summary>
+        /// <remarks>
+        /// Positive numbers should be used to specify Index and Segment
+        /// </remarks>
+        /// <param name="index">Required Index of the point, starting from point 1</param>
+        /// <param name="segmentIndex">(optional) Required Segment the point is held in, Starting from Segment 1</param>
+        /// <returns>Vector2 position of the point within UI Space</returns>
+        public Vector2 GetPosition(int index, int segmentIndex = 0)
+        {
+            if (segmentIndex > 0)
+            {
+                return Segments[segmentIndex - 1][index - 1];
+            }
+            else if (Segments.Count > 0)
+            {
+                var segmentIndexCount = 0;
+                var indexCount = index;
+                foreach (var segment in Segments)
+                {
+                    if (indexCount - segment.Length > 0)
+                    {
+                        indexCount -= segment.Length;
+                        segmentIndexCount += 1;
+                    }
+                    else
+                    {
+                        break;    
+                    }
+                }
+                return Segments[segmentIndexCount][indexCount - 1];
+            }
+            else
+            {
+                return Points[index - 1];
+            }
+        }
+
+        /// <summary>
+        /// Get the Vector2 position of a line within a specific segment
+        /// </summary>
+        /// <param name="index">Required Index of the point, starting from point 1</param>
+        /// <param name="segmentIndex"> Required Segment the point is held in, Starting from Segment 1</param>
+        /// <returns>Vector2 position of the point within UI Space</returns>
+        public Vector2 GetPositionBySegment(int index, int segment)
+        {
+            return Segments[segment][index - 1];
+        }
+
+        /// <summary>
+        /// Get the closest point between two given Vector2s from a given Vector2 point
+        /// </summary>
+        /// <param name="p1">Starting position</param>
+        /// <param name="p2">End position</param>
+        /// <param name="p3">Desired / Selected point</param>
+        /// <returns>Closest Vector2 position of the target within UI Space</returns>
+        public Vector2 GetClosestPoint(Vector2 p1, Vector2 p2, Vector2 p3)
+        {
+            Vector2 from_p1_to_p3 = p3 - p1;
+            Vector2 from_p1_to_p2 = p2 - p1;
+            float dot = Vector2.Dot(from_p1_to_p3, from_p1_to_p2.normalized);
+            dot /= from_p1_to_p2.magnitude;
+            float t = Mathf.Clamp01(dot);
+            return p1 + from_p1_to_p2 * t;
         }
     }
 }

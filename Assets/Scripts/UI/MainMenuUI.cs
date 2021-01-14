@@ -1,6 +1,7 @@
 ﻿using Coffee.UIEffects;
 using Firebase.Auth;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,9 +9,15 @@ using UnityEngine.SceneManagement;
 public class MainMenuUI : MonoBehaviour
 {
     public UITransitionEffect LoginUI;
+    public UITransitionEffect MainMenu;
+
+    public static MainMenuUI Instance;
 
     private void Start()
     {
+        // Set singleton instance
+        Instance = this;
+
         // Check for user authentication
         var auth = FirebaseAuth.DefaultInstance;
 
@@ -20,15 +27,28 @@ public class MainMenuUI : MonoBehaviour
 
             // Update user information
             User.UpdateCurrentUser();
-            
+
             // Load the main menu
-            SceneManager.LoadScene(1);
+            SwitchMenu("MAIN MENU");
         }
         else
         {
             print("User not logged in");
             // Show the login ui
-            StartCoroutine(AnimateUI(LoginUI, true));
+            SwitchMenu("LOGIN");
+        }
+    }
+
+    public void SwitchMenu(string code)
+    {
+        switch (code)
+        {
+            case "LOGIN":
+                StartCoroutine(AnimateUI(LoginUI, true));
+                break;
+            case "MAIN MENU":
+                StartCoroutine(AnimateUI(MainMenu, true));
+                break;
         }
     }
 
@@ -38,6 +58,15 @@ public class MainMenuUI : MonoBehaviour
         {
             menu.effectFactor += ((set) ? (+1) : (-1)) * Time.deltaTime * 2f;
             yield return null;
+        }
+
+        // If setting something unset all the others after the animation
+        if (set)
+        {
+            foreach (var m in (new UITransitionEffect[] { LoginUI, MainMenu }).Where(x => x != menu))
+            {
+                m.gameObject.SetActive(false);
+            }
         }
     }
 }

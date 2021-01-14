@@ -89,7 +89,9 @@ public class LoginUI : MonoBehaviour
 
                     FirebaseUser newUser = task.Result;
                     Debug.LogFormat("User signed in successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
-                    SceneManager.LoadScene(1);
+
+                    // Load the main menu
+                    MainMenuUI.Instance.SwitchMenu("MAIN MENU");
                 });
             }
             else
