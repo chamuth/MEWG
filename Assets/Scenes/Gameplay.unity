@@ -2250,7 +2250,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1345193383}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3047,7 +3047,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1345193383}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4001,6 +4001,7 @@ GameObject:
   - component: {fileID: 1099458329}
   - component: {fileID: 1099458330}
   - component: {fileID: 1099458331}
+  - component: {fileID: 1099458332}
   m_Layer: 5
   m_Name: Completion
   m_TagString: Untagged
@@ -4024,7 +4025,7 @@ RectTransform:
   - {fileID: 94481046}
   - {fileID: 1280987345}
   m_Father: {fileID: 1345193383}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4064,6 +4065,18 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!225 &1099458332
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099458328}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1147248718
 GameObject:
   m_ObjectHideFlags: 0
@@ -4859,12 +4872,12 @@ ParticleSystem:
   m_GameObject: {fileID: 1246771614}
   serializedVersion: 6
   lengthInSec: 5
-  simulationSpeed: 6
+  simulationSpeed: 7
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -4986,7 +4999,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 150
+      scalar: 100
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5418,7 +5431,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 100
+    maxNumParticles: 150
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -5683,7 +5696,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 100
+      scalar: 150
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -10111,6 +10124,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1345193383}
   - component: {fileID: 1345193384}
+  - component: {fileID: 1345193385}
   m_Layer: 5
   m_Name: Win
   m_TagString: Untagged
@@ -10130,9 +10144,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1246771615}
+  - {fileID: 1099458329}
   - {fileID: 657720367}
   - {fileID: 794785221}
-  - {fileID: 1099458329}
   - {fileID: 1971154023}
   m_Father: {fileID: 405027653}
   m_RootOrder: 1
@@ -10150,6 +10164,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1345193382}
   m_CullTransparentMesh: 0
+--- !u!95 &1345193385
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345193382}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b8cfec1c495101741b514429a5372cf7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1347327567
 GameObject:
   m_ObjectHideFlags: 0
@@ -10485,7 +10518,7 @@ GameObject:
   - component: {fileID: 1405427798}
   - component: {fileID: 1405427797}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Award Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13393,6 +13426,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1971154025 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8630734935331594765, guid: 6f0ff4656c5497941bd4b6182ccdb768,
+    type: 3}
+  m_PrefabInstance: {fileID: 1971154022}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &1971154026
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971154025}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1978478489
 GameObject:
   m_ObjectHideFlags: 0
