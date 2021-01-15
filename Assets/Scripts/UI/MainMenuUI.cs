@@ -5,6 +5,8 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Firebase.Database;
+using System;
 
 public class MainMenuUI : MonoBehaviour
 {
@@ -45,6 +47,8 @@ public class MainMenuUI : MonoBehaviour
 
     public void SwitchMenu(string code)
     {
+        MatchmakingUI.gameObject.SetActive(false);
+
         switch (code)
         {
             case "LOGIN":
@@ -57,27 +61,38 @@ public class MainMenuUI : MonoBehaviour
                 StartCoroutine(AnimateUI(MainMenu, true));
                 break;
             case "MATCHMAKING":
+                MatchmakingUI.gameObject.SetActive(true);
                 StartCoroutine(AnimateUI(MatchmakingUI, true));
                 break;
         }
     }
-    
+
+    DatabaseReference MatchNode;
+
     public void StartMatchmaking()
     {
-        print("STARTING MATCHMAKING");
         // Show the Matchmaking UI
         SwitchMenu("MATCHMAKING");
 
-        StartCoroutine(StartTestMatch());
-    }
+        // Add player to the matchmaking queue
+        MatchNode = FirebaseDatabase.DefaultInstance.RootReference.Child("matchmaking").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+        MatchNode.SetValueAsync("MATCHMAKING");
 
-    IEnumerator StartTestMatch()
-    {
-        yield return new WaitForSeconds(4);
+        MatchNode.ValueChanged += (a, b) =>
+        {
+            if (b.Snapshot.GetValue(false) != null)
+            {
+                var gameid = b.Snapshot.GetValue(false).ToString();
+                
+                print("Connected to " + gameid);
 
-        // Set test match id
-        Game.CurrentMatchID = "abcd1234";
-        SceneManager.LoadScene(1);
+                if (gameid != "MATCHMAKING")
+                {
+                    Game.CurrentMatchID = gameid;
+                    SceneManager.LoadSceneAsync(1);
+                }
+            }
+        };
     }
 
     IEnumerator AnimateUI(UITransitionEffect menu, bool set)

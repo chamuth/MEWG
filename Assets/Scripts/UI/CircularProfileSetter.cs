@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Firebase.Auth;
+using Firebase.Database;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
