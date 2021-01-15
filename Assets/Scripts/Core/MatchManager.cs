@@ -14,6 +14,10 @@ public class MatchManager : MonoBehaviour
     public TMPro.TextMeshProUGUI OurPlayerName;
     public TMPro.TextMeshProUGUI TheirPlayerName;
 
+    public GameObject ConclusionUI;
+    public GameObject WinUI;
+    public ParticleSystem WinParticles;
+
     public ProfileItem OurProfileItem;
     public ProfileItem TheirProfileItem;
 
@@ -63,6 +67,19 @@ public class MatchManager : MonoBehaviour
             _WinningProgressBar.Score1 = side1;
             _WinningProgressBar.Score2 = side2;
             #endregion
+        };
+
+        Game.OnMatchEnd += (MatchState state) =>
+        {
+            ConclusionUI.SetActive(true);
+
+            switch (state)
+            {
+                case MatchState.Win:
+                    WinUI.SetActive(true);
+                    WinParticles.Play();
+                    break;
+            }
         };
 
         // Start the match

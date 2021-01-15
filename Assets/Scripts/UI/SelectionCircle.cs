@@ -218,8 +218,6 @@ public class SelectionCircle : MonoBehaviour
             points.Add(Vector2.zero);
             points.Add(((Vector2)Input.mousePosition - nowPos));
 
-            print(Input.mousePosition);
-
             mouseLineRenderer.Points = points.ToArray();
         }
     }

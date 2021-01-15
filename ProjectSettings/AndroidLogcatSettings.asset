@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "LNVW5LK7SKOVGMOB",
         "name": "com.ninponix.mewg",
-        "processId": 18751,
+        "processId": 22171,
         "exited": true
     },
     "m_SelectedPriority": 0,
@@ -66,6 +66,12 @@
             "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.ninponix.mewg",
             "processId": 18751,
+            "exited": true
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 22171,
             "exited": true
         }
     ],

@@ -17,6 +17,7 @@ public static class Game
     public static Action<List<ProcessedWordMatch>> OnMatchedWordsChanged;
     public static Action<Ownership, WordMatch> OnNewWordMatched;
     public static Action OnEnemyDataLoaded;
+    public static Action<MatchState> OnMatchEnd;
 
     static DatabaseReference MatchReference;
 
@@ -51,12 +52,40 @@ public static class Game
     {
         CurrentMatchData = JsonUtility.FromJson<MatchRef>(e.Snapshot.GetRawJsonValue());
 
-        if (CurrentMatchData.matches != null)
+        try
         {
-            if (previousWordMatch != CurrentMatchData.matches)
+            if (CurrentMatchData.matches != null)
             {
-                UpdateMatchedWords();
+                if (previousWordMatch != CurrentMatchData.matches)
+                {
+                    UpdateMatchedWords();
+                }
             }
+        }
+        catch (Exception)
+        {
+
+        }
+
+        if (CurrentMatchData.status.winner != "")
+        {
+            Debug.Log(CurrentMatchData.status.winner != "" || CurrentMatchData.status.draw);
+
+            MatchState state;
+
+            if (CurrentMatchData.status.draw == true)
+            {
+                state = MatchState.Draw;
+            }
+            else
+            {
+                if (CurrentMatchData.status.winner == FirebaseAuth.DefaultInstance.CurrentUser.UserId)
+                    state = MatchState.Win;
+                else
+                    state = MatchState.Loss;
+            }
+
+            OnMatchEnd?.Invoke(state);
         }
 
         OnMatchDataChanged?.Invoke();
@@ -158,7 +187,15 @@ public class MatchRef
 {
     public string[] players;
     public MatchContent content;
+    public MatchStatus status = null;
     public WordMatch[] matches;
+}
+
+[Serializable]
+public class MatchStatus
+{
+    public bool draw = false;
+    public string winner = "";
 }
 
 [Serializable]
@@ -201,4 +238,9 @@ public class WordMatch
         hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(word);
         return hashCode;
     }
+}
+
+public enum MatchState
+{
+    Win, Loss, Draw
 }
