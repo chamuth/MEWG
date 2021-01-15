@@ -3,8 +3,8 @@
     "m_SelectedPackage": {
         "deviceId": "LNVW5LK7SKOVGMOB",
         "name": "com.ninponix.mewg",
-        "processId": 22171,
-        "exited": true
+        "processId": 5553,
+        "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
@@ -73,6 +73,48 @@
             "name": "com.ninponix.mewg",
             "processId": 22171,
             "exited": true
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 26836,
+            "exited": false
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 29293,
+            "exited": false
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 30852,
+            "exited": false
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 32279,
+            "exited": false
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 1957,
+            "exited": false
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 3250,
+            "exited": false
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 5553,
+            "exited": false
         }
     ],
     "m_Tags": {

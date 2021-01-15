@@ -12,6 +12,7 @@ public class User
     public int xp;
     public string profile;
     public UserStatistics statistics;
+    public Hints hints;
 
     public static User CurrentUser = null;
     public static Action OnUserDataUpdated;
@@ -57,4 +58,10 @@ public class UserStatistics
 {
     public int wins;
     public int losses;
+}
+
+[Serializable]
+public class Hints
+{
+    public int count;
 }

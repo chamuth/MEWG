@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class XP
 {
-    const float FIRST_LEVEL_LIMIT = 500;
+    const float FIRST_LEVEL_LIMIT = 100;
+    const float XP_LEVEL_MULTIPLIER = 2.5f;
 
     /// <summary>
     /// Returns Level number for XP value
@@ -22,7 +23,7 @@ public class XP
                 return (i + 1);
             }
             
-            limit = limit * 1.25f;
+            limit = limit * XP_LEVEL_MULTIPLIER;
         }
 
         return -1;
@@ -37,12 +38,21 @@ public class XP
         {
             if (XP < limit)
             {
-                returner.TotalXP = (int)(limit - (limit / 1.25));
-                returner.RemainingXP = XP - (int)(limit / 1.25);
-                break;
+                if (i == 0)
+                {
+                    returner.TotalXP = (int)(limit);
+                    returner.RemainingXP = XP;
+                    break;
+                }
+                else
+                {
+                    returner.TotalXP = (int)(limit - (limit / XP_LEVEL_MULTIPLIER));
+                    returner.RemainingXP = XP - (int)(limit / XP_LEVEL_MULTIPLIER);
+                    break;
+                }
             }
 
-            limit = limit * 1.25f;
+            limit = limit * XP_LEVEL_MULTIPLIER;
         }
 
         return returner;

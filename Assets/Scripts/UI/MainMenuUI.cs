@@ -45,6 +45,16 @@ public class MainMenuUI : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            // TODO: Sign out from the game dev purposes
+            FirebaseAuth.DefaultInstance.SignOut();
+            SwitchMenu("LOGIN");
+        }
+    }
+
     public void SwitchMenu(string code)
     {
         MatchmakingUI.gameObject.SetActive(false);
@@ -77,22 +87,28 @@ public class MainMenuUI : MonoBehaviour
         // Add player to the matchmaking queue
         MatchNode = FirebaseDatabase.DefaultInstance.RootReference.Child("matchmaking").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId);
         MatchNode.SetValueAsync("MATCHMAKING");
-
+        MatchNode.OnDisconnect().SetValue(null);
         MatchNode.ValueChanged += (a, b) =>
         {
             if (b.Snapshot.GetValue(false) != null)
             {
-                var gameid = b.Snapshot.GetValue(false).ToString();
-                
-                print("Connected to " + gameid);
-
-                if (gameid != "MATCHMAKING")
+                if (Application.isPlaying)
                 {
-                    Game.CurrentMatchID = gameid;
-                    SceneManager.LoadSceneAsync(1);
+                    var gameid = b.Snapshot.GetValue(false).ToString();
+
+                    if (gameid != "MATCHMAKING")
+                    {
+                        Game.CurrentMatchID = gameid;
+                        SceneManager.LoadSceneAsync(1);
+                    }
                 }
             }
         };
+    }
+
+    private void OnDestroy()
+    {
+        
     }
 
     IEnumerator AnimateUI(UITransitionEffect menu, bool set)

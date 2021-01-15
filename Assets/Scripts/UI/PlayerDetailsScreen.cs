@@ -71,7 +71,7 @@ public class PlayerDetailsScreen : MonoBehaviour
             pi.UpdateDetails();
         }
 
-        WLRatio.text = string.Format("{0:0.##} W/L", user.statistics.wins / (float) user.statistics.losses);
+        WLRatio.text = string.Format("{0:0.##} W/L", user.statistics.wins / (float) ((user.statistics.losses == 0) ? 1 : user.statistics.losses));
     }
 
     public static IEnumerator GetTexture(string url, ProfileItem[] profile)

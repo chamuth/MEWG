@@ -1,5 +1,6 @@
 ﻿using Facebook.Unity;
 using Firebase.Auth;
+using Firebase.Database;
 using Google;
 using System.Collections;
 using System.Collections.Generic;
@@ -70,9 +71,8 @@ public class LoginUI : MonoBehaviour
             {
                 // User logged in successfully
                 var token = AccessToken.CurrentAccessToken;
-                print(token.TokenString);
 
-                var credential = Firebase.Auth.FacebookAuthProvider.GetCredential(token.TokenString);
+                var credential = FacebookAuthProvider.GetCredential(token.TokenString);
 
                 auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
                 {
@@ -81,6 +81,7 @@ public class LoginUI : MonoBehaviour
                         Debug.LogError("SignInWithCredentialAsync was canceled.");
                         return;
                     }
+
                     if (task.IsFaulted)
                     {
                         Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
@@ -88,10 +89,35 @@ public class LoginUI : MonoBehaviour
                     }
 
                     FirebaseUser newUser = task.Result;
-                    Debug.LogFormat("User signed in successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
 
-                    // Load the main menu
-                    MainMenuUI.Instance.SwitchMenu("MAIN MENU");
+                    FirebaseDatabase.DefaultInstance.RootReference.Child("user").Child(newUser.UserId).GetValueAsync().ContinueWith((snapshot) =>
+                    {
+                        if (!snapshot.Result.Exists)
+                        {
+                            print("User " + newUser.UserId + " does not exist on db creating user");
+
+                            // User details doesn't exist save them
+                            var user = new User();
+                            user.name = newUser.DisplayName;
+                            user.profile = newUser.PhotoUrl.ToString();
+                            user.xp = 0;
+                            
+                            // User gonna have 0 wins and 0 losses when started
+                            user.statistics = new UserStatistics();
+                            user.statistics.wins = 0;
+                            user.statistics.losses = 0;
+
+                            // User gonna have 5 hints as a startup gift
+                            user.hints = new Hints();
+                            user.hints.count = 5;
+
+                            FirebaseDatabase.DefaultInstance.RootReference.Child("user").Child(newUser.UserId).SetRawJsonValueAsync(Newtonsoft.Json.JsonConvert.SerializeObject(user)).ContinueWith((t) =>
+                            {
+                                // Load the main menu
+                                MainMenuUI.Instance.SwitchMenu("MAIN MENU");
+                            });
+                        }
+                    });
                 });
             }
             else
