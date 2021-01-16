@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Firebase.Extensions;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using Firebase.Database;
+using Firebase.Auth;
 
 public class MatchManager : MonoBehaviour
 {
@@ -25,9 +28,14 @@ public class MatchManager : MonoBehaviour
 
     public TimeCounter MatchTimeCounter;
 
+    public GameObject ExitNotification;
+    public GameObject ExitPreloader;
+    bool Exiting = false;
+    bool Exited = false;
+
     void Start()
     {
-        OurPlayerName.text = Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.DisplayName;
+        OurPlayerName.text = FirebaseAuth.DefaultInstance.CurrentUser.DisplayName;
         
         Game.OnMatchDataChanged += () =>
         {
@@ -103,4 +111,42 @@ public class MatchManager : MonoBehaviour
         Game.OnNewWordMatched = null;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && !Exiting)
+        {
+            // Android back key pressed
+            ExitNotification.SetActive(!ExitNotification.activeSelf);
+        }
+
+        if (Exited)
+        {
+            Exited = false;
+            SceneManager.LoadSceneAsync(0);
+        }
+    }
+
+    public void ShowExitPanel()
+    {
+        if (!Exiting)
+            ExitNotification.SetActive(true);
+    }
+
+    public void ReturnToHome()
+    {
+        Exiting = true;
+        ExitPreloader.SetActive(true);
+
+        // Remove the matchmaking thing
+        FirebaseDatabase.DefaultInstance.RootReference.Child("matchmaking").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).SetValueAsync(null).ContinueWith((t) =>
+        {
+            // set the disconnect variable
+            FirebaseDatabase.DefaultInstance.RootReference.Child("match").Child(Game.CurrentMatchID).Child("disconnect").SetValueAsync(FirebaseAuth.DefaultInstance.CurrentUser.UserId).ContinueWith((b) =>
+            {
+                Exited = true;
+            });
+        });
+    }
+
 }
+    

@@ -30,6 +30,9 @@ public static class Game
         DatabaseReference db = FirebaseDatabase.DefaultInstance.RootReference;
         MatchReference = db.Child("match").Child(CurrentMatchID);
 
+        // On disconnect save the player disconnected field
+        MatchReference.Child("disconnect").OnDisconnect().SetValue(FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+
         MatchReference.GetValueAsync().ContinueWith((snapshot) =>
         {
             CurrentMatchData = JsonUtility.FromJson<MatchRef>(snapshot.Result.GetRawJsonValue());
