@@ -58,6 +58,7 @@ public class MainMenuUI : MonoBehaviour
     public void SwitchMenu(string code)
     {
         MatchmakingUI.gameObject.SetActive(false);
+        print("SWITCHING CODE IS " + code);
 
         switch (code)
         {
@@ -65,9 +66,9 @@ public class MainMenuUI : MonoBehaviour
                 StartCoroutine(AnimateUI(LoginUI, true));
                 break;
             case "MAIN MENU":
+
                 // Successfully logged in load the main menu
                 User.UpdateCurrentUser();
-
                 StartCoroutine(AnimateUI(MainMenu, true));
                 break;
             case "MATCHMAKING":
@@ -111,7 +112,7 @@ public class MainMenuUI : MonoBehaviour
         
     }
 
-    IEnumerator AnimateUI(UITransitionEffect menu, bool set)
+    public IEnumerator AnimateUI(UITransitionEffect menu, bool set)
     {
         menu.gameObject.SetActive(true);
 

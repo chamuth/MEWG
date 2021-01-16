@@ -1,4 +1,5 @@
-﻿using Facebook.Unity;
+﻿using Coffee.UIEffects;
+using Facebook.Unity;
 using Firebase.Auth;
 using Firebase.Database;
 using Google;
@@ -11,7 +12,9 @@ using UnityEngine.UI;
 
 public class LoginUI : MonoBehaviour
 {
+    public MainMenuUI _MainMenuUI;
     public Button FacebookLoginButton, GoogleLoginButton;
+    public GameObject PreloaderScreen;
 
     void Awake()
     {
@@ -69,6 +72,8 @@ public class LoginUI : MonoBehaviour
         {
             if (FB.IsLoggedIn)
             {
+                PreloaderScreen.SetActive(true);
+
                 // User logged in successfully
                 var token = AccessToken.CurrentAccessToken;
 
@@ -89,19 +94,22 @@ public class LoginUI : MonoBehaviour
                     }
 
                     FirebaseUser newUser = task.Result;
+                    print("Signed in as " + newUser.DisplayName);
 
-                    FirebaseDatabase.DefaultInstance.RootReference.Child("user").Child(newUser.UserId).GetValueAsync().ContinueWith((snapshot) =>
+                    var uid = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
+
+                    FirebaseDatabase.DefaultInstance.RootReference.Child("user").Child(uid).GetValueAsync().ContinueWith((snapshot) =>
                     {
                         if (!snapshot.Result.Exists)
                         {
-                            print("User " + newUser.UserId + " does not exist on db creating user");
+                            print("User profile doesn't exist on database");
 
                             // User details doesn't exist save them
                             var user = new User();
                             user.name = newUser.DisplayName;
                             user.profile = newUser.PhotoUrl.ToString();
                             user.xp = 0;
-                            
+
                             // User gonna have 0 wins and 0 losses when started
                             user.statistics = new UserStatistics();
                             user.statistics.wins = 0;
@@ -111,13 +119,20 @@ public class LoginUI : MonoBehaviour
                             user.hints = new Hints();
                             user.hints.count = 5;
 
-                            FirebaseDatabase.DefaultInstance.RootReference.Child("user").Child(newUser.UserId).SetRawJsonValueAsync(Newtonsoft.Json.JsonConvert.SerializeObject(user)).ContinueWith((t) =>
+                            FirebaseDatabase.DefaultInstance.RootReference.Child("user").Child(uid).SetRawJsonValueAsync(Newtonsoft.Json.JsonConvert.SerializeObject(user)).ContinueWith((t) =>
                             {
+                                print("User Profile created, loading main menu");
                                 // Load the main menu
-                                MainMenuUI.Instance.SwitchMenu("MAIN MENU");
+                                mmSwitch = true;
                             });
                         }
+                        else
+                        {
+                            print("User profile exists on the database loading main menu");
+                            mmSwitch = true;
+                        }
                     });
+
                 });
             }
             else
@@ -125,6 +140,18 @@ public class LoginUI : MonoBehaviour
                 print("Facebook Log in failed");
             }
         });
+    }
+
+    private bool mmSwitch = false; 
+
+    private void Update()
+    {
+        if (mmSwitch)
+        {
+            MainMenuUI.Instance.SwitchMenu("MAIN MENU");
+            PreloaderScreen.SetActive(false);
+            mmSwitch = false;
+        }
     }
 
     void GoogleLogin()
