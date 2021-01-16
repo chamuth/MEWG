@@ -18,16 +18,23 @@ public class HintCountRenderer : MonoBehaviour
 
         hintNodeReference = FirebaseDatabase.DefaultInstance.RootReference.Child("user").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).Child("hints");
 
-        hintNodeReference.ValueChanged += (obj, e) =>
-        {
-            // hide the preloader
-            preloader.SetActive(false);
+        hintNodeReference.ValueChanged += HintNodeReference_ValueChanged; 
+    }
 
-            var count = JsonConvert.DeserializeObject<HintNode>(e.Snapshot.GetRawJsonValue()).count;
-            text.text = count.ToString();
+    private void HintNodeReference_ValueChanged(object sender, ValueChangedEventArgs e)
+    {
+        // hide the preloader
+        preloader.SetActive(false);
 
-            StartCoroutine(AnimateChange(text.gameObject));
-        };
+        var count = JsonConvert.DeserializeObject<HintNode>(e.Snapshot.GetRawJsonValue()).count;
+        text.text = count.ToString();
+
+        StartCoroutine(AnimateChange(text.gameObject));
+    }
+
+    private void OnDestroy()
+    {
+        hintNodeReference.ValueChanged -= HintNodeReference_ValueChanged;
     }
 
     IEnumerator AnimateChange(GameObject animatable)
@@ -50,3 +57,4 @@ public class HintNode
 {
     public int count;
 }
+

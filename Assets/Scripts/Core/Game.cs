@@ -48,6 +48,11 @@ public static class Game
         UpdateMatchedWords();
     }
 
+    public static void Destroy()
+    {
+        MatchReference.ValueChanged -= MatchReference_ValueChanged;
+    }
+
     private static void MatchReference_ValueChanged(object sender, ValueChangedEventArgs e)
     {
         CurrentMatchData = JsonUtility.FromJson<MatchRef>(e.Snapshot.GetRawJsonValue());

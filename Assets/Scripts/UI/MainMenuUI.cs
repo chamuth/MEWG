@@ -14,6 +14,8 @@ public class MainMenuUI : MonoBehaviour
     public UITransitionEffect MainMenu;
     public UITransitionEffect MatchmakingUI;
 
+    public StartupTutorial Tutorial;
+
     public static MainMenuUI Instance;
 
     private void Start()
@@ -58,7 +60,6 @@ public class MainMenuUI : MonoBehaviour
     public void SwitchMenu(string code)
     {
         MatchmakingUI.gameObject.SetActive(false);
-        print("SWITCHING CODE IS " + code);
 
         switch (code)
         {
@@ -66,10 +67,19 @@ public class MainMenuUI : MonoBehaviour
                 StartCoroutine(AnimateUI(LoginUI, true));
                 break;
             case "MAIN MENU":
-
                 // Successfully logged in load the main menu
                 User.UpdateCurrentUser();
                 StartCoroutine(AnimateUI(MainMenu, true));
+
+                // If first time show the tutorial
+                if (PlayerPrefs.GetInt("FIRST_TIME", 1) == 1)
+                {
+                    Tutorial.gameObject.SetActive(true);
+                    Tutorial.StartTutorial();
+
+                    PlayerPrefs.SetInt("FIRST_TIME", 0);
+                    //PlayerPrefs.Save();
+                }
                 break;
             case "MATCHMAKING":
                 MatchmakingUI.gameObject.SetActive(true);

@@ -34,7 +34,6 @@ public class MatchManager : MonoBehaviour
             _WordsBlockContainer.Render();
             _SelectionCircle.Render(Game.CurrentMatchData.content.words);
 
-            // Set the timecounter
         };
 
         Game.OnNewWordMatched += (Ownership owner, WordMatch wordMatch) =>
@@ -88,6 +87,8 @@ public class MatchManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        Game.Destroy();
+        
         Game.OnMatchDataChanged = null;
         Game.OnFirstData = null;
         Game.OnMatchedWordsChanged = null;

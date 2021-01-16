@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Firebase.Database;
+using Firebase.Auth;
 
 public class WordsBlocksContainer : MonoBehaviour
 {
     public LetterBlockItem LetterBlock;
     public float LetterSpacing = 10f;
     public Transform Centerer;
+    public Animator HintAnimator;
+
     public string[] _Words { get; set; }
 
     List<RenderedWordBlock> Words = new List<RenderedWordBlock>();
@@ -142,6 +146,35 @@ public class WordsBlocksContainer : MonoBehaviour
         yield return new WaitForSeconds(5f);
 
         StartCoroutine(FadeInBlocks());
+    }
+
+    public void RenderHint()
+    {
+        if (User.CurrentUser.hints.count > 0)
+        {
+            // Reduce available hints count
+            var newHints = User.CurrentUser.hints.count - 1;
+            FirebaseDatabase.DefaultInstance.RootReference.Child("user").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).Child("hints").SetRawJsonValueAsync(JsonUtility.ToJson(new Hints { count = newHints }));
+
+            var foundWords = new List<string>();
+            WordMatches.ForEach((word) => { foundWords.Add(word.word); });
+
+            var unfoundWords = Words.Where((word) => !foundWords.Contains(word.Word));
+
+            Hint(unfoundWords.ToArray());
+        }
+    }
+
+    void Hint(RenderedWordBlock[] words)
+    {
+        var crossWordNotUsedLetters = (words[UnityEngine.Random.Range(0, words.Length)].Letters).Where(x => !x.CrosswordUsed).ToArray();
+        var letter = crossWordNotUsedLetters[UnityEngine.Random.Range(0, crossWordNotUsedLetters.Length)].Object.GetComponent<LetterBlockItem>();
+        letter.Visible = true;
+        letter._Ownership = Ownership.Neutral;
+        letter.UpdateValues();
+
+        // Play hint animation
+        HintAnimator.Play("Used");
     }
 
     IEnumerator FadeInBlocks()
