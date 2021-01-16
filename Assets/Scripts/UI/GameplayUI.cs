@@ -9,6 +9,7 @@ public class GameplayUI : MonoBehaviour
 
     private void Start()
     {
+        MatchStatusUI.gameObject.SetActive(true);
         StartCoroutine(HideVersusScreen());
     }
 

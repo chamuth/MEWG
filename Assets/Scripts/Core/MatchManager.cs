@@ -17,6 +17,8 @@ public class MatchManager : MonoBehaviour
     public GameObject ConclusionUI;
     public GameObject WinUI;
     public ParticleSystem WinParticles;
+    public GameObject LossUI;
+    public GameObject DrawUI;
 
     public ProfileItem OurProfileItem;
     public ProfileItem TheirProfileItem;
@@ -77,6 +79,12 @@ public class MatchManager : MonoBehaviour
                 case MatchState.Win:
                     WinUI.SetActive(true);
                     WinParticles.Play();
+                    break;
+                case MatchState.Loss:
+                    LossUI.SetActive(true);
+                    break;
+                case MatchState.Draw:
+                    DrawUI.SetActive(true);
                     break;
             }
         };
