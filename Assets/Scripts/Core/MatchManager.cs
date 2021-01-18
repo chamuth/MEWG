@@ -122,7 +122,7 @@ public class MatchManager : MonoBehaviour
         if (Exited)
         {
             Exited = false;
-            SceneManager.LoadSceneAsync(0);
+            SceneManager.LoadSceneAsync(1);
         }
     }
 

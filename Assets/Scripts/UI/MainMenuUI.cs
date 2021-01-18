@@ -15,6 +15,7 @@ public class MainMenuUI : MonoBehaviour
     public UITransitionEffect MatchmakingUI;
 
     public GameObject RatePanel;
+    public GameObject RemoveAds;
     public StartupTutorial Tutorial;
 
     [HideInInspector]
@@ -47,6 +48,11 @@ public class MainMenuUI : MonoBehaviour
             // Show the login ui
             SwitchMenu("LOGIN");
         }
+    }
+
+    public void ShowRemoveAdsMenu()
+    {
+        RemoveAds.SetActive(true);
     }
 
     private void Update()
@@ -126,7 +132,7 @@ public class MainMenuUI : MonoBehaviour
                     if (gameid != "MATCHMAKING")
                     {
                         Game.CurrentMatchID = gameid;
-                        SceneManager.LoadSceneAsync(1);
+                        SceneManager.LoadSceneAsync(2);
                     }
                 }
             }
