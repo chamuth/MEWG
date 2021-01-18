@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.Networking;
 
 public class PlayerDetailsScreen : MonoBehaviour
@@ -65,13 +66,22 @@ public class PlayerDetailsScreen : MonoBehaviour
         StartCoroutine(GetTexture(user.profile, _ProfileItem));
 
         // Set player level from xp
+        var playerLevel = XP.XPToLevel(user.xp);
+
         foreach (var pi in _ProfileItem)
         {
-            pi.Level = XP.XPToLevel(user.xp);
+            pi.Level = playerLevel;
             pi.UpdateDetails();
         }
 
         WLRatio.text = string.Format("{0:0.##} W/L", user.statistics.wins / (float) ((user.statistics.losses == 0) ? 1 : user.statistics.losses));
+
+        var attrId = XP.AttributeCodeForXP(playerLevel);
+
+        if (attrId != "")
+        {
+            Attributes.Where(x => x.Id == attrId).First().Target.gameObject.SetActive(true);
+        }
     }
 
     public static IEnumerator GetTexture(string url, ProfileItem[] profile)
@@ -103,6 +113,7 @@ public class PlayerDetailsScreen : MonoBehaviour
     }
 }
 
+[Serializable]
 public class PlayerAttribute
 {
     public string Id;

@@ -57,6 +57,22 @@ public class XP
 
         return returner;
     }
+
+    public static string AttributeCodeForXP(int level)
+    {
+        if (level > 50)
+        {
+            return "LOGOPHILE";
+        }
+        else if (level > 20)
+        {
+            return "WORD_MASTER";
+        }
+        else
+        {
+            return "";
+        }
+    }
 }
 
 public class XPReturner
