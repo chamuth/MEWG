@@ -14,8 +14,10 @@ public class MainMenuUI : MonoBehaviour
     public UITransitionEffect MainMenu;
     public UITransitionEffect MatchmakingUI;
 
+    public GameObject RatePanel;
     public StartupTutorial Tutorial;
 
+    [HideInInspector]
     public static MainMenuUI Instance;
 
     private void Start()
@@ -57,6 +59,11 @@ public class MainMenuUI : MonoBehaviour
         }
     }
 
+    public void ShareGame()
+    {
+        
+    }
+
     public void SwitchMenu(string code)
     {
         MatchmakingUI.gameObject.SetActive(false);
@@ -80,6 +87,15 @@ public class MainMenuUI : MonoBehaviour
                     PlayerPrefs.SetInt("FIRST_TIME", 0);
                     //PlayerPrefs.Save();
                 }
+
+                if (PlayerPrefs.GetInt("ALREADY_RATED", 0) == 0 && PlayerPrefs.GetInt("FIRST_TIME", 1) != 1)
+                {
+                    if (UnityEngine.Random.Range(0,10) > 7)
+                    {
+                        RatePanel.SetActive(true);
+                    }
+                }
+
                 break;
             case "MATCHMAKING":
                 MatchmakingUI.gameObject.SetActive(true);

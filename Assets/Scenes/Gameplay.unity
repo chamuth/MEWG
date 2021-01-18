@@ -12994,7 +12994,6 @@ MonoBehaviour:
   MatchTimeCounter: {fileID: 503243449}
   ExitNotification: {fileID: 413908000}
   ExitPreloader: {fileID: 1552938679}
-  Exiting: 0
 --- !u!1 &1499743279
 GameObject:
   m_ObjectHideFlags: 0
