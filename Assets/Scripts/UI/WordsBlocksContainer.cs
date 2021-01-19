@@ -19,6 +19,8 @@ public class WordsBlocksContainer : MonoBehaviour
     public List<ProcessedWordMatch> WordMatches = new List<ProcessedWordMatch>();
     public List<WordWordConnection> Connections = new List<WordWordConnection>();
 
+    private int UsedHints = 0;
+
     public IEnumerator RenderWords(string[] words)
     {
         Words = new List<RenderedWordBlock>();
@@ -150,7 +152,8 @@ public class WordsBlocksContainer : MonoBehaviour
 
     public void RenderHint()
     {
-        if (User.CurrentUser.hints.count > 0)
+        // If user actually has remaining hints and hasn't used more than 3 hints in a single match
+        if (User.CurrentUser.hints.count > 0 && UsedHints < 3)
         {
             // Reduce available hints count
             var newHints = User.CurrentUser.hints.count - 1;
@@ -161,13 +164,20 @@ public class WordsBlocksContainer : MonoBehaviour
 
             var unfoundWords = Words.Where((word) => !foundWords.Contains(word.Word));
 
+            // Use hint
+            UsedHints++;
+
             Hint(unfoundWords.ToArray());
         }
     }
 
     void Hint(RenderedWordBlock[] words)
     {
-        var crossWordNotUsedLetters = (words[UnityEngine.Random.Range(0, words.Length)].Letters).Where(x => !x.CrosswordUsed).ToArray();
+        // Get letters that aren't used in crosswords and aren't revealed before using a hint
+        var crossWordNotUsedLetters = (words[UnityEngine.Random.Range(0, words.Length)].Letters).Where((x) => {
+            return !x.CrosswordUsed && !x.Object.gameObject.GetComponent<LetterBlockItem>().Visible;
+        }).ToArray();
+
         var letter = crossWordNotUsedLetters[UnityEngine.Random.Range(0, crossWordNotUsedLetters.Length)].Object.GetComponent<LetterBlockItem>();
         letter.Visible = true;
         letter._Ownership = Ownership.Neutral;
