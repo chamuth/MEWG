@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Linq;
 using Firebase.Database;
 using Firebase.Auth;
+using UnityEditor;
 
 public class WordsBlocksContainer : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class WordsBlocksContainer : MonoBehaviour
     public float LetterSpacing = 10f;
     public Transform Centerer;
     public Animator HintAnimator;
+    public SelectionCircle selectionCircle;
 
     public string[] _Words { get; set; }
 
@@ -21,7 +23,7 @@ public class WordsBlocksContainer : MonoBehaviour
 
     private int UsedHints = 0;
 
-    public IEnumerator RenderWords(string[] words)
+    public IEnumerator RenderWords(string[] words, bool dev = false)
     {
         Words = new List<RenderedWordBlock>();
         Connections = new List<WordWordConnection>();
@@ -44,7 +46,7 @@ public class WordsBlocksContainer : MonoBehaviour
         {
             var lblock = Instantiate(LetterBlock, Vector3.zero, Quaternion.Euler(0, 0, 0), Centerer.transform);
             lblock.Letter = words[0][i].ToString();
-            lblock.Visible = false;
+            lblock.Visible = dev;
             lblock.UpdateValues();
 
             var lblockrect = lblock.gameObject.GetComponent<RectTransform>();
@@ -96,7 +98,7 @@ public class WordsBlocksContainer : MonoBehaviour
                     {
                         var lblock = Instantiate(LetterBlock, Vector3.zero, Quaternion.Euler(0, 0, 0), Centerer.transform);
                         lblock.Letter = word[k].ToString();
-                        lblock.Visible = false;
+                        lblock.Visible = dev;
                         lblock.UpdateValues();
 
                         var lblockrect = lblock.gameObject.GetComponent<RectTransform>();
@@ -351,10 +353,19 @@ public class WordsBlocksContainer : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.T))
         {
-            StartCoroutine(RenderWords(WordsDEV.Split(',')));
+            StartCoroutine(RenderWords(WordsDEV.Split(','), true));
+            selectionCircle.Render(WordsDEV.Split(','), true);
         }
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            // Enter that into the clipboard
+            EditorGUIUtility.systemCopyBuffer = Newtonsoft.Json.JsonConvert.SerializeObject(WordsDEV.Split(','));
+        }
+#endif
     }
 
     public Vector3 Offset;

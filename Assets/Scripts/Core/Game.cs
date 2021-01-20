@@ -75,25 +75,26 @@ public static class Game
 
         }
 
-        if (CurrentMatchData.status.winner != "")
+        if (CurrentMatchData.status != null)
         {
-            Debug.Log(CurrentMatchData.status.winner != "" || CurrentMatchData.status.draw);
-
-            MatchState state;
-
-            if (CurrentMatchData.status.draw == true)
+            if (CurrentMatchData.status.winner != "")
             {
-                state = MatchState.Draw;
-            }
-            else
-            {
-                if (CurrentMatchData.status.winner == FirebaseAuth.DefaultInstance.CurrentUser.UserId)
-                    state = MatchState.Win;
+                MatchState state;
+
+                if (CurrentMatchData.status.draw == true)
+                {
+                    state = MatchState.Draw;
+                }
                 else
-                    state = MatchState.Loss;
-            }
+                {
+                    if (CurrentMatchData.status.winner == FirebaseAuth.DefaultInstance.CurrentUser.UserId)
+                        state = MatchState.Win;
+                    else
+                        state = MatchState.Loss;
+                }
 
-            OnMatchEnd?.Invoke(state);
+                OnMatchEnd?.Invoke(state);
+            }
         }
 
         OnMatchDataChanged?.Invoke();

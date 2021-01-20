@@ -1,7 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const randomstring = require("randomstring");
-const { object } = require('firebase-functions/lib/providers/storage');
+var words = require('./data/words.json')
 
 admin.initializeApp(functions.config().firebase);
 
@@ -9,6 +9,80 @@ var database = admin.database();
 
 const MATCHMAKING_PLACEHOLDER = "MATCHMAKING";
 
+// ON GAME TIMER IS OUT
+exports.timeout = functions.database.ref("match/{matchid}/time").onCreate((snap, context) => 
+{
+    // Game timer is out
+    var matchid = context.params.matchid;
+    var answers = { }
+    var answersCount = 0;
+
+    database.ref("match/" + matchid + "/matches").once("value").then(matches => 
+    {
+        matches.forEach((match) => 
+        {
+            var uid = match.val()["uid"];
+
+            if (answers[uid])
+                answers[uid] = answers[uid] + 1;
+            else
+                answers[uid] = 1; 
+
+            answersCount++;
+        });
+        
+        database.ref("match/" + matchid + "/content/words").once("value").then(snap => 
+        {
+            var totalWords = snap.numChildren();
+
+            // calculate the winner and loser
+            var tempMax = -1;
+            var winner = null;
+            var draw = false;
+            
+            var _players = Object.keys(answers);
+
+            _players.forEach((playerId) => 
+            {
+                if (answers[playerId] == tempMax && tempMax != -1)
+                    draw = true;
+
+                if (answers[playerId] > tempMax)
+                {
+                    tempMax = answers[playerId];
+                    winner = playerId;
+                }
+            });
+
+            var loser = _players.find((x,i,o) => x != winner);
+    
+            database.ref("match/" + matchid + "/status").set({
+                draw : draw,
+                winner : (draw) ? null : winner
+            });
+
+            // set player statistics
+            if (!draw)
+            {
+                database.ref("user/" + winner + "/statistics/wins").once("value").then((snap) => 
+                {
+                    database.ref("user/" + winner + "/statistics/wins").set(snap.val() + 1)
+                });
+
+                database.ref("user/" + loser + "/statistics/losses").once("value").then((snap) => 
+                {
+                    database.ref("user/" + loser + "/statistics/losses").set(snap.val() + 1)
+                });
+            }
+
+            return true;
+        });
+
+        return true;
+    })
+});
+
+// ON MATCH DATA UPDATED / WORD MATCHED
 exports.matchUpdated = functions.database.ref("match/{matchid}/matches").onUpdate((snap, context) => 
 {
     // Check if the game is over and the players are won
@@ -36,12 +110,15 @@ exports.matchUpdated = functions.database.ref("match/{matchid}/matches").onUpdat
 
             if (totalWords == answersCount)
             {
+                // Match finished
                 // calculate the match stuff
                 var tempMax = -1;
                 var winner = null;
                 var draw = false;
                 
-                Object.keys(answers).forEach((playerId) => 
+                var _players = Object.keys(answers);
+
+                _players.forEach((playerId) => 
                 {
                     if (answers[playerId] == tempMax && tempMax != -1)
                         draw = true;
@@ -52,11 +129,27 @@ exports.matchUpdated = functions.database.ref("match/{matchid}/matches").onUpdat
                         winner = playerId;
                     }
                 });
+
+                var loser = _players.find((x,i,o) => x != winner);
         
                 database.ref("match/" + matchid + "/status").set({
                     draw : draw,
                     winner : (draw) ? null : winner
                 });
+
+                // set player statistics
+                if (!draw)
+                {
+                    database.ref("user/" + winner + "/statistics/wins").once("value").then((snap) => 
+                    {
+                        database.ref("user/" + winner + "/statistics/wins").set(snap.val() + 1)
+                    });
+
+                    database.ref("user/" + loser + "/statistics/losses").once("value").then((snap) => 
+                    {
+                        database.ref("user/" + loser + "/statistics/losses").set(snap.val() + 1)
+                    });
+                }
             }
 
             return true;
@@ -67,6 +160,7 @@ exports.matchUpdated = functions.database.ref("match/{matchid}/matches").onUpdat
 
 });
 
+// ON MATCHMAKING QUEUE UPDATED
 exports.matchmaker = functions.database.ref('matchmaking/{playerId}').onCreate((snap, context) => {
     
     var gameId = generateGameId();
@@ -104,16 +198,13 @@ exports.matchmaker = functions.database.ref('matchmaking/{playerId}').onCreate((
             if (result.snapshot.child(context.params.playerId).val() !== gameId) return;
             
             // Start the match
+            set = generateWords();
+
             var match = 
             {
                 players: [context.params.playerId, secondPlayer.key],
                 content: {
-                    words: [
-                        "TEACHER",
-                        "TEACH",
-                        "CREATE",
-                        "TEAR"
-                    ]
+                    words: set
                 }
             }
             
@@ -138,6 +229,12 @@ exports.matchmaker = functions.database.ref('matchmaking/{playerId}').onCreate((
     });
 
 });
+
+function generateWords()
+{
+    var wordSet = words.sets[Math.floor(Math.random() * words.sets.length)];
+    return wordSet;
+}
 
 function generateGameId()
 {

@@ -29,7 +29,8 @@ public class HintCountRenderer : MonoBehaviour
         var count = JsonConvert.DeserializeObject<HintNode>(e.Snapshot.GetRawJsonValue()).count;
         text.text = count.ToString();
 
-        StartCoroutine(AnimateChange(text.gameObject));
+        if (gameObject.activeInHierarchy)
+            StartCoroutine(AnimateChange(text.gameObject)); 
     }
 
     private void OnDestroy()

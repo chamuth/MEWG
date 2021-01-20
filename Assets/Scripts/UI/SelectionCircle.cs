@@ -24,9 +24,9 @@ public class SelectionCircle : MonoBehaviour
 
     bool RenderedOnce = false;
 
-    public void Render(string[] words)
+    public void Render(string[] words, bool dev = false)
     {
-        if (!RenderedOnce)
+        if (!RenderedOnce || dev)
         {
             #region Generate Letters for the Words List
             var _letters = new List<string>();

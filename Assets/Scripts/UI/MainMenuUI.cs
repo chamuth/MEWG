@@ -131,6 +131,7 @@ public class MainMenuUI : MonoBehaviour
 
                     if (gameid != "MATCHMAKING")
                     {
+                        Game.CurrentMatchData = new MatchRef();
                         Game.CurrentMatchID = gameid;
                         SceneManager.LoadSceneAsync(2);
                     }

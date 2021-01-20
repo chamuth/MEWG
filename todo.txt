@@ -1,9 +1,14 @@
-[ ] Matchmaking server
+Immediate solvables
+[ ] Fix name popping and not loading issue (wait until receiving player info to go to other scene)
+[ ] Conclusion (Win/lose/draw) screen not showing on second time and shit
+[ ] Don't show word sets with more than 7 letters on them, they are so fucking hard!!!!!!
+
+[X] Matchmaking server
 [ ] Remove copyrighted backgrounds
 [ ] Add sound FX to the game
-[ ] Fix the resolution dependant line renderer issue
+[X] Fix the resolution dependant line renderer issue
 [ ] Add achievements
-[ ] Assess WORD_MASTER like titles dynamically
+[X] Assess WORD_MASTER like titles dynamically
 [ ] Add admob
 [ ] Sharing options
 [ ] basic settings screen with sound on off or something

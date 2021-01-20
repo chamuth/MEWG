@@ -18,10 +18,13 @@ public class CircularProfileSetter : MonoBehaviour
         profile = GetComponent<ProfileItem>();
 
         // Set user setters
-        User.OnUserDataUpdated += () =>
-        {
+        User.OnUserDataUpdated += UserDataUpdated;
+    }
+
+    void UserDataUpdated()
+    {
+        if (gameObject.activeInHierarchy)
             StartCoroutine(ReadLocalUser());
-        };
     }
 
     XPReturner xpreturner;
@@ -29,7 +32,7 @@ public class CircularProfileSetter : MonoBehaviour
     private void OnDestroy()
     {
         // Reset event listeners
-        User.OnUserDataUpdated = null;
+        User.OnUserDataUpdated -= UserDataUpdated;
     }
 
     IEnumerator ReadLocalUser()
