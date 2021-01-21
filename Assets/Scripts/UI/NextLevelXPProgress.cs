@@ -25,9 +25,9 @@ public class NextLevelXPProgress : MonoBehaviour
         yield return new WaitForSeconds(0.6f);
 
         // Animate the progress
-        while (ProgressElement.fillAmount < 1)
+        while (ProgressElement.fillAmount < 0.99)
         {
-            ProgressElement.fillAmount = Mathf.MoveTowards(ProgressElement.fillAmount, 1, Time.deltaTime * 5f);
+            ProgressElement.fillAmount = Mathf.Lerp(ProgressElement.fillAmount, 1, Time.deltaTime * 2f);
             yield return null;
         }
 
@@ -35,9 +35,9 @@ public class NextLevelXPProgress : MonoBehaviour
         LevelText.text = CurrentLevel.ToString();
 
         // Animate the progress
-        while (ProgressElement.fillAmount < CurrentLevelProgress)
+        while (ProgressElement.fillAmount < CurrentLevelProgress - 0.05f)
         {
-            ProgressElement.fillAmount = Mathf.MoveTowards(ProgressElement.fillAmount, CurrentLevelProgress, Time.deltaTime * 5f);
+            ProgressElement.fillAmount = Mathf.Lerp(ProgressElement.fillAmount, CurrentLevelProgress, Time.deltaTime * 1f);
             yield return null;
         }
     }
