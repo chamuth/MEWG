@@ -9,6 +9,7 @@ public class SplashUI : MonoBehaviour
 
     void Start()
     {
+        Application.targetFrameRate = 60;
         StartCoroutine(FadeOutAfter(5));
     }
 

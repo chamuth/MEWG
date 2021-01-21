@@ -30,6 +30,9 @@ public class MatchManager : MonoBehaviour
 
     public GameObject ExitNotification;
     public GameObject ExitPreloader;
+
+    public GameObject MatchEndingPreloader;
+
     bool Exiting = false;
     bool Exited = false;
 
@@ -37,6 +40,8 @@ public class MatchManager : MonoBehaviour
     {
         OurPlayerName.text = FirebaseAuth.DefaultInstance.CurrentUser.DisplayName;
         
+        ResetProgressbar();
+
         Game.OnMatchDataChanged += () =>
         {
             // Render the things first time only
@@ -44,6 +49,11 @@ public class MatchManager : MonoBehaviour
             _WordsBlockContainer.Render();
             _SelectionCircle.Render(Game.CurrentMatchData.content.words);
 
+            if (Game.CurrentMatchData.matches.Length == Game.CurrentMatchData.content.words.Length)
+            {
+                // match has ended
+                MatchEndingPreloader.SetActive(true);
+            }
         };
 
         Game.OnNewWordMatched += (Ownership owner, WordMatch wordMatch) =>
@@ -80,6 +90,7 @@ public class MatchManager : MonoBehaviour
 
         Game.OnMatchEnd += (MatchState state) =>
         {
+            MatchEndingPreloader.SetActive(false);
             ConclusionUI.SetActive(true);
 
             switch (state)
@@ -99,6 +110,12 @@ public class MatchManager : MonoBehaviour
 
         // Start the match
         Game.Watch();
+    }
+
+    void ResetProgressbar()
+    {
+        _WinningProgressBar.Score1 = 0;
+        _WinningProgressBar.Score2 = 0;
     }
 
     private void OnDestroy()

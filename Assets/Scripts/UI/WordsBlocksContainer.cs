@@ -21,6 +21,11 @@ public class WordsBlocksContainer : MonoBehaviour
     public List<ProcessedWordMatch> WordMatches = new List<ProcessedWordMatch>();
     public List<WordWordConnection> Connections = new List<WordWordConnection>();
 
+    public CanvasGroup ZeroHintsRemainingNotification;
+    public CanvasGroup AllHintsUsedNotification;
+
+    public const int USABLE_HINT_LIMIT_PER_MATCH = 3;
+
     private int UsedHints = 0;
 
     public IEnumerator RenderWords(string[] words, bool dev = false)
@@ -155,7 +160,7 @@ public class WordsBlocksContainer : MonoBehaviour
     public void RenderHint()
     {
         // If user actually has remaining hints and hasn't used more than 3 hints in a single match
-        if (User.CurrentUser.hints.count > 0 && UsedHints < 3)
+        if (User.CurrentUser.hints.count > 0 && UsedHints < USABLE_HINT_LIMIT_PER_MATCH)
         {
             // Reduce available hints count
             var newHints = User.CurrentUser.hints.count - 1;
@@ -170,6 +175,36 @@ public class WordsBlocksContainer : MonoBehaviour
             UsedHints++;
 
             Hint(unfoundWords.ToArray());
+        }
+        else
+        {
+            if (User.CurrentUser.hints.count == 0)
+            {
+                StartCoroutine(ShowNotification(ZeroHintsRemainingNotification));
+                return;
+            }
+
+            if (UsedHints == USABLE_HINT_LIMIT_PER_MATCH)
+            {
+                StartCoroutine(ShowNotification(AllHintsUsedNotification));
+            }
+        }
+    }
+
+    IEnumerator ShowNotification(CanvasGroup group)
+    {
+        while (group.alpha < 1)
+        {
+            group.alpha = Mathf.MoveTowards(group.alpha, 1, Time.deltaTime * 4f);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(4);
+
+        while(group.alpha > 0)
+        {
+            group.alpha = Mathf.MoveTowards(group.alpha, 0, Time.deltaTime * 5f);
+            yield return null;
         }
     }
 
