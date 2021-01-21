@@ -15,7 +15,7 @@ public class GameplayUI : MonoBehaviour
 
     IEnumerator HideVersusScreen()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(10f);
 
         while (MatchStatusUI.effectFactor > 0)
         {

@@ -1,9 +1,9 @@
 {
-    "m_SelectedDeviceId": "R58M708CX9R",
+    "m_SelectedDeviceId": "LNVW5LK7SKOVGMOB",
     "m_SelectedPackage": {
-        "deviceId": "R58M708CX9R",
+        "deviceId": "LNVW5LK7SKOVGMOB",
         "name": "com.ninponix.mewg",
-        "processId": 31091,
+        "processId": 31741,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -120,6 +120,12 @@
             "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.ninponix.mewg",
             "processId": 27490,
+            "exited": false
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 31741,
             "exited": false
         },
         {
