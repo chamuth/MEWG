@@ -6,6 +6,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.Networking;
 using Firebase.Auth;
+using UnityEngine.SceneManagement;
 
 public static class Game
 {
@@ -19,14 +20,18 @@ public static class Game
     public static Action OnEnemyDataLoaded;
     public static Action<MatchState> OnMatchEnd;
 
-    static DatabaseReference MatchReference;
+    public static DatabaseReference MatchReference;
 
     static WordMatch[] previousWordMatch = new WordMatch[] { };
 
     public static User CurrentEnemy = null;
 
+    static string enemyId = "";
+
     public static void Watch()
-    { 
+    {
+        enemyId = CurrentMatchData.players.First((x) => x != FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+
         DatabaseReference db = FirebaseDatabase.DefaultInstance.RootReference;
         MatchReference = db.Child("match").Child(CurrentMatchID);
 
@@ -46,10 +51,23 @@ public static class Game
             OnFirstData?.Invoke();
         });
 
+        MatchReference.Child("disconnect").ValueChanged += DisconectValueChanged;
         MatchReference.ValueChanged += MatchReference_ValueChanged;
 
         UpdateMatchedWords();
     }
+
+    private static void DisconectValueChanged(object sender, ValueChangedEventArgs e)
+    {
+        var playerId = e.Snapshot.Value.ToString();
+
+        if (playerId == enemyId)
+        {
+            // Enemy player has disconnected
+            SceneManager.LoadSceneAsync(1);
+        }
+    }
+
 
     public static void Destroy()
     {

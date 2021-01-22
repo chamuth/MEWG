@@ -145,6 +145,13 @@ exports.matchUpdated = functions.database.ref("match/{matchid}/matches").onUpdat
                         database.ref("user/" + winner + "/statistics/wins").set(snap.val() + 1)
                     });
 
+                    // Gain 100 XP per winning match
+                    database.ref("user/" + winner + "/xp").once("value").then((snap) => 
+                    {
+                        var currentXP = snap.val();
+                        database.ref("user/" + winner + "/xp").set(currentXP + 100);
+                    });
+
                     database.ref("user/" + loser + "/statistics/losses").once("value").then((snap) => 
                     {
                         database.ref("user/" + loser + "/statistics/losses").set(snap.val() + 1)

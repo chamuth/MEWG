@@ -8,7 +8,7 @@ public class RewardLister : MonoBehaviour
     [HideInInspector()]
     public CanvasGroup[] Rewards;
 
-    private void Start()
+    public void ProcessRewards()
     {
         // Load in the rewards
         var rewards = new List<CanvasGroup>();

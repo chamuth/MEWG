@@ -3,6 +3,11 @@ Immediate solvables
 [ ] Conclusion (Win/lose/draw) screen not showing on second time and shit
 [ ] Don't show word sets with more than 7 letters on them, they are so fucking hard!!!!!!
 
+[ ] In app purchases for ad removal and buying hint packages
+[ ] Achievements
+[ ] Leaderboard
+[ ] Admob, fullscreen interstitial after every match (maybe video). Watch a reward video ad to gain a free hint.
+
 [X] Matchmaking server
 [ ] Remove copyrighted backgrounds
 [ ] Add sound FX to the game
