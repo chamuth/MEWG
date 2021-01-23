@@ -6,6 +6,8 @@ using System.Linq;
 using Firebase.Database;
 using Firebase.Auth;
 using UnityEditor;
+using System.IO;
+using Newtonsoft.Json;
 
 public class WordsBlocksContainer : MonoBehaviour
 {
@@ -388,17 +390,24 @@ public class WordsBlocksContainer : MonoBehaviour
 
     private void LateUpdate()
     {
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.T))
         {
             StartCoroutine(RenderWords(WordsDEV.Split(','), true));
             selectionCircle.Render(WordsDEV.Split(','), true);
         }
 
-#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            // Enter that into the clipboard
-            EditorGUIUtility.systemCopyBuffer = Newtonsoft.Json.JsonConvert.SerializeObject(WordsDEV.Split(','));
+            string path = Application.streamingAssetsPath + "/generated.json";
+            string contents = File.ReadAllText(path);
+            
+            GeneratedWordsClass gen = JsonConvert.DeserializeObject<GeneratedWordsClass>(contents);
+
+            if (!gen.words.Exists(x => x == WordsDEV.Split(',')))
+                gen.words.Add(WordsDEV.Split(','));
+
+            File.WriteAllText(path, JsonConvert.SerializeObject(gen));
         }
 #endif
     }
@@ -435,4 +444,10 @@ public static class DirectionSwitcher
     {
         return (current == Direction.Horizontal) ? Direction.Vertical : Direction.Horizontal;
     }
+}
+
+[Serializable]
+public class GeneratedWordsClass
+{
+    public List<string[]> words;
 }

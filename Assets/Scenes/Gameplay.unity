@@ -2425,7 +2425,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &405027653
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5846,7 +5846,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &814082879
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7170,8 +7170,8 @@ MonoBehaviour:
   HintAnimator: {fileID: 1609324124}
   selectionCircle: {fileID: 424480388}
   WordMatches: []
-  ZeroHintsRemainingNotification: {fileID: 0}
-  AllHintsUsedNotification: {fileID: 0}
+  ZeroHintsRemainingNotification: {fileID: 880552242}
+  AllHintsUsedNotification: {fileID: 1548663569}
   WordsDEV: TECHNICAL,LOG,HOLOCAUST,CAST,CRINGE
   Offset: {x: 0, y: 0, z: 0}
 --- !u!114 &907068270

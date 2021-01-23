@@ -66,11 +66,27 @@ public class DevGenerateWords : MonoBehaviour
             else
             {
                 print("No word matching");
+                
+                // If there's less than 4 words
+                if (i < 3)
+                    GenerateWords();
+
                 break;
             }
         }
-        
-        container.WordsDEV = string.Join(",", selectedWords.Select(x => x.ToUpper()).ToArray());
+
+        var lettersCount = GetAllLetters(selectedWords).Count();
+        print(lettersCount + " Letters in each word");
+        if (lettersCount < 8)
+        {
+            container.WordsDEV = string.Join(",", selectedWords.Select(x => x.ToUpper()).ToArray());
+        }
+        else
+        {
+            // too much letters regenerate
+            print("TOO MUCH LETTERS");
+            GenerateWords();
+        }
     }
 
     string[] GetAllLetters(List<string> words)
