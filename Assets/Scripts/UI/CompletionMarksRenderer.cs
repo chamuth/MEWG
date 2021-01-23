@@ -15,15 +15,22 @@ public class CompletionMarksRenderer : MonoBehaviour
         var matches = Game.CurrentMatchData.matches;
         int correct = 0;
 
-        foreach(var match in matches)
+        if (matches != null)
         {
-            var g = (match.uid == FirebaseAuth.DefaultInstance.CurrentUser.UserId) ? CorrectIcon : IncorrectIcon;
-            Instantiate(g, transform);
+            foreach (var match in matches)
+            {
+                var g = (match.uid == FirebaseAuth.DefaultInstance.CurrentUser.UserId) ? CorrectIcon : IncorrectIcon;
+                Instantiate(g, transform);
 
-            if (match.uid == FirebaseAuth.DefaultInstance.CurrentUser.UserId)
-                correct++;
+                if (match.uid == FirebaseAuth.DefaultInstance.CurrentUser.UserId)
+                    correct++;
+            }
+
+            WordsCounterText.text = string.Format("{0}/{1} Words", correct, matches.Length);
         }
-
-        WordsCounterText.text = string.Format("{0}/{1} Words", correct, matches.Length);
+        else
+        {
+            WordsCounterText.text = "No words matched";
+        }
     }
 }

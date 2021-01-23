@@ -54,27 +54,63 @@ exports.timeout = functions.database.ref("match/{matchid}/time").onCreate((snap,
                 }
             });
 
-            var loser = _players.find((x,i,o) => x != winner);
+            // If no one has answered, the match is a draw
+            if (Object.keys(answers).length == 0)
+                draw = true;
     
             database.ref("match/" + matchid + "/status").set({
                 draw : draw,
                 winner : (draw) ? null : winner
             });
 
-            // set player statistics
-            if (!draw)
+            // MATCH CONCLUSION SAVING
+            database.ref("match/" + matchid + "/players").once("value").then((snapshot) => 
             {
-                database.ref("user/" + winner + "/statistics/wins").once("value").then((snap) => 
-                {
-                    database.ref("user/" + winner + "/statistics/wins").set(snap.val() + 1)
-                });
+                var players = snapshot.val();
+                var loser = players.find((x) => x != winner);
 
-                database.ref("user/" + loser + "/statistics/losses").once("value").then((snap) => 
+                // set player statistics
+                if (!draw)
                 {
-                    database.ref("user/" + loser + "/statistics/losses").set(snap.val() + 1)
-                });
-            }
+                    database.ref("user/" + winner + "/statistics/wins").once("value").then((snap) => 
+                    {
+                        database.ref("user/" + winner + "/statistics/wins").set(snap.val() + 1)
+                    });
 
+                    // Gain 150 XP per winning match
+                    database.ref("user/" + winner + "/xp").once("value").then((snap) => 
+                    {
+                        var currentXP = snap.val();
+                        database.ref("user/" + winner + "/xp").set(currentXP + 150);
+                    });
+
+                    database.ref("user/" + loser + "/statistics/losses").once("value").then((snap) => 
+                    {
+                        database.ref("user/" + loser + "/statistics/losses").set(snap.val() + 1)
+                    });
+
+                    // Gain 25 XP per finishing match
+                    database.ref("user/" + loser + "/xp").once("value").then((snap) => 
+                    {
+                        var currentXP = snap.val();
+                        database.ref("user/" + loser + "/xp").set(currentXP + 25);
+                    });
+                } else {
+                    // on draw give both players 50 XP
+                    database.ref("user/" + players[0] + "/xp").once("value").then((snap) => 
+                    {
+                        var currentXP = snap.val();
+                        database.ref("user/" + players[0] + "/xp").set(currentXP + 50);
+                    });
+
+                    database.ref("user/" + players[1] + "/xp").once("value").then((snap) => 
+                    {
+                        var currentXP = snap.val();
+                        database.ref("user/" + players[1] + "/xp").set(currentXP + 50);
+                    });
+                }
+            });
+           
             return true;
         });
 
@@ -129,41 +165,61 @@ exports.matchUpdated = functions.database.ref("match/{matchid}/matches").onUpdat
                         winner = playerId;
                     }
                 });
-
-                var loser = _players.find((x,i,o) => x != winner);
-        
+                
                 database.ref("match/" + matchid + "/status").set({
                     draw : draw,
                     winner : (draw) ? null : winner
                 });
-
-                // set player statistics
-                if (!draw)
+                
+                // MATCH CONCLUSION SAVING
+                database.ref("match/" + matchid + "/players").once("value").then((snapshot) => 
                 {
-                    database.ref("user/" + winner + "/statistics/wins").once("value").then((snap) => 
-                    {
-                        database.ref("user/" + winner + "/statistics/wins").set(snap.val() + 1)
-                    });
+                    var players = snapshot.val();
+                    var loser = players.find((x) => x != winner);
 
-                    // Gain 150 XP per winning match
-                    database.ref("user/" + winner + "/xp").once("value").then((snap) => 
+                    // set player statistics
+                    if (!draw)
                     {
-                        var currentXP = snap.val();
-                        database.ref("user/" + winner + "/xp").set(currentXP + 150);
-                    });
+                        database.ref("user/" + winner + "/statistics/wins").once("value").then((snap) => 
+                        {
+                            database.ref("user/" + winner + "/statistics/wins").set(snap.val() + 1)
+                        });
+    
+                        // Gain 150 XP per winning match
+                        database.ref("user/" + winner + "/xp").once("value").then((snap) => 
+                        {
+                            var currentXP = snap.val();
+                            database.ref("user/" + winner + "/xp").set(currentXP + 150);
+                        });
+    
+                        database.ref("user/" + loser + "/statistics/losses").once("value").then((snap) => 
+                        {
+                            database.ref("user/" + loser + "/statistics/losses").set(snap.val() + 1)
+                        });
+    
+                        // Gain 25 XP per finishing match
+                        database.ref("user/" + loser + "/xp").once("value").then((snap) => 
+                        {
+                            var currentXP = snap.val();
+                            database.ref("user/" + loser + "/xp").set(currentXP + 25);
+                        });
+                    } else {
+                        // on draw give both players 50 XP
+                        database.ref("user/" + players[0] + "/xp").once("value").then((snap) => 
+                        {
+                            var currentXP = snap.val();
+                            database.ref("user/" + players[0] + "/xp").set(currentXP + 50);
+                        });
 
-                    database.ref("user/" + loser + "/statistics/losses").once("value").then((snap) => 
-                    {
-                        database.ref("user/" + loser + "/statistics/losses").set(snap.val() + 1)
-                    });
+                        database.ref("user/" + players[1] + "/xp").once("value").then((snap) => 
+                        {
+                            var currentXP = snap.val();
+                            database.ref("user/" + players[1] + "/xp").set(currentXP + 50);
+                        });
+                    }
+                });
+               
 
-                    // Gain 25 XP per finishing match
-                    database.ref("user/" + loser + "/xp").once("value").then((snap) => 
-                    {
-                        var currentXP = snap.val();
-                        database.ref("user/" + loser + "/xp").set(currentXP + 25);
-                    });
-                }
             }
 
             return true;

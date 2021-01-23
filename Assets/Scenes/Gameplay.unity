@@ -7086,7 +7086,6 @@ GameObject:
   - component: {fileID: 907068267}
   - component: {fileID: 907068269}
   - component: {fileID: 907068270}
-  - component: {fileID: 907068271}
   m_Layer: 5
   m_Name: Word Blocks Container
   m_TagString: Untagged
@@ -7185,18 +7184,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc2c2e66117a4464a9d23d6a09beee14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &907068271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 907068265}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87ea576716f3a474bb2f209cbd92b3a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &917735944

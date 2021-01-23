@@ -77,7 +77,12 @@ public static class Game
 
     public static void Destroy()
     {
-        //MatchReference.ValueChanged -= MatchReference_ValueChanged;
+        try
+        {
+            // Remove value changed reference
+            MatchReference.ValueChanged -= MatchReference_ValueChanged;
+        }
+        catch (Exception) { }
     }
 
     private static void MatchReference_ValueChanged(object sender, ValueChangedEventArgs e)
@@ -101,6 +106,11 @@ public static class Game
 
         if (CurrentMatchData.status != null)
         {
+            if (CurrentMatchData.status.draw)
+            {
+                OnMatchEnd?.Invoke(MatchState.Draw);
+            }
+
             if (CurrentMatchData.status.winner != "")
             {
                 MatchState state;

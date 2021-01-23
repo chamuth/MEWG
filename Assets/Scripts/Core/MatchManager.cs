@@ -129,6 +129,7 @@ public class MatchManager : MonoBehaviour
         Game.OnFirstData = null;
         Game.OnMatchedWordsChanged = null;
         Game.OnNewWordMatched = null;
+        Game.OnMatchEnd = null;
     }
 
     private void Update()
@@ -137,6 +138,12 @@ public class MatchManager : MonoBehaviour
         {
             // Android back key pressed
             ExitNotification.SetActive(!ExitNotification.activeSelf);
+        }
+
+        if (MatchTimeCounter.Timer <= 0)
+        {
+            // Time has ran out
+            MatchEndingPreloader.SetActive(true);
         }
 
         if (Exited)
