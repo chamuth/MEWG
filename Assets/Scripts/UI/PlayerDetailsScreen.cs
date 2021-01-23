@@ -17,15 +17,14 @@ public class PlayerDetailsScreen : MonoBehaviour
     public TMPro.TextMeshProUGUI[] PlayerName;
     public TMPro.TextMeshProUGUI WLRatio;
     public PlayerAttribute[] Attributes;
-    
-    string UID = "";
 
+    bool rendered = false;
+    
     public void Start()
     {
         if (CurrentUser)
         {
             User.UpdateCurrentUser();
-            UID = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
             StartCoroutine(RenderCurrentUser());
         }
         else
@@ -54,33 +53,40 @@ public class PlayerDetailsScreen : MonoBehaviour
 
     IEnumerator RenderUser(User user)
     {
-        yield return new WaitForSeconds(0);
-
-        // Set player name
-        foreach (var text in PlayerName)
+        if (!rendered)
         {
-            text.text = user.name;
-        }
+            print("RENDERING USER " + user.name);
 
-        // Load profile picture from the internet
-        StartCoroutine(GetTexture(user.profile, _ProfileItem));
+            yield return new WaitForSeconds(0);
 
-        // Set player level from xp
-        var playerLevel = XP.XPToLevel(user.xp);
+            // Set player name
+            foreach (var text in PlayerName)
+            {
+                text.text = user.name;
+            }
 
-        foreach (var pi in _ProfileItem)
-        {
-            pi.Level = playerLevel;
-            pi.UpdateDetails();
-        }
+            // Load profile picture from the internet
+            StartCoroutine(GetTexture(user.profile, _ProfileItem));
 
-        WLRatio.text = string.Format("{0:0.##} W/L", user.statistics.wins / (float) ((user.statistics.losses == 0) ? 1 : user.statistics.losses));
+            // Set player level from xp
+            var playerLevel = XP.XPToLevel(user.xp);
 
-        var attrId = XP.AttributeCodeForXP(playerLevel);
+            foreach (var pi in _ProfileItem)
+            {
+                pi.Level = playerLevel;
+                pi.UpdateDetails();
+            }
 
-        if (attrId != "")
-        {
-            Attributes.Where(x => x.Id == attrId).First().Target.gameObject.SetActive(true);
+            WLRatio.text = string.Format("{0:0.##} W/L", user.statistics.wins / (float)((user.statistics.losses == 0) ? 1 : user.statistics.losses));
+
+            var attrId = XP.AttributeCodeForXP(playerLevel);
+
+            if (attrId != "")
+            {
+                Attributes.Where(x => x.Id == attrId).First().Target.gameObject.SetActive(true);
+            }
+
+            rendered = true;
         }
     }
 

@@ -121,28 +121,34 @@ public class MainMenuUI : MonoBehaviour
         MatchNode = FirebaseDatabase.DefaultInstance.RootReference.Child("matchmaking").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId);
         MatchNode.SetValueAsync("MATCHMAKING");
         MatchNode.OnDisconnect().SetValue(null);
-        MatchNode.ValueChanged += (a, b) =>
-        {
-            if (b.Snapshot.GetValue(false) != null)
-            {
-                if (Application.isPlaying)
-                {
-                    var gameid = b.Snapshot.GetValue(false).ToString();
+        MatchNode.ValueChanged += MatchNode_ValueChanged;
+    }
 
-                    if (gameid != "MATCHMAKING")
-                    {
-                        Game.CurrentMatchData = new MatchRef();
-                        Game.CurrentMatchID = gameid;
-                        SceneManager.LoadSceneAsync(2);
-                    }
+    private void MatchNode_ValueChanged(object a, ValueChangedEventArgs b)
+    {
+        if (b.Snapshot.GetValue(false) != null)
+        {
+            if (Application.isPlaying)
+            {
+                var gameid = b.Snapshot.GetValue(false).ToString();
+
+                if (gameid != "MATCHMAKING")
+                {
+                    Game.CurrentMatchData = new MatchRef();
+                    Game.CurrentMatchID = gameid;
+                    SceneManager.LoadSceneAsync(2);
                 }
             }
-        };
+        }
     }
 
     private void OnDestroy()
     {
-        
+        try
+        {
+            MatchNode.ValueChanged -= MatchNode_ValueChanged;
+        }
+        catch (Exception) { };
     }
 
     public IEnumerator AnimateUI(UITransitionEffect menu, bool set)

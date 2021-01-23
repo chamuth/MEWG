@@ -44,17 +44,20 @@ public class MatchManager : MonoBehaviour
 
         Game.OnMatchDataChanged += () =>
         {
-            // Render the things first time only
-            _WordsBlockContainer._Words = Game.CurrentMatchData.content.words;
-            _WordsBlockContainer.Render();
-            _SelectionCircle.Render(Game.CurrentMatchData.content.words);
-
-            if (Game.CurrentMatchData.matches != null && Game.CurrentMatchData.content != null)
+            if (Game.CurrentMatchData != null)
             {
-                if (Game.CurrentMatchData.matches.Length == Game.CurrentMatchData.content.words.Length)
+                // Render the things first time only
+                _WordsBlockContainer._Words = Game.CurrentMatchData.content.words;
+                _WordsBlockContainer.Render();
+                _SelectionCircle.Render(Game.CurrentMatchData.content.words);
+
+                if (Game.CurrentMatchData.matches != null && Game.CurrentMatchData.content != null)
                 {
-                    // match has ended
-                    MatchEndingPreloader.SetActive(true);
+                    if (Game.CurrentMatchData.matches.Length == Game.CurrentMatchData.content.words.Length)
+                    {
+                        // match has ended
+                        MatchEndingPreloader.SetActive(true);
+                    }
                 }
             }
         };

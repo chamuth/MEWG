@@ -74,7 +74,6 @@ public static class Game
         }
     }
 
-
     public static void Destroy()
     {
         try
@@ -83,6 +82,8 @@ public static class Game
             MatchReference.ValueChanged -= MatchReference_ValueChanged;
         }
         catch (Exception) { }
+        
+        MatchReference = null;
     }
 
     private static void MatchReference_ValueChanged(object sender, ValueChangedEventArgs e)
@@ -99,37 +100,38 @@ public static class Game
                 }
             }
         }
-        catch (Exception)
+        catch (Exception) { }
+
+        try
         {
-
-        }
-
-        if (CurrentMatchData.status != null)
-        {
-            if (CurrentMatchData.status.draw)
+            if (CurrentMatchData.status != null)
             {
-                OnMatchEnd?.Invoke(MatchState.Draw);
-            }
-
-            if (CurrentMatchData.status.winner != "")
-            {
-                MatchState state;
-
-                if (CurrentMatchData.status.draw == true)
+                if (CurrentMatchData.status.draw)
                 {
-                    state = MatchState.Draw;
+                    OnMatchEnd?.Invoke(MatchState.Draw);
                 }
-                else
+
+                if (CurrentMatchData.status.winner != "")
                 {
-                    if (CurrentMatchData.status.winner == FirebaseAuth.DefaultInstance.CurrentUser.UserId)
-                        state = MatchState.Win;
+                    MatchState state;
+
+                    if (CurrentMatchData.status.draw == true)
+                    {
+                        state = MatchState.Draw;
+                    }
                     else
-                        state = MatchState.Loss;
-                }
+                    {
+                        if (CurrentMatchData.status.winner == FirebaseAuth.DefaultInstance.CurrentUser.UserId)
+                            state = MatchState.Win;
+                        else
+                            state = MatchState.Loss;
+                    }
 
-                OnMatchEnd?.Invoke(state);
+                    OnMatchEnd?.Invoke(state);
+                }
             }
         }
+        catch (Exception) { }
 
         OnMatchDataChanged?.Invoke();
     }
