@@ -31,13 +31,13 @@ public class DevGenerateWords : MonoBehaviour
         var selectedWords = new List<string>();
 
         // Select first word
-        var compatible = words.Where((x) => (x.Length > 2 && x.Length < 7));
+        var compatible = words.Where((x) => (x.Length > 4 && x.Length < 7));
 
         // Select first word randomly
         var firstWord = compatible.ElementAt(Random.Range(0, compatible.Count()));
         selectedWords.Add(firstWord);
 
-        var count = Random.Range(4, 7);
+        var count = Random.Range(5, 7);
 
         // Connect word to the words
         for (var i = 0; i < count; i++)
@@ -50,7 +50,7 @@ public class DevGenerateWords : MonoBehaviour
                 if (!selectedWords.Contains(x))
                 {
                     var prevLetters = GetAllLetters(new List<string>(new string[] { selectedWords[i] })); // letters in previous words
-                    return (prevLetters.Count(y => x.Contains(y)) > 3); // if there's more than x letters that are in the previous words
+                    return (prevLetters.Count(y => x.Contains(y)) > ((i == 0) ? 1 : 3)); // if there's more than x letters that are in the previous words
                 }
                 else
                 {
@@ -68,8 +68,8 @@ public class DevGenerateWords : MonoBehaviour
                 print("No word matching");
                 
                 // If there's less than 4 words
-                if (i < 3)
-                    GenerateWords();
+                //if (i < 3)
+                //    GenerateWords();
 
                 break;
             }

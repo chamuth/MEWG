@@ -30,8 +30,6 @@ public static class Game
 
     public static void Watch()
     {
-        enemyId = CurrentMatchData.players.First((x) => x != FirebaseAuth.DefaultInstance.CurrentUser.UserId);
-
         DatabaseReference db = FirebaseDatabase.DefaultInstance.RootReference;
         MatchReference = db.Child("match").Child(CurrentMatchID);
 
@@ -46,6 +44,8 @@ public static class Game
             User.GetUser(CurrentMatchData.players.First(x => x != FirebaseAuth.DefaultInstance.CurrentUser.UserId)).ContinueWith((x) =>
             {
                 CurrentEnemy = x.Result;
+                // Save the enemy id
+                enemyId = CurrentMatchData.players.First((z) => z != FirebaseAuth.DefaultInstance.CurrentUser.UserId);
             });
 
             OnFirstData?.Invoke();
@@ -59,19 +59,25 @@ public static class Game
 
     private static void DisconectValueChanged(object sender, ValueChangedEventArgs e)
     {
-        var playerId = e.Snapshot.Value.ToString();
-
-        if (playerId == enemyId)
+        if (e.Snapshot.Exists)
         {
-            // Enemy player has disconnected
-            SceneManager.LoadSceneAsync(1);
+            // If disconnect value exists
+            var playerId = e.Snapshot.Value.ToString();
+
+            if (playerId == enemyId)
+            {
+                UniversalUI.Instance.ShowPlayerDisconnectMessage();
+
+                // Enemy player has disconnected
+                SceneManager.LoadSceneAsync(1);
+            }
         }
     }
 
 
     public static void Destroy()
     {
-        MatchReference.ValueChanged -= MatchReference_ValueChanged;
+        //MatchReference.ValueChanged -= MatchReference_ValueChanged;
     }
 
     private static void MatchReference_ValueChanged(object sender, ValueChangedEventArgs e)
