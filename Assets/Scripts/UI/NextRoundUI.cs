@@ -17,6 +17,11 @@ public class NextRoundUI : MonoBehaviour
     public GameObject WaitingForOpponent;
     public GameObject WaitingForPlayerInput;
 
+    [Header("Sections")]
+    public GameObject WaitingForInput;
+    public GameObject WaitingForNextRound;
+    public GameObject MatchResetProgress;
+
     string enemyId = "";
     bool enemyReady = false;
     bool meReady = false;
@@ -64,9 +69,27 @@ public class NextRoundUI : MonoBehaviour
         if (enemyReady && meReady && !loading)
         {
             // if both the enemy and the player are ready for the next round
-            SceneManager.LoadSceneAsync(2);
+            StartCoroutine(LoadNextRound());
+            // Set ready to false for next round
+            myReadyReference.SetValueAsync(false);
+
+            // Hide the waiting for input section
+            MatchResetProgress.SetActive(true);
+            WaitingForInput.SetActive(false);
+
             loading = true;
         }
+    }
+
+    IEnumerator LoadNextRound()
+    {
+        yield return new WaitForSeconds(10);
+        SceneManager.LoadSceneAsync(2);
+    }
+
+    private void OnDestroy()
+    {
+        enemyReadyReference.ValueChanged -= EnemyReadyReference_ValueChanged;
     }
 
     /// <summary>

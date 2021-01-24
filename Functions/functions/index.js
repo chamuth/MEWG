@@ -9,6 +9,24 @@ var database = admin.database();
 
 const MATCHMAKING_PLACEHOLDER = "MATCHMAKING";
 
+exports.resetMatch = functions.database.ref("match/{matchid}/ready").onUpdate((snap, context) => 
+{
+    var matchid = context.params.matchid;
+
+    database.ref("match/" + matchid).once("value").then((snap) => 
+    {
+        var matchdata = snap.val();
+
+        var players = matchdata["players"];
+        var readyPlayers = matchdata["ready"];
+
+        // Both players are ready for the next round
+        if (readyPlayers[players[0]] && readyPlayers[players[1]])
+            resetMatch(matchid);
+    });
+
+});
+
 // ON GAME TIMER IS OUT
 exports.timeout = functions.database.ref("match/{matchid}/time").onCreate((snap, context) => 
 {
@@ -229,6 +247,19 @@ exports.matchUpdated = functions.database.ref("match/{matchid}/matches").onUpdat
     })
 
 });
+
+function resetMatch(matchid)
+{
+    // Reset match status
+    database.ref("match/" + matchid + "/status").set(null);
+    // Reset current matches
+    database.ref("match/" + matchid + "/matches").set(null);
+    // Neither players should be ready for round two ending
+    database.ref("match/" + matchid + "/ready").set(null);
+    // Reset the words for the match (new match);
+    set = generateWords();
+    database.ref("match/" + matchid + "/content/words").set(set);
+}
 
 // ON MATCHMAKING QUEUE UPDATED
 exports.matchmaker = functions.database.ref('matchmaking/{playerId}').onCreate((snap, context) => {
