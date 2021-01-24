@@ -17,20 +17,6 @@ public class NextLevelXPProgress : MonoBehaviour
     
     IEnumerator AnimateNextLevel()
     {
-        // Set progress to 0
-        ProgressElement.fillAmount = 0;
-        LevelText.text = (CurrentLevel - 1).ToString();
-
-        // Wait for the reward animation to finish
-        yield return new WaitForSeconds(0.6f);
-
-        // Animate the progress
-        while (ProgressElement.fillAmount < 0.99)
-        {
-            ProgressElement.fillAmount = Mathf.Lerp(ProgressElement.fillAmount, 1, Time.deltaTime * 2f);
-            yield return null;
-        }
-
         ProgressElement.fillAmount = 0;
         LevelText.text = CurrentLevel.ToString();
 

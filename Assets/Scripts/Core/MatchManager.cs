@@ -98,6 +98,7 @@ public class MatchManager : MonoBehaviour
         {
             MatchEndingPreloader.SetActive(false);
             ConclusionUI.SetActive(true);
+            ConclusionUI.gameObject.GetComponent<ConclusionUI>().CurrentMatchState = state;
 
             switch (state)
             {

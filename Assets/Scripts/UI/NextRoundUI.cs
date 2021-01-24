@@ -57,13 +57,15 @@ public class NextRoundUI : MonoBehaviour
         enemyReadyReference.ValueChanged += EnemyReadyReference_ValueChanged;
     }
 
+    bool loading = false;
+
     private void Update()
     {
-        if (enemyReady && meReady)
+        if (enemyReady && meReady && !loading)
         {
             // if both the enemy and the player are ready for the next round
-            // reload the scene
             SceneManager.LoadSceneAsync(2);
+            loading = true;
         }
     }
 

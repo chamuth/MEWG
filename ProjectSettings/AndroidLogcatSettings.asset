@@ -3,130 +3,52 @@
     "m_SelectedPackage": {
         "deviceId": "LNVW5LK7SKOVGMOB",
         "name": "com.ninponix.mewg",
-        "processId": 31741,
-        "exited": false
+        "processId": 17912,
+        "exited": true
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.ninponix.mewg",
-            "processId": 18655,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.bbk.launcher2",
-            "processId": 31225,
-            "exited": false
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 19874,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 24607,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 29820,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 31120,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 1067,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 5591,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 11407,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 18751,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 22171,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 26836,
-            "exited": false
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 29293,
-            "exited": false
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 30852,
-            "exited": false
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 32279,
-            "exited": false
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 1957,
-            "exited": false
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
             "processId": 3250,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.ninponix.mewg",
             "processId": 5553,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.ninponix.mewg",
             "processId": 27490,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.ninponix.mewg",
             "processId": 31741,
+            "exited": true
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 29360,
+            "exited": true
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 7991,
             "exited": false
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 17912,
+            "exited": true
         },
         {
             "deviceId": "0074d288",
