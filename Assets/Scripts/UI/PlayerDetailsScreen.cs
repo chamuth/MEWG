@@ -55,8 +55,6 @@ public class PlayerDetailsScreen : MonoBehaviour
     {
         if (!rendered)
         {
-            print("RENDERING USER " + user.name);
-
             yield return new WaitForSeconds(0);
 
             // Set player name
