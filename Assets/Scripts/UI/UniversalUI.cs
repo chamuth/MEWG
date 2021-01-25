@@ -6,6 +6,7 @@ public class UniversalUI : MonoBehaviour
 {
     public GameObject HintsUI;
     public CanvasGroup DisconnectMessage;
+    public CanvasGroup NetworkMessage;
     public static UniversalUI Instance;
 
     private void Start()
@@ -21,28 +22,33 @@ public class UniversalUI : MonoBehaviour
 
     public void ShowPlayerDisconnectMessage()
     {
-        StartCoroutine(_ShowPlayerDisconnectMessage());
+        StartCoroutine(_ShowMessage(DisconnectMessage));
     }
 
-    IEnumerator _ShowPlayerDisconnectMessage()
+    public void ShowNetworkConnectionWarning()
     {
-        DisconnectMessage.alpha = 0;
-        DisconnectMessage.gameObject.SetActive(true);
+        StartCoroutine(_ShowMessage(NetworkMessage));
+    }
 
-        while (DisconnectMessage.alpha < 1)
+    IEnumerator _ShowMessage(CanvasGroup cg)
+    {
+        cg.alpha = 0;
+        cg.gameObject.SetActive(true);
+
+        while (cg.alpha < 1)
         {
-            DisconnectMessage.alpha = Mathf.MoveTowards(DisconnectMessage.alpha, 1, Time.deltaTime * 3f);
+            cg.alpha = Mathf.MoveTowards(cg.alpha, 1, Time.deltaTime * 3f);
             yield return null;
         }
 
         yield return new WaitForSeconds(4);
 
-        while (DisconnectMessage.alpha > 0)
+        while (cg.alpha > 0)
         {
-            DisconnectMessage.alpha = Mathf.MoveTowards(DisconnectMessage.alpha, 0, Time.deltaTime * 4f);
+            cg.alpha = Mathf.MoveTowards(cg.alpha, 0, Time.deltaTime * 4f);
             yield return null;
         }
 
-        DisconnectMessage.gameObject.SetActive(false);
+        cg.gameObject.SetActive(false);
     }
 }

@@ -42,8 +42,6 @@ public class CircularProfileSetter : MonoBehaviour
         while (User.CurrentUser == null)
             yield return null;
 
-        GetComponent<CanvasGroup>().alpha = 1;
-
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(User.CurrentUser.profile);
 
         yield return www.SendWebRequest();
@@ -68,6 +66,8 @@ public class CircularProfileSetter : MonoBehaviour
 
         xpreturner = XP.RemainingXPToLevelUp(User.CurrentUser.xp);
         XPLevel.text = string.Format("{0} XP / {1} XP", xpreturner.RemainingXP, xpreturner.TotalXP);
+
+        GetComponent<CanvasGroup>().alpha = 1;
     }
 
     private void Update()
