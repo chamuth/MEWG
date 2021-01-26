@@ -1,18 +1,36 @@
+FEATURES
+========
+[ ] Ability to react to the other player instantly, like reactions on a facebook live video to express humiliation, happiness, sadness, anger and etc.
+[ ] Store match creation time, update match creation time on rematches and delete old matches to save database space using a cloud function called everyday midnight
+
 Immediate solvables
+[X] Matchmaking server
+[X] Fix the resolution dependant line renderer issue
+[X] Assess WORD_MASTER like titles dynamically
 [X] Fix name popping and not loading issue (wait until receiving player info to go to other scene)
 [X] Conclusion (Win/lose/draw) screen not showing on second time and shit
 [X] Don't show word sets with more than 8 letters on them, they are so fucking hard!!!!!!
-
 [ ] In app purchases for ad removal and buying hint packages
-[ ] Achievements
-[ ] Leaderboard
+[ ] Leaderboard for Experience and W/L ratio
+[ ] Daily free hint(s) for subsequent days of gameplay to improve user engagement (1 hint on day one, two hints on day two, 3 hints on day three and etc).
 [ ] Admob, fullscreen interstitial after every match (maybe video). Watch a reward video ad to gain a free hint.
+[ ] Create local and Google Play Games Achievements for the game
+	Finishing a match in 10, 20, 30 seconds or less
+	Win 5, 10, 20 matches with all words
+	Get over 2,3,4,5 W/L ratio
+	20, 50, 100, 200, 500 match wins
+	Win 5 matches without using any hints
+	Play 100, 200, 500, 1000 matches
+	Play 5,10 days subsequently
+	Get 1,2,3,4,5 hours in game
+	Find 100,250,500,1000 words
 
-[X] Matchmaking server
+LAST PROBLEMS
+=============	
 [ ] Remove copyrighted backgrounds
+
 [ ] Add sound FX to the game
-[X] Fix the resolution dependant line renderer issue
-[ ] Add achievements
-[X] Assess WORD_MASTER like titles dynamically
+	Main menu music, timer ending sounds, correct word sfx, letter matching sound, enemy player correct word sfx, hint used sfx, button press sfx, match won sfx, level up sfx
+
 [ ] Sharing options
-[ ] basic settings screen with sound on off or something
+[ ] Basic settings screen with sound on off or something
