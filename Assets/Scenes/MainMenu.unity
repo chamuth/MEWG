@@ -9824,7 +9824,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000015258789, y: 0.000061035156}
+  m_AnchoredPosition: {x: 0, y: 0.000061035156}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &650174493
@@ -14593,7 +14593,7 @@ PrefabInstance:
     - target: {fileID: 8630734935331594765, guid: 6f0ff4656c5497941bd4b6182ccdb768,
         type: 3}
       propertyPath: m_Name
-      value: IconButton
+      value: Cancel Matchmaking
       objectReference: {fileID: 0}
     - target: {fileID: 8630734935331594764, guid: 6f0ff4656c5497941bd4b6182ccdb768,
         type: 3}
@@ -14785,6 +14785,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8630734935331594754, guid: 6f0ff4656c5497941bd4b6182ccdb768,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8630734935331594754, guid: 6f0ff4656c5497941bd4b6182ccdb768,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8630734935331594754, guid: 6f0ff4656c5497941bd4b6182ccdb768,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8630734935331594754, guid: 6f0ff4656c5497941bd4b6182ccdb768,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1534582085}
+    - target: {fileID: 8630734935331594754, guid: 6f0ff4656c5497941bd4b6182ccdb768,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StopMatchmaking
+      objectReference: {fileID: 0}
+    - target: {fileID: 8630734935331594754, guid: 6f0ff4656c5497941bd4b6182ccdb768,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8630734935331594755, guid: 6f0ff4656c5497941bd4b6182ccdb768, type: 3}

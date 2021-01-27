@@ -124,6 +124,18 @@ public class MainMenuUI : MonoBehaviour
         MatchNode.ValueChanged += MatchNode_ValueChanged;
     }
 
+    public void StopMatchmaking()
+    {
+        try
+        {
+            MatchNode.SetValueAsync(null);
+            MatchNode.ValueChanged -= MatchNode_ValueChanged;
+        }
+        catch (Exception) { }
+
+        SwitchMenu("MAIN MENU");
+    }
+
     private void MatchNode_ValueChanged(object a, ValueChangedEventArgs b)
     {
         if (b.Snapshot.GetValue(false) != null)
