@@ -67,7 +67,12 @@ public class MainMenuUI : MonoBehaviour
 
     public void ShareGame()
     {
-        
+        var sharer = new NativeShare();
+
+        sharer.SetSubject("Checkout this cool game!");
+        sharer.SetText("Play Multiplayer English Word-matching Game for Free http://play.google.com/store/apps/details?id=com.ninponix.mewg");
+
+        sharer.Share();
     }
 
     public void SwitchMenu(string code)

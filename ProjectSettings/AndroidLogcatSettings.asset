@@ -1,10 +1,10 @@
 {
-    "m_SelectedDeviceId": "LNVW5LK7SKOVGMOB",
+    "m_SelectedDeviceId": "0074d288",
     "m_SelectedPackage": {
-        "deviceId": "LNVW5LK7SKOVGMOB",
+        "deviceId": "0074d288",
         "name": "com.ninponix.mewg",
-        "processId": 19376,
-        "exited": true
+        "processId": 9263,
+        "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
@@ -67,6 +67,30 @@
             "name": "com.ninponix.mewg",
             "processId": 23315,
             "exited": true
+        },
+        {
+            "deviceId": "0074d288",
+            "name": "com.ninponix.mewg",
+            "processId": 444,
+            "exited": true
+        },
+        {
+            "deviceId": "0074d288",
+            "name": "com.ninponix.mewg",
+            "processId": 5501,
+            "exited": false
+        },
+        {
+            "deviceId": "0074d288",
+            "name": "com.ninponix.mewg",
+            "processId": 8053,
+            "exited": false
+        },
+        {
+            "deviceId": "0074d288",
+            "name": "com.ninponix.mewg",
+            "processId": 9263,
+            "exited": false
         },
         {
             "deviceId": "R58M708CX9R",

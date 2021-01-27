@@ -70,12 +70,12 @@ public class NextRoundUI : MonoBehaviour
         {
             // if both the enemy and the player are ready for the next round
             StartCoroutine(LoadNextRound());
-            // Set ready to false for next round
-            myReadyReference.SetValueAsync(false);
 
             // Hide the waiting for input section
             MatchResetProgress.SetActive(true);
             WaitingForInput.SetActive(false);
+
+            WaitingForNextRound.SetActive(true);
 
             loading = true;
         }
