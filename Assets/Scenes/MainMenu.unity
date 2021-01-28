@@ -17682,12 +17682,17 @@ PrefabInstance:
     - target: {fileID: 8630734936319541560, guid: 6f0ff4656c5497941bd4b6182ccdb768,
         type: 3}
       propertyPath: m_fontSize
-      value: 32
+      value: 30.1
       objectReference: {fileID: 0}
     - target: {fileID: 8630734936319541560, guid: 6f0ff4656c5497941bd4b6182ccdb768,
         type: 3}
       propertyPath: m_fontSizeBase
-      value: 32
+      value: 30.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8630734936319541560, guid: 6f0ff4656c5497941bd4b6182ccdb768,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8630734936319541561, guid: 6f0ff4656c5497941bd4b6182ccdb768,
         type: 3}

@@ -222,6 +222,11 @@ public class SelectionCircle : MonoBehaviour
         }
     }
 
+    public void ShowReactionButtons()
+    {
+
+    }
+
     public void RandomizeLetters()
     {
         StartCoroutine(FadeOutLetters());

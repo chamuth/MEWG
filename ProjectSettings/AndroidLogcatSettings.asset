@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "0074d288",
         "name": "com.ninponix.mewg",
-        "processId": 9263,
+        "processId": 26829,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -93,6 +93,18 @@
             "exited": false
         },
         {
+            "deviceId": "0074d288",
+            "name": "com.ninponix.mewg",
+            "processId": 24570,
+            "exited": false
+        },
+        {
+            "deviceId": "0074d288",
+            "name": "com.ninponix.mewg",
+            "processId": 26829,
+            "exited": false
+        },
+        {
             "deviceId": "R58M708CX9R",
             "name": "com.ninponix.mewg",
             "processId": 13617,
@@ -113,7 +125,7 @@
             },
             {
                 "m_Name": "No Filter",
-                "m_Selected": true
+                "m_Selected": false
             },
             {
                 "m_Name": "",
@@ -129,7 +141,7 @@
             },
             {
                 "m_Name": "Unity",
-                "m_Selected": false
+                "m_Selected": true
             },
             {
                 "m_Name": "CRASH",

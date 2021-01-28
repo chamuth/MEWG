@@ -3,6 +3,8 @@ using Facebook.Unity;
 using Firebase.Auth;
 using Firebase.Database;
 using Google;
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,6 +20,7 @@ public class LoginUI : MonoBehaviour
 
     void Awake()
     {
+        #region Initialize Facebook SDK
         if (!FB.IsInitialized)
         {
             // Initialize the Facebook SDK
@@ -28,6 +31,16 @@ public class LoginUI : MonoBehaviour
             // Already initialized, signal an app activation App Event
             FB.ActivateApp();
         }
+        #endregion
+
+        #region Active Google Play Games SDK
+        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
+            .RequestServerAuthCode(false /* Don't force refresh */)
+            .Build();
+
+        PlayGamesPlatform.InitializeInstance(config);
+        PlayGamesPlatform.Activate();
+        #endregion
     }
     private void OnHideUnity(bool isGameShown)
     {
@@ -42,6 +55,7 @@ public class LoginUI : MonoBehaviour
             Time.timeScale = 1;
         }
     }
+
     private void InitCallback()
     {
         if (FB.IsInitialized)
@@ -64,6 +78,8 @@ public class LoginUI : MonoBehaviour
     void FacebookLogin()
     {
         print("Initiating Facebook Login");
+        
+        PreloaderScreen.SetActive(true);
 
         FirebaseAuth auth = FirebaseAuth.DefaultInstance;
 
@@ -72,8 +88,6 @@ public class LoginUI : MonoBehaviour
         {
             if (FB.IsLoggedIn)
             {
-                PreloaderScreen.SetActive(true);
-
                 // User logged in successfully
                 var token = AccessToken.CurrentAccessToken;
 
@@ -98,46 +112,84 @@ public class LoginUI : MonoBehaviour
 
                     var uid = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
 
-                    FirebaseDatabase.DefaultInstance.RootReference.Child("user").Child(uid).GetValueAsync().ContinueWith((snapshot) =>
-                    {
-                        if (!snapshot.Result.Exists)
-                        {
-                            print("User profile doesn't exist on database");
-
-                            // User details doesn't exist save them
-                            var user = new User();
-                            user.name = newUser.DisplayName;
-                            user.profile = newUser.PhotoUrl.ToString();
-                            user.xp = 0;
-
-                            // User gonna have 0 wins and 0 losses when started
-                            user.statistics = new UserStatistics();
-                            user.statistics.wins = 0;
-                            user.statistics.losses = 0;
-
-                            // User gonna have 5 hints as a startup gift
-                            user.hints = new Hints();
-                            user.hints.count = 5;
-
-                            FirebaseDatabase.DefaultInstance.RootReference.Child("user").Child(uid).SetRawJsonValueAsync(Newtonsoft.Json.JsonConvert.SerializeObject(user)).ContinueWith((t) =>
-                            {
-                                print("User Profile created, loading main menu");
-                                // Load the main menu
-                                mmSwitch = true;
-                            });
-                        }
-                        else
-                        {
-                            print("User profile exists on the database loading main menu");
-                            mmSwitch = true;
-                        }
-                    });
+                    CreateDatabaseUser(newUser, uid);
 
                 });
             }
             else
             {
                 print("Facebook Log in failed");
+            }
+        });
+    }
+
+    void GoogleLogin()
+    {
+        Social.localUser.Authenticate((bool success) => {
+            if (success)
+            {
+                var authCode = PlayGamesPlatform.Instance.GetServerAuthCode();
+
+                FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+                Credential credential = PlayGamesAuthProvider.GetCredential(authCode);
+
+                auth.SignInWithCredentialAsync(credential).ContinueWith(task => {
+                    if (task.IsCanceled)
+                    {
+                        Debug.LogError("GPG: SignInWithCredentialAsync was canceled.");
+                        return;
+                    }
+                    if (task.IsFaulted)
+                    {
+                        Debug.LogError("GPG: SignInWithCredentialAsync encountered an error: " + task.Exception);
+                        return;
+                    }
+
+                    FirebaseUser newUser = task.Result;
+                    print("Signed in as " + newUser.DisplayName);
+
+                    var uid = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
+
+                    CreateDatabaseUser(newUser, uid);
+                });
+            }
+        });
+    }
+
+    void CreateDatabaseUser(FirebaseUser newUser, string uid)
+    {
+        FirebaseDatabase.DefaultInstance.RootReference.Child("user").Child(uid).GetValueAsync().ContinueWith((snapshot) =>
+        {
+            if (!snapshot.Result.Exists)
+            {
+                print("User profile doesn't exist on database");
+
+                // User details doesn't exist save them
+                var user = new User();
+                user.name = newUser.DisplayName;
+                user.profile = newUser.PhotoUrl.ToString();
+                user.xp = 0;
+
+                // User gonna have 0 wins and 0 losses when started
+                user.statistics = new UserStatistics();
+                user.statistics.wins = 0;
+                user.statistics.losses = 0;
+
+                // User gonna have 5 hints as a startup gift
+                user.hints = new Hints();
+                user.hints.count = 5;
+
+                FirebaseDatabase.DefaultInstance.RootReference.Child("user").Child(uid).SetRawJsonValueAsync(Newtonsoft.Json.JsonConvert.SerializeObject(user)).ContinueWith((t) =>
+                {
+                    print("User Profile created, loading main menu");
+                    // Load the main menu
+                    mmSwitch = true;
+                });
+            }
+            else
+            {
+                print("User profile exists on the database loading main menu");
+                mmSwitch = true;
             }
         });
     }
@@ -154,50 +206,4 @@ public class LoginUI : MonoBehaviour
         }
     }
 
-    void GoogleLogin()
-    {
-        print("Initiating Google Login");
-
-        //FirebaseAuth auth = FirebaseAuth.DefaultInstance;
-
-        //GoogleSignIn.Configuration = new GoogleSignInConfiguration
-        //{
-        //    RequestIdToken = true,
-        //    WebClientId = "38208650817-8crs3a8417nuvjfemkshqurnd3cc2n1p.apps.googleusercontent.com"
-        //};
-
-        //Task<GoogleSignInUser> signIn = GoogleSignIn.DefaultInstance.SignIn();
-
-        //TaskCompletionSource<FirebaseUser> signInCompleted = new TaskCompletionSource<FirebaseUser>();
-        //signIn.ContinueWith(task => {
-        //    if (task.IsCanceled)
-        //    {
-        //        signInCompleted.SetCanceled();
-        //    }
-        //    else if (task.IsFaulted)
-        //    {
-        //        signInCompleted.SetException(task.Exception);
-        //    }
-        //    else
-        //    {
-        //        Credential credential = Firebase.Auth.GoogleAuthProvider.GetCredential(((Task<GoogleSignInUser>)task).Result.IdToken, null);
-        //        auth.SignInWithCredentialAsync(credential).ContinueWith(authTask => {
-        //            if (authTask.IsCanceled)
-        //            {
-        //                signInCompleted.SetCanceled();
-        //            }
-        //            else if (authTask.IsFaulted)
-        //            {
-        //                signInCompleted.SetException(authTask.Exception);
-        //            }
-        //            else
-        //            {
-        //                var result = ((Task<FirebaseUser>)authTask).Result;
-        //                signInCompleted.SetResult(result);
-        //                Debug.LogFormat("User signed in successfully: {0} ({1})", result.DisplayName, result.UserId);
-        //            }
-        //        });
-        //    }
-        //});
-    }
 }

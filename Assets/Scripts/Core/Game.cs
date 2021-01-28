@@ -234,6 +234,29 @@ public class MatchRef
     public MatchContent content;
     public MatchStatus status = null;
     public WordMatch[] matches;
+    public Reaction[] reactions;
+}
+
+[Serializable]
+public class Reaction
+{
+    public string uid;
+    public int index;
+
+    public override bool Equals(object obj)
+    {
+        return ((Reaction)obj).index == index && ((Reaction)obj).uid == uid;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        return base.ToString();
+    }
 }
 
 [Serializable]
