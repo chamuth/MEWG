@@ -75,6 +75,11 @@ public class MainMenuUI : MonoBehaviour
         sharer.Share();
     }
 
+    public void RateGame()
+    {
+        Application.OpenURL("http://play.google.com/store/apps/details?id=com.ninponix.mewg");
+    }
+
     public void SwitchMenu(string code)
     {
         MatchmakingUI.gameObject.SetActive(false);
