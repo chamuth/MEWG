@@ -12,7 +12,7 @@ IMMEDIATE REQUIREMENTS
 [X] Conclusion (Win/lose/draw) screen not showing on second time and shit
 [X] Don't show word sets with more than 8 letters on them, they are so fucking hard!!!!!!
 [ ] In app purchases for ad removal and buying hint packages
-[ ] Leaderboard for Experience and W/L ratio
+[X] Leaderboard for Experience and W/L ratio
 [ ] Daily free hint(s) for subsequent days of gameplay to improve user engagement (1 hint on day one, two hints on day two, 3 hints on day three and etc).
 [ ] Admob, fullscreen interstitial after every match (maybe video). Watch a reward video ad to gain a free hint.
 

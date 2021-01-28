@@ -42,6 +42,7 @@ public class LoginUI : MonoBehaviour
         PlayGamesPlatform.Activate();
         #endregion
     }
+    
     private void OnHideUnity(bool isGameShown)
     {
         if (!isGameShown)
@@ -83,7 +84,7 @@ public class LoginUI : MonoBehaviour
 
         FirebaseAuth auth = FirebaseAuth.DefaultInstance;
 
-        var perms = new List<string>() { "public_profile", "email" };
+        var perms = new List<string>() { "public_profile", "email", "user_friends" };
         FB.LogInWithReadPermissions(perms, (ILoginResult result) =>
         {
             if (FB.IsLoggedIn)
@@ -175,7 +176,7 @@ public class LoginUI : MonoBehaviour
                 user.statistics.wins = 0;
                 user.statistics.losses = 0;
 
-                // User gonna have 5 hints as a startup gift
+                // User gonna have free 5 hints as a startup gift
                 user.hints = new Hints();
                 user.hints.count = 5;
 

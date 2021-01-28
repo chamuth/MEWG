@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Firebase.Database;
 using Firebase.Auth;
+using GooglePlayGames;
 
 public class MatchManager : MonoBehaviour
 {
@@ -112,6 +113,15 @@ public class MatchManager : MonoBehaviour
                 case MatchState.Draw:
                     DrawUI.SetActive(true);
                     break;
+            }
+
+            if (PlayGamesPlatform.Instance.localUser.authenticated)
+            {
+                // Report to XP leaderboard
+                PlayGamesPlatform.Instance.ReportScore(User.CurrentUser.xp, "CgkIwfymq44BEAIQAQ", (b) => { });
+                // Report to W/L leaderboard, which is measured in kilo metrics, multiplied by 1000
+                float wl = (User.CurrentUser.statistics.losses == 0) ? User.CurrentUser.statistics.wins : (User.CurrentUser.statistics.wins / (float)User.CurrentUser.statistics.losses);
+                PlayGamesPlatform.Instance.ReportScore((int)(wl * 1000), "CgkIwfymq44BEAIQAQ", (b) => { });
             }
         };
 

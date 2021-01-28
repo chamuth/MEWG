@@ -47,6 +47,9 @@ public class ConclusionUI : MonoBehaviour
         {
             Rewards.SetActive(false);
             NextRound.SetActive(true);
+
+            // Reset current match data even from here
+            Game.CurrentMatchData = new MatchRef() { players = Game.CurrentMatchData.players };
         }
 
         CurrentStep++;

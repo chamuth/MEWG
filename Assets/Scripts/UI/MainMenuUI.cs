@@ -7,16 +7,21 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Firebase.Database;
 using System;
-
+using GooglePlayGames;
+using Facebook.Unity;
+// TODO: Stop main menu actions before the player details are loaded
 public class MainMenuUI : MonoBehaviour
 {
     public UITransitionEffect LoginUI;
     public UITransitionEffect MainMenu;
     public UITransitionEffect MatchmakingUI;
+    public UITransitionEffect OpponentModeSelectionUI;
+    public UITransitionEffect FriendsUI;
 
     public GameObject RatePanel;
     public GameObject RemoveAds;
     public StartupTutorial Tutorial;
+    public GameObject GiftsUI;
 
     [HideInInspector]
     public static MainMenuUI Instance;
@@ -67,17 +72,47 @@ public class MainMenuUI : MonoBehaviour
 
     public void ShareGame()
     {
-        var sharer = new NativeShare();
+        if (FB.IsLoggedIn)
+        {
+            // Player is logged in using Facebook
+            FB.AppRequest("Hey! Come play MEWG a multiplayer word matching game with me", title: "Multiplayer English Word-matching Game");
+        }
+        else if (PlayGamesPlatform.Instance.localUser.authenticated)
+        {
+            // Player is logged in using Google Play Games Services
+            
+        }
+        else
+        {
+            var sharer = new NativeShare();
 
-        sharer.SetSubject("Checkout this cool game!");
-        sharer.SetText("Play Multiplayer English Word-matching Game for Free http://play.google.com/store/apps/details?id=com.ninponix.mewg");
+            sharer.SetSubject("Checkout this cool game!");
+            sharer.SetText("Play Multiplayer English Word-matching Game for Free http://play.google.com/store/apps/details?id=com.ninponix.mewg");
 
-        sharer.Share();
+            sharer.Share();
+        }
     }
 
     public void RateGame()
     {
+        PlayerPrefs.SetInt("ALREADY_RATED", 1);
         Application.OpenURL("http://play.google.com/store/apps/details?id=com.ninponix.mewg");
+    }
+
+    public void OpenLeaderboards()
+    {
+        if (PlayGamesPlatform.Instance.localUser.authenticated)
+        {
+            PlayGamesPlatform.Instance.ShowLeaderboardUI("CgkIwfymq44BEAIQAQ");
+        }
+    }
+
+    public void OpenAchievementsUI()
+    {
+        if (PlayGamesPlatform.Instance.localUser.authenticated)
+        {
+            PlayGamesPlatform.Instance.ShowAchievementsUI();
+        }
     }
 
     public void SwitchMenu(string code)
@@ -112,15 +147,84 @@ public class MainMenuUI : MonoBehaviour
                     }
                 }
 
+                GiftProcessing();
+
                 break;
             case "MATCHMAKING":
                 MatchmakingUI.gameObject.SetActive(true);
                 StartCoroutine(AnimateUI(MatchmakingUI, true));
                 break;
+            case "OPPONENT MODES":
+                StartCoroutine(AnimateUI(OpponentModeSelectionUI, true));
+                break;
+        }
+    }
+
+    private void GiftProcessing()
+    {
+        if (PlayerPrefs.GetInt("CONSECUTIVE_DAYS", -1) == -1)
+        {
+            // A new day
+            PlayerPrefs.SetInt("CONSECUTIVE_DAYS", 0);
+        }
+        else
+        {
+            // If the player is playing on a different day than the last played one
+            if (DateTime.Now.DayOfYear != PlayerPrefs.GetInt("LAST_PLAYED", DateTime.Now.DayOfYear))
+            {
+                if (DateTime.Now.DayOfYear - PlayerPrefs.GetInt("LAST_PLAYED", DateTime.Now.DayOfYear) == 1)
+                {
+                    // If now playing on a consecutive day 
+                    PlayerPrefs.SetInt("CONSECUTIVE_DAYS", PlayerPrefs.GetInt("CONSECUTIVE_DAYS") + 1);
+                }
+                else
+                {
+                    PlayerPrefs.SetInt("CONSECUTIVE_DAYS", 0);
+                }
+            }
+        }
+
+        PlayerPrefs.SetInt("LAST_PLAYED", DateTime.Now.DayOfYear);
+        PlayerPrefs.Save();
+
+        // Gift
+        var cday = PlayerPrefs.GetInt("CONSECUTIVE_DAYS", 0);
+        if (cday > 0)
+        {
+            // Ready the gift
+            var count = 0;
+
+            if (cday == 1)
+            {
+                count = 1;
+            }
+            else if (cday == 3)
+            {
+                count = 2;
+            }
+            else if (cday == 5)
+            {
+                count = 3;
+            }
+            else if (cday == 9)
+            {
+                count = 4;
+            }
+
+            if (count > 0)
+            {
+                GiftsUI.SetActive(true);
+                GiftsUI.GetComponent<GiftsUI>().SetGiftAmount(count);
+            }
         }
     }
 
     DatabaseReference MatchNode;
+
+    public void Play()
+    {
+        SwitchMenu("OPPONENT MODES");
+    }
 
     public void StartMatchmaking()
     {
@@ -176,6 +280,7 @@ public class MainMenuUI : MonoBehaviour
     public IEnumerator AnimateUI(UITransitionEffect menu, bool set)
     {
         menu.gameObject.SetActive(true);
+        menu.effectFactor = (set) ? 0 : 1;
 
         while ((set && menu.effectFactor < 1) || (!set && menu.effectFactor > 0))
         {
