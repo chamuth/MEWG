@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using Firebase.Database;
 using Firebase.Auth;
 using GooglePlayGames;
+using GoogleMobileAds.Api;
 
 public class MatchManager : MonoBehaviour
 {
@@ -36,6 +37,9 @@ public class MatchManager : MonoBehaviour
 
     bool Exiting = false;
     bool Exited = false;
+
+    InterstitialAd MatchEndingInterstitialAd;
+    string MATCH_ENDING_INTERSTITIAL_AD_ID = "ca-app-pub-3940256099942544/1033173712";
 
     void Start()
     {
@@ -123,10 +127,37 @@ public class MatchManager : MonoBehaviour
                 float wl = (User.CurrentUser.statistics.losses == 0) ? User.CurrentUser.statistics.wins : (User.CurrentUser.statistics.wins / (float)User.CurrentUser.statistics.losses);
                 PlayGamesPlatform.Instance.ReportScore((int)(wl * 1000), "CgkIwfymq44BEAIQAQ", (b) => { });
             }
+
+
+            // Show the ad
+            StartCoroutine(ShowMatchEndingAd());
         };
 
         // Start the match
         Game.Watch();
+
+        // Load the ads
+        LoadAds();
+    }
+
+    void LoadAds()
+    {
+        MatchEndingInterstitialAd = new InterstitialAd(MATCH_ENDING_INTERSTITIAL_AD_ID);
+        // Create an empty ad request.
+        AdRequest request = new AdRequest.Builder().Build();
+        // Load the interstitial with the request.
+        MatchEndingInterstitialAd.LoadAd(request);
+    }
+    
+    IEnumerator ShowMatchEndingAd()
+    {
+        yield return new WaitForSeconds(1);
+
+        // If the admob ad is actually loaded
+        if (MatchEndingInterstitialAd.IsLoaded())
+        {
+            MatchEndingInterstitialAd.Show();
+        }
     }
 
     void ResetProgressbar()

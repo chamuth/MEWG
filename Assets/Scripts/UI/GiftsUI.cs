@@ -41,7 +41,7 @@ public class GiftsUI : MonoBehaviour
         currentGiftAmount = 0;
 
         var hintReference = FirebaseDatabase.DefaultInstance.RootReference
-            .Child("child")
+            .Child("user")
             .Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId)
             .Child("hints")
             .Child("count");

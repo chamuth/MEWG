@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using GoogleMobileAds.Api;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,6 +12,8 @@ public class SplashUI : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         StartCoroutine(FadeOutAfter(5));
+        // Google Admob Initialization  
+        MobileAds.Initialize(initStatus => { });
     }
 
     IEnumerator FadeOutAfter(float seconds)

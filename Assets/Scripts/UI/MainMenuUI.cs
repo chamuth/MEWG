@@ -172,6 +172,7 @@ public class MainMenuUI : MonoBehaviour
         {
             // A new day
             PlayerPrefs.SetInt("CONSECUTIVE_DAYS", 0);
+            print("A NEW DAY");
         }
         else
         {
@@ -187,42 +188,47 @@ public class MainMenuUI : MonoBehaviour
                 {
                     PlayerPrefs.SetInt("CONSECUTIVE_DAYS", 0);
                 }
+
+
+                // Gift
+                var cday = PlayerPrefs.GetInt("CONSECUTIVE_DAYS", 0);
+                if (cday > 0)
+                {
+                    // Ready the gift
+                    var count = 0;
+
+                    if (cday == 1)
+                    {
+                        count = 1;
+                    }
+                    else if (cday == 3)
+                    {
+                        count = 2;
+                    }
+                    else if (cday == 5)
+                    {
+                        count = 3;
+                    }
+                    else if (cday == 9)
+                    {
+                        count = 4;
+                    }
+
+                    if (count > 0)
+                    {
+                        GiftsUI.SetActive(true);
+                        GiftsUI.GetComponent<GiftsUI>().SetGiftAmount(count);
+                    }
+                }
+            }
+            else
+            {
+                print("SAME DAY");
             }
         }
 
         PlayerPrefs.SetInt("LAST_PLAYED", DateTime.Now.DayOfYear);
         PlayerPrefs.Save();
-
-        // Gift
-        var cday = PlayerPrefs.GetInt("CONSECUTIVE_DAYS", 0);
-        if (cday > 0)
-        {
-            // Ready the gift
-            var count = 0;
-
-            if (cday == 1)
-            {
-                count = 1;
-            }
-            else if (cday == 3)
-            {
-                count = 2;
-            }
-            else if (cday == 5)
-            {
-                count = 3;
-            }
-            else if (cday == 9)
-            {
-                count = 4;
-            }
-
-            if (count > 0)
-            {
-                GiftsUI.SetActive(true);
-                GiftsUI.GetComponent<GiftsUI>().SetGiftAmount(count);
-            }
-        }
     }
 
     DatabaseReference MatchNode;
