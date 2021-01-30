@@ -21,6 +21,7 @@ public class UniversalUI : MonoBehaviour
     RewardedAd rewardedAd;
     bool videoAdLoaded = false;
     bool hideVideoAdButton = false;
+    bool hintsRewarded = false;
 
     private void Start()
     {
@@ -58,6 +59,17 @@ public class UniversalUI : MonoBehaviour
             ShowRewardingAdButton.interactable = false;
             hideVideoAdButton = false;
         }
+
+        if (hintsRewarded)
+        {
+            HintsRewardedUI.SetActive(true);
+            HintRewardedParticleSystem.Play();
+
+            PlayerPrefs.SetString("LAST_VIDEO_AD_DATE", DateTime.Now.DayOfYear.ToString() + DateTime.Now.Hour.ToString());
+            PlayerPrefs.Save();
+
+            hintsRewarded = false;
+        }
     }
 
     private void RewardedAd_OnUserEarnedReward(object sender, Reward e)
@@ -72,11 +84,7 @@ public class UniversalUI : MonoBehaviour
 
         hintReference.SetValueAsync(User.CurrentUser.hints.count + 2).ContinueWith((s) =>
         {
-            HintsRewardedUI.SetActive(true);
-            HintRewardedParticleSystem.Play();
-
-            PlayerPrefs.GetString("LAST_VIDEO_AD_DATE", DateTime.Now.DayOfYear.ToString() + DateTime.Now.Hour.ToString());
-            PlayerPrefs.Save();
+            hintsRewarded = true;
         });
 
         // Hide the video ad button
@@ -101,6 +109,7 @@ public class UniversalUI : MonoBehaviour
     {
         if (rewardedAd.IsLoaded())
         {
+            HintsUI.SetActive(false);
             rewardedAd.Show();
         }
     }

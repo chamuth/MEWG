@@ -23,7 +23,10 @@ public class HintsUICountRenderer : MonoBehaviour
 
     private void HintsUICountRenderer_ValueChanged(object sender, ValueChangedEventArgs e)
     {
-        int val = (int) e.Snapshot.Value;
-        hintsText.text = string.Format("You currently have {0} hints", val);
+        if (e.Snapshot.GetValue(false) != null)
+        {
+            var val = int.Parse(e.Snapshot.GetValue(false).ToString());
+            hintsText.text = string.Format("You currently have {0} hints", val);
+        }
     }
 }
