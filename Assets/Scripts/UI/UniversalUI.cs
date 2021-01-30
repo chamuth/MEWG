@@ -82,7 +82,7 @@ public class UniversalUI : MonoBehaviour
             .Child("hints")
             .Child("count");
 
-        hintReference.SetValueAsync(User.CurrentUser.hints.count + 2).ContinueWith((s) =>
+        hintReference.SetValueAsync(User.CurrentUser.hints.count + 1).ContinueWith((s) =>
         {
             hintsRewarded = true;
         });

@@ -23,6 +23,7 @@ public class MainMenuUI : MonoBehaviour
     public StartupTutorial Tutorial;
     public GameObject GiftsUI;
     public GameObject SettingsUI;
+    public GameObject ShareReferralUI;
 
     [HideInInspector]
     public static MainMenuUI Instance;
@@ -78,30 +79,34 @@ public class MainMenuUI : MonoBehaviour
 
     public void ShareGame()
     {
-        if (FB.IsLoggedIn)
-        {
-            // Player is logged in using Facebook
-            FB.AppRequest("Hey! Come play MEWG a multiplayer word matching game with me", title: "Multiplayer English Word-matching Game");
-        }
-        else if (PlayGamesPlatform.Instance.localUser.authenticated)
-        {
-            // Player is logged in using Google Play Games Services
-            
-        }
-        else
-        {
-            var sharer = new NativeShare();
+        //if (FB.IsLoggedIn)
+        //{
+        //    // Player is logged in using Facebook
+        //    FB.AppRequest("Hey! Come play MEWG a multiplayer word matching game with me", title: "Multiplayer English Word-matching Game");
+        //}
+        //else if (PlayGamesPlatform.Instance.localUser.authenticated)
+        //{
+        //    // Player is logged in using Google Play Games Services
 
-            sharer.SetSubject("Checkout this cool game!");
-            sharer.SetText("Play Multiplayer English Word-matching Game for Free http://play.google.com/store/apps/details?id=com.ninponix.mewg");
+        //}
+        //else
+        //{
+        //    var sharer = new NativeShare();
 
-            sharer.Share();
-        }
+        //    sharer.SetSubject("Checkout this cool game!");
+        //    sharer.SetText("Play Multiplayer English Word-matching Game for Free http://play.google.com/store/apps/details?id=com.ninponix.mewg");
+
+        //    sharer.Share();
+        //}
+
+        ShareReferralUI.SetActive(true);
     }
 
     public void RateGame()
     {
         PlayerPrefs.SetInt("ALREADY_RATED", 1);
+        PlayerPrefs.Save();
+
         Application.OpenURL("http://play.google.com/store/apps/details?id=com.ninponix.mewg");
     }
 
