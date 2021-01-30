@@ -22,6 +22,7 @@ public class MainMenuUI : MonoBehaviour
     public GameObject RemoveAds;
     public StartupTutorial Tutorial;
     public GameObject GiftsUI;
+    public GameObject SettingsUI;
 
     [HideInInspector]
     public static MainMenuUI Instance;
@@ -58,6 +59,11 @@ public class MainMenuUI : MonoBehaviour
     public void ShowRemoveAdsMenu()
     {
         RemoveAds.SetActive(true);
+    }
+
+    public void ShowSettingsUI()
+    {
+        SettingsUI.SetActive(true);
     }
 
     private void Update()
@@ -223,7 +229,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void Play()
     {
-        SwitchMenu("OPPONENT MODES");
+        StartMatchmaking();
     }
 
     public void StartMatchmaking()
