@@ -39,7 +39,7 @@ public class MatchManager : MonoBehaviour
     bool Exited = false;
 
     InterstitialAd MatchEndingInterstitialAd;
-    string MATCH_ENDING_INTERSTITIAL_AD_ID = "ca-app-pub-3940256099942544/1033173712";
+    string MATCH_ENDING_INTERSTITIAL_AD_ID = "ca-app-pub-5103739755612302/6783000198";
 
     void Start()
     {

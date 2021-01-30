@@ -38,8 +38,6 @@ public class GiftsUI : MonoBehaviour
     {
         Preloader.SetActive(true);
 
-        currentGiftAmount = 0;
-
         var hintReference = FirebaseDatabase.DefaultInstance.RootReference
             .Child("user")
             .Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId)
@@ -52,5 +50,7 @@ public class GiftsUI : MonoBehaviour
             closeMyself = true;
             Preloader.SetActive(false);
         });
+
+        currentGiftAmount = 0;
     }
 }

@@ -6,6 +6,7 @@ public class LevelUpUI : MonoBehaviour
 {
     public NextLevelXPProgress XPProgress;
     public GameObject LevelUpChild;
+    public ParticleSystem LevelUpParticleSystem;
 
     private void Start()
     {
@@ -30,6 +31,7 @@ public class LevelUpUI : MonoBehaviour
                 // Level Up
                 XPProgress.CurrentLevel = serverLevel;
                 LevelUpChild.SetActive(true);
+                LevelUpParticleSystem.Play();
 
                 PlayerPrefs.SetInt("PLAYER_XP", User.CurrentUser.xp);
                 PlayerPrefs.Save();

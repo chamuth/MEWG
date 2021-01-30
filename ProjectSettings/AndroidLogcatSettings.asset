@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "LNVW5LK7SKOVGMOB",
         "name": "com.ninponix.mewg",
-        "processId": 9965,
+        "processId": 27314,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -66,6 +66,18 @@
             "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.ninponix.mewg",
             "processId": 9965,
+            "exited": false
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 8371,
+            "exited": true
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 27314,
             "exited": false
         },
         {
