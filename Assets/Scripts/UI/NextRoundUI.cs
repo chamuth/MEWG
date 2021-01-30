@@ -6,12 +6,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Linq;
+using Coffee.UIEffects;
 
 public class NextRoundUI : MonoBehaviour
 {
     public Button ReadyButton;
     public Button ReadiedButton;
     public Button FinishGame;
+
+    public UITransitionEffect NextRoundFader;
 
     [Header("Notifiers / Panels")]
     public GameObject WaitingForOpponent;
@@ -83,7 +86,14 @@ public class NextRoundUI : MonoBehaviour
 
     IEnumerator LoadNextRound()
     {
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(15);
+
+        while(NextRoundFader.effectFactor < 1)
+        {
+            NextRoundFader.effectFactor += Time.deltaTime * 3f;
+            yield return null;
+        }
+
         SceneManager.LoadSceneAsync(2);
     }
 
