@@ -17,6 +17,9 @@ public class SelectionCircle : MonoBehaviour
     public Transform SelectionLineContainer;
     public float LetterRadius = 2f;
 
+    public CanvasGroup FormingWordUI;
+    public TMPro.TextMeshProUGUI FormingWordText;
+
     public List<LetterConnection> LetterConnections = new List<LetterConnection>();
 
     List<string> CurrentlyFormingWord = new List<string>();
@@ -219,6 +222,17 @@ public class SelectionCircle : MonoBehaviour
             points.Add(((Vector2)Input.mousePosition - nowPos));
 
             mouseLineRenderer.Points = points.ToArray();
+        }
+
+        if (CurrentlyFormingWord.Count > 0)
+        {
+            FormingWordUI.alpha = Mathf.MoveTowards(FormingWordUI.alpha, 1, Time.deltaTime * 4f);
+            FormingWordText.text = string.Join("", CurrentlyFormingWord.ToArray());
+        }
+        else
+        {
+            if (FormingWordUI.alpha > 0)
+                FormingWordUI.alpha = Mathf.MoveTowards(FormingWordUI.alpha, 0, Time.deltaTime * 4f);
         }
     }
 
