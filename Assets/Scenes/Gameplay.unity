@@ -18029,7 +18029,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1403131176
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18047,7 +18047,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 283.68823, y: 242.0263}
+  m_SizeDelta: {x: 400, y: 242.0263}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1403131177
 MonoBehaviour:
@@ -18069,9 +18069,9 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'MEWG
+  m_text: 'Word
 
-    GAME'
+    Binders'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6c62b16e810bf3f4db7bbd8d8d698c96, type: 2}
   m_sharedMaterial: {fileID: -2118643568885268804, guid: 6c62b16e810bf3f4db7bbd8d8d698c96,
@@ -18141,7 +18141,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1403131177}
-    characterCount: 9
+    characterCount: 12
     spriteCount: 0
     spaceCount: 1
     wordCount: 2
