@@ -9,6 +9,7 @@ public class GameplayUI : MonoBehaviour
 
     private void Start()
     {
+        SoundManager.Instance.PlayClip("WOOSH");
         MatchStatusUI.gameObject.SetActive(true);
         StartCoroutine(HideVersusScreen());
     }

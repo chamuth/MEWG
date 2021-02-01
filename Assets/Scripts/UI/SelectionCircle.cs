@@ -102,6 +102,7 @@ public class SelectionCircle : MonoBehaviour
                 CurrentlyFormingWord.Add(letter);
                 CurrentlyFormingWord_IDs.Add(_id);
                 Instantiate(SelectedCircle, letterGO.transform.position, Quaternion.Euler(0, 0, 0), SelectedCircleContainer);
+                SoundManager.Instance.SelectLetter(CurrentlyFormingWord.Count);
             });
 
             var pointerUp = new EventTrigger.Entry();
@@ -155,6 +156,9 @@ public class SelectionCircle : MonoBehaviour
                     points.Add((nowPos - prevPos));
 
                     line.Points = points.ToArray();
+
+                    // Play the sound
+                    SoundManager.Instance.SelectLetter(CurrentlyFormingWord.Count);
                 }
             });
 

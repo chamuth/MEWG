@@ -190,6 +190,9 @@ public static class Game
 
         if (actualWord && original)
         {
+            // Play Matched sound
+            SoundManager.Instance.PlayClip("CORRECT");
+
             if (MatchReference != null)
             {
                 var json = "";
@@ -223,6 +226,9 @@ public static class Game
             {
                 Debug.Log("Matched reference not found");
             }
+        } else
+        {
+            SoundManager.Instance.PlayClip("CANCELWRONG");
         }
     }
 }

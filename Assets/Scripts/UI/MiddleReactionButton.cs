@@ -78,6 +78,8 @@ public class MiddleReactionButton : MonoBehaviour
 
     public void SendEmoji(int reactionIndex)
     {
+        SoundManager.Instance.PlayClip("WOOSH");
+
         print("Sending reaction " + reactionIndex.ToString());
 
         if (previousReactions != null)

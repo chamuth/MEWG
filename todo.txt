@@ -1,6 +1,6 @@
 FEATURES
 ========
-[ ] Ability to react to the other player instantly, like reactions on a facebook live video to express humiliation, happiness, sadness, anger and etc.
+[X] Ability to react to the other player instantly, like reactions on a facebook live video to express humiliation, happiness, sadness, anger and etc.
 [ ] Store match creation time, update match creation time on rematches and delete old matches to save database space using a cloud function called everyday midnight
 
 IMMEDIATE REQUIREMENTS
@@ -13,8 +13,8 @@ IMMEDIATE REQUIREMENTS
 [X] Don't show word sets with more than 8 letters on them, they are so fucking hard!!!!!!
 [ ] In app purchases for ad removal and buying hint packages
 [X] Leaderboard for Experience and W/L ratio
-[ ] Daily free hint(s) for subsequent days of gameplay to improve user engagement (1 hint on day one, two hints on day two, 3 hints on day three and etc).
-[ ] Admob, fullscreen interstitial after every match (maybe video). Watch a reward video ad to gain a free hint.
+[X] Daily free hint(s) for subsequent days of gameplay to improve user engagement (1 hint on day one, two hints on day two, 3 hints on day three and etc).
+[X] Admob, fullscreen interstitial after every match (maybe video). Watch a reward video ad to gain a free hint.
 
 [ ] Create local and Google Play Games Achievements for the game
 	Finishing a match in 10, 20, 30 seconds or less
@@ -29,10 +29,9 @@ IMMEDIATE REQUIREMENTS
 
 LAST PROBLEMS
 =============
-[ ] Remove copyrighted backgrounds
-
+[ ] Add more and more word sets
+[X] Remove copyrighted backgrounds
 [ ] Add sound FX to the game
 	Main menu music, timer ending sounds, correct word sfx, letter matching sound, enemy player correct word sfx, hint used sfx, button press sfx, match won sfx, level up sfx
-
-[ ] Sharing options
-[ ] Basic settings screen with sound on off or something
+[X] Sharing options
+[X] Basic settings screen with sound on off or something

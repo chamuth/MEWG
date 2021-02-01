@@ -110,6 +110,7 @@ public class MatchManager : MonoBehaviour
                 case MatchState.Win:
                     WinUI.SetActive(true);
                     WinParticles.Play();
+                    SoundManager.Instance.PlayClip("WIN");
                     break;
                 case MatchState.Loss:
                     LossUI.SetActive(true);
@@ -153,10 +154,13 @@ public class MatchManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
 
-        // If the admob ad is actually loaded
-        if (MatchEndingInterstitialAd.IsLoaded())
+        if (PlayerPrefs.GetInt("REMOVE_ADS", 0) == 1)
         {
-            MatchEndingInterstitialAd.Show();
+            // If the admob ad is actually loaded
+            if (MatchEndingInterstitialAd.IsLoaded())
+            {
+                MatchEndingInterstitialAd.Show();
+            }
         }
     }
 
