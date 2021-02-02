@@ -18,11 +18,15 @@ public class SoundManager : MonoBehaviour
 
     public static SoundManager Instance;
 
+    bool MusicON = true;
+    bool SFXON = true;
+
     private void Start()
     {
         general = GetComponent<AudioSource>();
         letterSFX = transform.GetChild(0).gameObject.GetComponent<AudioSource>();
         Instance = this;
+        UpdateSettings();
     }
 
     public void PlayClip(string name)
@@ -54,15 +58,25 @@ public class SoundManager : MonoBehaviour
                 break;
         }
 
-        general.PlayOneShot(clip);
+        if (SFXON)
+            general.PlayOneShot(clip);
+    }
+
+    public void UpdateSettings()
+    {
+        MusicON = PlayerPrefs.GetInt("MUSIC_ON", 1) == 1;
+        SFXON = PlayerPrefs.GetInt("SFX_ON", 1) == 1;
     }
     
     public void SelectLetter(int letters)
     {
-        var seminotes = (letters - 1) * 2;
-        if (letters >= 4) seminotes--;
+        if (SFXON)
+        {
+            var seminotes = (letters - 1) * 2;
+            if (letters >= 4) seminotes--;
 
-        letterSFX.pitch = Mathf.Pow(1.05946f, seminotes);
-        letterSFX.PlayOneShot(Select);
+            letterSFX.pitch = Mathf.Pow(1.05946f, seminotes);
+            letterSFX.PlayOneShot(Select);
+        }
     }
 }

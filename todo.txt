@@ -37,3 +37,4 @@ LAST PROBLEMS
 	Main menu music, timer ending sounds, correct word sfx, letter matching sound, enemy player correct word sfx, hint used sfx, button press sfx, match won sfx, level up sfx
 [X] Sharing options
 [X] Basic settings screen with sound on off or something
+[ ] Lazify the reaction sending surface to avoid spamming
