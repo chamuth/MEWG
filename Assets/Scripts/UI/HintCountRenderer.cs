@@ -1,6 +1,7 @@
 ﻿using Firebase.Auth;
 using Firebase.Database;
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -54,6 +55,7 @@ public class HintCountRenderer : MonoBehaviour
     }
 }
 
+[Serializable]
 public class HintNode
 {
     public int count;
