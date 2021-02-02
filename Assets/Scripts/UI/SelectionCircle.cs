@@ -113,7 +113,11 @@ public class SelectionCircle : MonoBehaviour
                 {
                     var word = string.Join("", CurrentlyFormingWord.ToArray());
 
-                    Game.MatchWord(word);
+                    var correct = Game.MatchWord(word);
+
+                    // If the answer is incorrect play the shake animation
+                    if (!correct)
+                        FormingWordUI.gameObject.GetComponent<Animator>().Play("Shake");
 
                     // Reset the currently formed word
                     CurrentlyFormingWord.Clear();

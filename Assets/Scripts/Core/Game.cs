@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEngine.Networking;
 using Firebase.Auth;
 using UnityEngine.SceneManagement;
+using Newtonsoft.Json;
 
 public static class Game
 {
@@ -59,17 +60,20 @@ public static class Game
 
     private static void DisconectValueChanged(object sender, ValueChangedEventArgs e)
     {
-        if (e.Snapshot.Exists)
+        if (e.DatabaseError == null)
         {
-            // If disconnect value exists
-            var playerId = e.Snapshot.Value.ToString();
-
-            if (playerId == enemyId)
+            if (e.Snapshot.Exists)
             {
-                UniversalUI.Instance.ShowPlayerDisconnectMessage();
+                // If disconnect value exists
+                var playerId = e.Snapshot.Value.ToString();
 
-                // Enemy player has disconnected
-                SceneManager.LoadSceneAsync(1);
+                if (playerId == enemyId)
+                {
+                    UniversalUI.Instance.ShowPlayerDisconnectMessage();
+
+                    // Enemy player has disconnected
+                    SceneManager.LoadSceneAsync(1);
+                }
             }
         }
     }
@@ -88,52 +92,55 @@ public static class Game
 
     private static void MatchReference_ValueChanged(object sender, ValueChangedEventArgs e)
     {
-        CurrentMatchData = JsonUtility.FromJson<MatchRef>(e.Snapshot.GetRawJsonValue());
-
-        try
+        if (e.DatabaseError == null)
         {
-            if (CurrentMatchData.matches != null)
+            CurrentMatchData = JsonConvert.DeserializeObject<MatchRef>(e.Snapshot.GetRawJsonValue());
+
+            try
             {
-                if (previousWordMatch != CurrentMatchData.matches)
+                if (CurrentMatchData.matches != null)
                 {
-                    UpdateMatchedWords();
+                    if (previousWordMatch != CurrentMatchData.matches)
+                    {
+                        UpdateMatchedWords();
+                    }
                 }
             }
-        }
-        catch (Exception) { }
+            catch (Exception) { }
 
-        try
-        {
-            if (CurrentMatchData.status != null)
+            try
             {
-                if (CurrentMatchData.status.draw)
+                if (CurrentMatchData.status != null)
                 {
-                    OnMatchEnd?.Invoke(MatchState.Draw);
-                }
-
-                if (CurrentMatchData.status.winner != "")
-                {
-                    MatchState state;
-
-                    if (CurrentMatchData.status.draw == true)
+                    if (CurrentMatchData.status.draw)
                     {
-                        state = MatchState.Draw;
+                        OnMatchEnd?.Invoke(MatchState.Draw);
                     }
-                    else
+
+                    if (CurrentMatchData.status.winner != "")
                     {
-                        if (CurrentMatchData.status.winner == FirebaseAuth.DefaultInstance.CurrentUser.UserId)
-                            state = MatchState.Win;
+                        MatchState state;
+
+                        if (CurrentMatchData.status.draw == true)
+                        {
+                            state = MatchState.Draw;
+                        }
                         else
-                            state = MatchState.Loss;
-                    }
+                        {
+                            if (CurrentMatchData.status.winner == FirebaseAuth.DefaultInstance.CurrentUser.UserId)
+                                state = MatchState.Win;
+                            else
+                                state = MatchState.Loss;
+                        }
 
-                    OnMatchEnd?.Invoke(state);
+                        OnMatchEnd?.Invoke(state);
+                    }
                 }
             }
-        }
-        catch (Exception) { }
+            catch (Exception) { }
 
-        OnMatchDataChanged?.Invoke();
+            OnMatchDataChanged?.Invoke();
+        }
     }
 
     static void UpdateMatchedWords()
@@ -175,7 +182,7 @@ public static class Game
         }
     }
 
-    public static void MatchWord(string word)
+    public static bool MatchWord(string word)
     {
         // If the word is a given word and it is not previously found
         var actualWord = CurrentMatchData.content.words.Contains(word);
@@ -226,9 +233,13 @@ public static class Game
             {
                 Debug.Log("Matched reference not found");
             }
-        } else
+
+            return true;
+        } 
+        else
         {
             SoundManager.Instance.PlayClip("CANCELWRONG");
+            return false;
         }
     }
 }

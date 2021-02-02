@@ -5740,6 +5740,24 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 607431478}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &607431480 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 914196651767275461, guid: f5db720019286d3468f62cbf1383b07c,
+    type: 3}
+  m_PrefabInstance: {fileID: 607431478}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &607431481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607431480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ea20e949986474438ff8198d42ef3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &608830048
 GameObject:
   m_ObjectHideFlags: 0
@@ -8641,6 +8659,7 @@ GameObject:
   - component: {fileID: 888836938}
   - component: {fileID: 888836937}
   - component: {fileID: 888836939}
+  - component: {fileID: 888836940}
   m_Layer: 5
   m_Name: FormingWord
   m_TagString: Untagged
@@ -8718,6 +8737,25 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!95 &888836940
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 888836935}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8b8af308b7400ef46bee3ef966bb70b0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &906544574
 GameObject:
   m_ObjectHideFlags: 0
@@ -11220,6 +11258,7 @@ GameObject:
   - component: {fileID: 1220663699}
   - component: {fileID: 1220663700}
   - component: {fileID: 1220663701}
+  - component: {fileID: 1220663702}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -11388,6 +11427,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!114 &1220663702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220663694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ea20e949986474438ff8198d42ef3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1233003323
 GameObject:
   m_ObjectHideFlags: 0
@@ -21144,6 +21195,7 @@ GameObject:
   - component: {fileID: 1593158696}
   - component: {fileID: 1593158697}
   - component: {fileID: 1593158698}
+  - component: {fileID: 1593158699}
   m_Layer: 5
   m_Name: LastReaction
   m_TagString: Untagged
@@ -21411,6 +21463,18 @@ MonoBehaviour:
   TheirReactionAnimator: {fileID: 1582578927}
   TheirReactionText: {fileID: 592784470}
   LastUsedReactionIndex: 0
+--- !u!114 &1593158699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593158692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ea20e949986474438ff8198d42ef3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1609324119
 GameObject:
   m_ObjectHideFlags: 0
@@ -22376,6 +22440,18 @@ MonoBehaviour:
   m_EffectColor: {r: 0.28813636, g: 0.2988033, b: 0.3301887, a: 0.09019608}
   m_EffectDistance: {x: 5, y: 5}
   m_UseGraphicAlpha: 1
+--- !u!114 &1683161627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683161625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ea20e949986474438ff8198d42ef3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1714903135
 GameObject:
   m_ObjectHideFlags: 0
@@ -25996,6 +26072,18 @@ MonoBehaviour:
   m_EffectColor: {r: 0.28813636, g: 0.2988033, b: 0.3301887, a: 0.09019608}
   m_EffectDistance: {x: 5, y: 5}
   m_UseGraphicAlpha: 1
+--- !u!114 &2119704265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119704262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ea20e949986474438ff8198d42ef3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2137937544
 GameObject:
   m_ObjectHideFlags: 0
@@ -26784,6 +26872,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67e118348d401ac49a364479452db1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2467792550592705032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2467792550592705030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ea20e949986474438ff8198d42ef3f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &3068423917790498554

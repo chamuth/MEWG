@@ -30,6 +30,8 @@ IMMEDIATE REQUIREMENTS
 LAST PROBLEMS
 =============
 [ ] Add more and more word sets
+[ ] Ambient music for the game
+[ ] Settings turning music on and off
 [X] Remove copyrighted backgrounds
 [ ] Add sound FX to the game
 	Main menu music, timer ending sounds, correct word sfx, letter matching sound, enemy player correct word sfx, hint used sfx, button press sfx, match won sfx, level up sfx

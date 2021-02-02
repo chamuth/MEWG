@@ -4921,6 +4921,7 @@ GameObject:
   - component: {fileID: 396133208}
   - component: {fileID: 396133207}
   - component: {fileID: 396133206}
+  - component: {fileID: 396133212}
   m_Layer: 5
   m_Name: HintsRewarded
   m_TagString: Untagged
@@ -5052,6 +5053,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &396133212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396133204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86bd06dac8b06f842a7610053ddc7f82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ClipId: WIN
 --- !u!1 &398089741
 GameObject:
   m_ObjectHideFlags: 0
@@ -16459,6 +16473,7 @@ GameObject:
   - component: {fileID: 835465329}
   - component: {fileID: 835465331}
   - component: {fileID: 835465330}
+  - component: {fileID: 835465332}
   m_Layer: 5
   m_Name: Level Up Child
   m_TagString: Untagged
@@ -16517,6 +16532,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 835465328}
   m_CullTransparentMesh: 0
+--- !u!114 &835465332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835465328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86bd06dac8b06f842a7610053ddc7f82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ClipId: LEVELUP
 --- !u!1001 &835611824
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21023,6 +21051,8 @@ MonoBehaviour:
   CancelWrong: {fileID: 8300000, guid: bf85e2b3956094749ac930f510710ae7, type: 3}
   Correct: {fileID: 8300000, guid: 659a437c350b148498b02879cb430d6d, type: 3}
   Pop: {fileID: 8300000, guid: c2af79ed7c3d56e4dbd77001056ac3b3, type: 3}
+  Hint: {fileID: 8300000, guid: 55644df64a9805a43b3d7b1c3ae073c6, type: 3}
+  LevelUp: {fileID: 0}
 --- !u!1 &1132808139
 GameObject:
   m_ObjectHideFlags: 0

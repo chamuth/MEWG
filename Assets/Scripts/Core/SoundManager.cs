@@ -10,6 +10,8 @@ public class SoundManager : MonoBehaviour
     public AudioClip CancelWrong;
     public AudioClip Correct;
     public AudioClip Pop;
+    public AudioClip Hint;
+    public AudioClip LevelUp;
 
     AudioSource general;
     AudioSource letterSFX;
@@ -43,6 +45,12 @@ public class SoundManager : MonoBehaviour
                 break;
             case "POP":
                 clip = Pop;
+                break;
+            case "HINT":
+                clip = Hint;
+                break;
+            case "LEVELUP":
+                clip = LevelUp;
                 break;
         }
 

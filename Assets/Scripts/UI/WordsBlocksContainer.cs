@@ -224,6 +224,9 @@ public class WordsBlocksContainer : MonoBehaviour
 
         // Play hint animation
         HintAnimator.Play("Used");
+
+        // Play the hint sound
+        SoundManager.Instance.PlayClip("HINT");
     }
 
     IEnumerator FadeInBlocks()
