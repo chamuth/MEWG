@@ -33,6 +33,8 @@ public class MiddleReactionButton : MonoBehaviour
 
     private Reaction[] previousReactions = new Reaction[] { };
 
+    float reactionTimeout = 0;
+
     private void Start()
     {
         Game.OnMatchDataChanged += MatchDataChanged;
@@ -78,28 +80,32 @@ public class MiddleReactionButton : MonoBehaviour
 
     public void SendEmoji(int reactionIndex)
     {
-        SoundManager.Instance.PlayClip("WOOSH");
-
-        print("Sending reaction " + reactionIndex.ToString());
-
-        if (previousReactions != null)
+        if (reactionTimeout > 2f)
         {
-            var t = new List<Reaction>(previousReactions);
-            t.Add(new Reaction { index = reactionIndex, uid = FirebaseAuth.DefaultInstance.CurrentUser.UserId });
-            Game.MatchReference.Child("reactions").SetRawJsonValueAsync(JsonConvert.SerializeObject(t.ToArray()));
-        }
-        else
-        {
-            var t = new Reaction[] {
+            SoundManager.Instance.PlayClip("WOOSH");
+
+            print("Sending reaction " + reactionIndex.ToString());
+
+            if (previousReactions != null)
+            {
+                var t = new List<Reaction>(previousReactions);
+                t.Add(new Reaction { index = reactionIndex, uid = FirebaseAuth.DefaultInstance.CurrentUser.UserId });
+                Game.MatchReference.Child("reactions").SetRawJsonValueAsync(JsonConvert.SerializeObject(t.ToArray()));
+            }
+            else
+            {
+                var t = new Reaction[] {
                 new Reaction { index = reactionIndex, uid = FirebaseAuth.DefaultInstance.CurrentUser.UserId }
             };
-            
-            Game.MatchReference.Child("reactions").SetRawJsonValueAsync(JsonConvert.SerializeObject(t));
+
+                Game.MatchReference.Child("reactions").SetRawJsonValueAsync(JsonConvert.SerializeObject(t));
+            }
+
+            LastUsedReactionIndex = reactionIndex;
+
+            reactionTimer = 0;
+            reactionTimeout = 0;
         }
-
-        LastUsedReactionIndex = reactionIndex;
-
-        reactionTimer = 0;
     }
 
     public void MiddleReactionButtonDown()
@@ -120,6 +126,8 @@ public class MiddleReactionButton : MonoBehaviour
 
     private void Update()
     {
+        reactionTimeout += Time.deltaTime;
+
         myReactionText.text = Reactions[LastUsedReactionIndex].text;
 
         // Hold down to import 

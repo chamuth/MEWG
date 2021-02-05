@@ -14,6 +14,7 @@ public class SettingsUI : MonoBehaviour
         MusicToggle.OnToggle += () =>
         {
             PlayerPrefs.SetInt("MUSIC_ON", MusicToggle.Enabled ? 1 : 0);
+            PlayerPrefs.Save();
             SoundManager.Instance.UpdateSettings();
         };
 
@@ -22,6 +23,7 @@ public class SettingsUI : MonoBehaviour
         SFXToggle.OnToggle += () =>
         {
             PlayerPrefs.SetInt("SFX_ON", SFXToggle.Enabled ? 1 : 0);
+            PlayerPrefs.Save();
             SoundManager.Instance.UpdateSettings();
         };
     }

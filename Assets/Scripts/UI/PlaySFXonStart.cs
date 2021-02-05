@@ -6,7 +6,7 @@ public class PlaySFXonStart : MonoBehaviour
 {
     public string ClipId = "";
 
-    private void Start()
+    private void OnEnable()
     {
         SoundManager.Instance.PlayClip(ClipId);
     }

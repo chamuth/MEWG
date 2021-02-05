@@ -18,23 +18,25 @@ IMMEDIATE REQUIREMENTS
 
 [ ] Create local and Google Play Games Achievements for the game
 	Finishing a match in 10, 20, 30 seconds or less
-	Win 5, 10, 20 matches with all words
+	[x] Win 5, 10, 20 matches with all words
 	Get over 2,3,4,5 W/L ratio
 	20, 50, 100, 200, 500 match wins
 	Win 5 matches without using any hints
 	Play 100, 200, 500, 1000 matches
-	Play 5,10 days subsequently
+	[x] Play 5,10 days subsequently
 	Get 1,2,3,4,5 hours in game
-	Find 100,250,500,1000 words
+	[x] Find 100,250,500,1000 words
 
 LAST PROBLEMS
 =============
 [ ] Add more and more word sets
 [ ] Ambient music for the game
-[ ] Settings turning music on and off
+[X] Settings turning music on and off
 [X] Remove copyrighted backgrounds
-[ ] Add sound FX to the game
+[X] Add sound FX to the game
 	Main menu music, timer ending sounds, correct word sfx, letter matching sound, enemy player correct word sfx, hint used sfx, button press sfx, match won sfx, level up sfx
 [X] Sharing options
 [X] Basic settings screen with sound on off or something
 [ ] Lazify the reaction sending surface to avoid spamming
+
+[ ] Sharing and rewarding option
