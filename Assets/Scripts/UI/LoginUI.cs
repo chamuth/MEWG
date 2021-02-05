@@ -17,58 +17,7 @@ public class LoginUI : MonoBehaviour
     public MainMenuUI _MainMenuUI;
     public Button FacebookLoginButton, GoogleLoginButton;
     public GameObject PreloaderScreen;
-
-    void Awake()
-    {
-        #region Initialize Facebook SDK
-        if (!FB.IsInitialized)
-        {
-            // Initialize the Facebook SDK
-            FB.Init(InitCallback, OnHideUnity);
-        }
-        else
-        {
-            // Already initialized, signal an app activation App Event
-            FB.ActivateApp();
-        }
-        #endregion
-
-        #region Active Google Play Games SDK
-        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
-            .RequestServerAuthCode(false /* Don't force refresh */)
-            .Build();
-
-        PlayGamesPlatform.InitializeInstance(config);
-        PlayGamesPlatform.Activate();
-        #endregion
-    }
-    
-    private void OnHideUnity(bool isGameShown)
-    {
-        if (!isGameShown)
-        {
-            // Pause the game - we will need to hide
-            Time.timeScale = 0;
-        }
-        else
-        {
-            // Resume the game - we're getting focus again
-            Time.timeScale = 1;
-        }
-    }
-
-    private void InitCallback()
-    {
-        if (FB.IsInitialized)
-        {
-            // Signal an app activation App Event
-            FB.ActivateApp();
-        }
-        else
-        {
-            Debug.Log("Failed to Initialize the Facebook SDK");
-        }
-    }
+   
 
     void Start()
     {
