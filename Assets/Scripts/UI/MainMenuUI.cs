@@ -212,6 +212,12 @@ public class MainMenuUI : MonoBehaviour
                     }
                 }
 
+                // If the player isn't logged in log in on Google Play Games
+                if (!PlayGamesPlatform.Instance.IsAuthenticated())
+                {
+                    Social.localUser.Authenticate((bool success) => { });
+                }
+
                 GiftProcessing();
 
                 break;

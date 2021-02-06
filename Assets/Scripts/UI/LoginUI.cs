@@ -75,6 +75,8 @@ public class LoginUI : MonoBehaviour
 
     void GoogleLogin()
     {
+        PreloaderScreen.SetActive(true);
+
         Social.localUser.Authenticate((bool success) => {
             if (success)
             {

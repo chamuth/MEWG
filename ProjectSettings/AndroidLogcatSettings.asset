@@ -1,65 +1,53 @@
 {
     "m_SelectedDeviceId": "LNVW5LK7SKOVGMOB",
     "m_SelectedPackage": {
-        "deviceId": "LNVW5LK7SKOVGMOB",
-        "name": "com.ninponix.mewg",
-        "processId": 25374,
+        "deviceId": "",
+        "name": "",
+        "processId": 0,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 6873,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 8971,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 15287,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 8046,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 9737,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.bbk.launcher2",
             "processId": 2061,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.ninponix.mewg",
             "processId": 17533,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.ninponix.mewg",
             "processId": 23030,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.ninponix.mewg",
             "processId": 25374,
+            "exited": true
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.bbk.launcher2",
+            "processId": 1952,
+            "exited": false
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 17283,
+            "exited": true
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 19497,
             "exited": false
         },
         {
