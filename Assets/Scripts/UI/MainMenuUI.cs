@@ -110,12 +110,6 @@ public class MainMenuUI : MonoBehaviour
         }
     }
 
-
-    public void ShowRemoveAdsMenu()
-    {
-        RemoveAds.SetActive(true);
-    }
-
     public void ShowSettingsUI()
     {
         SettingsUI.SetActive(true);
