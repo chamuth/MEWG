@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Linq;
 using Coffee.UIEffects;
+using Newtonsoft.Json;
 
 public class NextRoundUI : MonoBehaviour
 {
@@ -72,15 +73,26 @@ public class NextRoundUI : MonoBehaviour
         if (enemyReady && meReady && !loading)
         {
             // if both the enemy and the player are ready for the next round
-            StartCoroutine(LoadNextRound());
+            //StartCoroutine(LoadNextRound());
+
+            Game.MatchReference.Child("content").ValueChanged += WordsUpdatedForNextRound;
 
             // Hide the waiting for input section
-            MatchResetProgress.SetActive(true);
             WaitingForInput.SetActive(false);
 
             WaitingForNextRound.SetActive(true);
 
             loading = true;
+        }
+    }
+
+    private void WordsUpdatedForNextRound(object sender, ValueChangedEventArgs e)
+    {
+        if (!JsonConvert.DeserializeObject<MatchContent>(e.Snapshot.GetRawJsonValue()).words.SequenceEqual(Game.CurrentMatchData.content.words))
+        {
+            // Words updated
+            print("Words Updated reloading scene");
+            SceneManager.LoadSceneAsync(2);
         }
     }
 

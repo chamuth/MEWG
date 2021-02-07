@@ -37,6 +37,7 @@ public class MatchManager : MonoBehaviour
 
     bool Exiting = false;
     bool Exited = false;
+    bool OnceStatusGiven = false;
 
     InterstitialAd MatchEndingInterstitialAd;
     string MATCH_ENDING_INTERSTITIAL_AD_ID = "ca-app-pub-5103739755612302/6783000198";
@@ -101,37 +102,42 @@ public class MatchManager : MonoBehaviour
 
         Game.OnMatchEnd += (MatchState state) =>
         {
-            MatchEndingPreloader.SetActive(false);
-            ConclusionUI.SetActive(true);
-            ConclusionUI.gameObject.GetComponent<ConclusionUI>().CurrentMatchState = state;
-
-            switch (state)
+            if (!OnceStatusGiven)
             {
-                case MatchState.Win:
-                    WinUI.SetActive(true);
-                    WinParticles.Play();
-                    SoundManager.Instance.PlayClip("WIN");
-                    break;
-                case MatchState.Loss:
-                    LossUI.SetActive(true);
-                    break;
-                case MatchState.Draw:
-                    DrawUI.SetActive(true);
-                    break;
+                OnceStatusGiven = true; 
+
+                MatchEndingPreloader.SetActive(false);
+                ConclusionUI.SetActive(true);
+                ConclusionUI.gameObject.GetComponent<ConclusionUI>().CurrentMatchState = state;
+
+                switch (state)
+                {
+                    case MatchState.Win:
+                        WinUI.SetActive(true);
+                        WinParticles.Play();
+                        SoundManager.Instance.PlayClip("WIN");
+                        break;
+                    case MatchState.Loss:
+                        LossUI.SetActive(true);
+                        break;
+                    case MatchState.Draw:
+                        DrawUI.SetActive(true);
+                        break;
+                }
+
+                if (PlayGamesPlatform.Instance.localUser.authenticated)
+                {
+                    // Report to XP leaderboard
+                    PlayGamesPlatform.Instance.ReportScore(User.CurrentUser.xp, "CgkIwfymq44BEAIQAQ", (b) => { });
+                    // Report to W/L leaderboard, which is measured in kilo metrics, multiplied by 1000
+                    float wl = (User.CurrentUser.statistics.losses == 0) ? User.CurrentUser.statistics.wins : (User.CurrentUser.statistics.wins / (float)User.CurrentUser.statistics.losses);
+                    PlayGamesPlatform.Instance.ReportScore((int)(wl * 1000), "CgkIwfymq44BEAIQAQ", (b) => { });
+                }
+
+
+                // Show the ad
+                StartCoroutine(ShowMatchEndingAd());
             }
-
-            if (PlayGamesPlatform.Instance.localUser.authenticated)
-            {
-                // Report to XP leaderboard
-                PlayGamesPlatform.Instance.ReportScore(User.CurrentUser.xp, "CgkIwfymq44BEAIQAQ", (b) => { });
-                // Report to W/L leaderboard, which is measured in kilo metrics, multiplied by 1000
-                float wl = (User.CurrentUser.statistics.losses == 0) ? User.CurrentUser.statistics.wins : (User.CurrentUser.statistics.wins / (float)User.CurrentUser.statistics.losses);
-                PlayGamesPlatform.Instance.ReportScore((int)(wl * 1000), "CgkIwfymq44BEAIQAQ", (b) => { });
-            }
-
-
-            // Show the ad
-            StartCoroutine(ShowMatchEndingAd());
         };
 
         // Start the match
