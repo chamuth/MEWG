@@ -29,6 +29,7 @@ public class WordsBlocksContainer : MonoBehaviour
     public const int USABLE_HINT_LIMIT_PER_MATCH = 3;
 
     private int UsedHints = 0;
+    private Dictionary<string, bool> PreviousAnimatedWords = null;
 
     public int GetUsedHints()
     {
@@ -159,6 +160,14 @@ public class WordsBlocksContainer : MonoBehaviour
         var center = GetCenterOfObjects();
         Centerer.GetComponent<RectTransform>().anchoredPosition = -center;
 
+        if (PreviousAnimatedWords == null)
+        {
+            PreviousAnimatedWords = new Dictionary<string, bool>();
+
+            foreach (var word in words)
+                PreviousAnimatedWords.Add(word, false);
+        }
+
         yield return new WaitForSeconds(5f);
 
         StartCoroutine(FadeInBlocks());
@@ -249,6 +258,14 @@ public class WordsBlocksContainer : MonoBehaviour
     {
         foreach (var wordMatch in WordMatches)
         {
+            var onceAnimated = false;
+
+            if (PreviousAnimatedWords.ContainsKey(wordMatch.word))
+            {
+                onceAnimated = PreviousAnimatedWords[wordMatch.word];
+                PreviousAnimatedWords[wordMatch.word] = true; // Set previous animated to true
+            }
+
             var wItem = Words.Find(x => x.Word == wordMatch.word);
             
             if (wItem != null)
@@ -263,26 +280,32 @@ public class WordsBlocksContainer : MonoBehaviour
                     {
                         ShowLetter(
                             Words[connection._1stWordIndex].Letters[connection._1stWordLetterIndex].Object.GetComponent<LetterBlockItem>(),
-                            wordMatch.owner
+                            wordMatch.owner,
+                            connection._1stWordLetterIndex,
+                            onceAnimated
                         );
                     }
 
-                foreach(var letter in wItem.Letters)
+                for (var k = 0; k < wItem.Letters.Count; k ++)
                 {
+                    var letter = wItem.Letters[k];
+
                     if (letter.Object != null)
                     {
                         var block = letter.Object.GetComponent<LetterBlockItem>();
-                        ShowLetter(block, wordMatch.owner);
+                        ShowLetter(block, wordMatch.owner, k, onceAnimated);
                     }
                 }
             }
         }
     }
 
-    void ShowLetter(LetterBlockItem block, Ownership owner)
+    void ShowLetter(LetterBlockItem block, Ownership owner, int index = 0, bool onceAnimated = false)
     {
         block._Ownership = (owner);
         block.Visible = true;
+        block.WordOffset = index;
+        block.OnceAnimated = onceAnimated;
         block.UpdateValues();
     }
 

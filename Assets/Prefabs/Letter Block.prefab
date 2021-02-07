@@ -92,6 +92,7 @@ MonoBehaviour:
   Letter: A
   _Ownership: 0
   Visible: 1
+  WordOffset: 0
 --- !u!1 &6150343593170984590
 GameObject:
   m_ObjectHideFlags: 0

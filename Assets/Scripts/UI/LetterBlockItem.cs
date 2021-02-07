@@ -10,9 +10,32 @@ public class LetterBlockItem : MonoBehaviour
     public Ownership _Ownership = Ownership.Neutral;
     public bool Visible = false;
 
+    public bool OnceAnimated = false;
+
+    /// <summary>
+    /// Letter index of the word
+    /// </summary>
+    public int WordOffset = 0;
+
     private void OnValidate()
     {
         UpdateValues();
+    }
+
+    IEnumerator SpawnLetter()
+    {
+        yield return new WaitForSeconds(0.1f * WordOffset);
+
+        if (!OnceAnimated)
+        {
+            transform.localScale = Vector3.one * 1.5f;
+
+            while (transform.localScale != Vector3.one)
+            {
+                transform.localScale = Vector2.MoveTowards(transform.localScale, Vector3.one, Time.deltaTime * 4f);
+                yield return null;
+            }
+        }
     }
 
     public void UpdateValues()
@@ -31,10 +54,12 @@ public class LetterBlockItem : MonoBehaviour
             case Ownership.Ours:
                 image.color = ColorManager.Instance.GetColor("FRIENDLY_COLOR");
                 txt.color = Color.white;
+                StartCoroutine(SpawnLetter());
                 break;
             case Ownership.Theirs:
                 image.color = ColorManager.Instance.GetColor("ENEMY_COLOR");
                 txt.color = Color.white;
+                StartCoroutine(SpawnLetter());
                 break;
         }
     }
