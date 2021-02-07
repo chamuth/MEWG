@@ -30,6 +30,11 @@ public class WordsBlocksContainer : MonoBehaviour
 
     private int UsedHints = 0;
 
+    public int GetUsedHints()
+    {
+        return UsedHints;
+    }
+
     public IEnumerator RenderWords(string[] words, bool dev = false)
     {
         Words = new List<RenderedWordBlock>();

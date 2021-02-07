@@ -197,8 +197,12 @@ public static class Game
 
         if (actualWord && original)
         {
+            // Word mathced
             // Play Matched sound
             SoundManager.Instance.PlayClip("CORRECT");
+
+            // Increment the achivements
+            AchievementsManager.FoundWord();
 
             if (MatchReference != null)
             {
@@ -238,6 +242,7 @@ public static class Game
         } 
         else
         {
+            // Word didn't match
             SoundManager.Instance.PlayClip("CANCELWRONG");
             return false;
         }

@@ -178,7 +178,7 @@ public class MainMenuUI : MonoBehaviour
                     Tutorial.StartTutorial();
 
                     PlayerPrefs.SetInt("FIRST_TIME", 0);
-                    //PlayerPrefs.Save();
+                    PlayerPrefs.Save();
                 }
 
                 if (PlayerPrefs.GetInt("ALREADY_RATED", 0) == 0 && PlayerPrefs.GetInt("FIRST_TIME", 1) != 1)
@@ -261,6 +261,9 @@ public class MainMenuUI : MonoBehaviour
                         GiftsUI.SetActive(true);
                         GiftsUI.GetComponent<GiftsUI>().SetGiftAmount(count);
                     }
+
+                    // Unlock achievements for consecutive days
+                    AchievementsManager.ConsecutiveDays(cday + 1);
                 }
             }
             else

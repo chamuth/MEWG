@@ -29,6 +29,8 @@ public class LevelUpUI : MonoBehaviour
             if (savedLevel < serverLevel)
             {
                 // Level Up
+                AchievementsManager.LevelUp(serverLevel);
+
                 XPProgress.CurrentLevel = serverLevel;
                 LevelUpChild.SetActive(true);
                 LevelUpParticleSystem.Play();

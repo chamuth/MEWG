@@ -116,6 +116,13 @@ public class MatchManager : MonoBehaviour
                         WinUI.SetActive(true);
                         WinParticles.Play();
                         SoundManager.Instance.PlayClip("WIN");
+
+                        // Winning achievements
+                        AchievementsManager.MatchWon();
+                        // Match won without using hints
+                        if (_WordsBlockContainer.GetUsedHints() == 0)
+                            AchievementsManager.MatchWonWithoutHints();
+
                         break;
                     case MatchState.Loss:
                         LossUI.SetActive(true);
