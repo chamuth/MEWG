@@ -54,7 +54,8 @@ public static class AchievementsManager
         else if (level == 20)
             id = Level20_ID;
 
-        PlayGamesPlatform.Instance.UnlockAchievement(Level10_ID);
+        if (id != "")
+            PlayGamesPlatform.Instance.UnlockAchievement(id);
     }
 
     public static void ConsecutiveDays(int days)
