@@ -1,19 +1,13 @@
 {
     "m_SelectedDeviceId": "LNVW5LK7SKOVGMOB",
     "m_SelectedPackage": {
-        "deviceId": "",
-        "name": "",
-        "processId": 0,
+        "deviceId": "LNVW5LK7SKOVGMOB",
+        "name": "com.ninponix.mewg",
+        "processId": 3473,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.bbk.launcher2",
-            "processId": 2061,
-            "exited": true
-        },
         {
             "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.ninponix.mewg",
@@ -48,6 +42,18 @@
             "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.ninponix.mewg",
             "processId": 19497,
+            "exited": true
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.whatsapp",
+            "processId": 31503,
+            "exited": false
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 3473,
             "exited": false
         },
         {
