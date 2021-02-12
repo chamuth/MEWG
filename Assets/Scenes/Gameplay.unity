@@ -9006,7 +9006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LetterBlock: {fileID: 6150343591423028133, guid: c7e337a3f07efe04fb4ba1d9a3d516b1,
     type: 3}
-  LetterSpacing: 5
+  LetterSpacing: 4
   Centerer: {fileID: 2113137500}
   HintAnimator: {fileID: 1609324124}
   selectionCircle: {fileID: 424480388}

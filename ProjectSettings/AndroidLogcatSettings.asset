@@ -1,31 +1,13 @@
 {
     "m_SelectedDeviceId": "LNVW5LK7SKOVGMOB",
     "m_SelectedPackage": {
-        "deviceId": "LNVW5LK7SKOVGMOB",
-        "name": "com.ninponix.mewg",
-        "processId": 3473,
+        "deviceId": "",
+        "name": "",
+        "processId": 0,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 17533,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 23030,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 25374,
-            "exited": true
-        },
         {
             "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.bbk.launcher2",
@@ -34,27 +16,39 @@
         },
         {
             "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 17283,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.ninponix.mewg",
-            "processId": 19497,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.whatsapp",
             "processId": 31503,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.ninponix.mewg",
             "processId": 3473,
-            "exited": false
+            "exited": true
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 31525,
+            "exited": true
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 15864,
+            "exited": true
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 26538,
+            "exited": true
+        },
+        {
+            "deviceId": "LNVW5LK7SKOVGMOB",
+            "name": "com.ninponix.mewg",
+            "processId": 27375,
+            "exited": true
         },
         {
             "deviceId": "0074d288",
@@ -125,7 +119,7 @@
             },
             {
                 "m_Name": "No Filter",
-                "m_Selected": false
+                "m_Selected": true
             },
             {
                 "m_Name": "",
@@ -141,7 +135,7 @@
             },
             {
                 "m_Name": "Unity",
-                "m_Selected": true
+                "m_Selected": false
             },
             {
                 "m_Name": "CRASH",

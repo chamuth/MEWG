@@ -9,6 +9,31 @@ var database = admin.database();
 
 const MATCHMAKING_PLACEHOLDER = "MATCHMAKING";
 
+exports.clearMatches = functions.pubsub.schedule("every 5 minutes").onRun((context) => {
+
+    database.ref("match/").once("value").then((snapshot) => {
+        var value = snapshot.val();
+        
+        if (value != null)
+        {
+            Object.keys(value).forEach(function(key) {
+                var duration = Date.now() - value[key]["timestamp"];
+
+                // If the match is older than an hour
+                if (duration > (1000 * 60 * 60))
+                {
+                    // delete the database
+                    database.ref("match/" + key).set(null);
+                    console.log("Match (" + key + ") is old, so deleted to save RTDB space");
+                }
+            });
+        }
+    });
+    
+    return null;
+});
+
+// ON BOTH PLAYERS ARE READY FOR RESTART
 exports.resetMatch = functions.database.ref("match/{matchid}/ready").onUpdate((snap, context) => 
 {
     var matchid = context.params.matchid;
@@ -306,7 +331,8 @@ exports.matchmaker = functions.database.ref('matchmaking/{playerId}').onCreate((
                 players: [context.params.playerId, secondPlayer.key],
                 content: {
                     words: set
-                }
+                },
+                timestamp: Date.now()
             }
             
             database.ref("match/" + gameId).set(match).then(snapshot => {

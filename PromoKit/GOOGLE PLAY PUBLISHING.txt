@@ -39,7 +39,7 @@ We hope you enjoy MEWG and leave every word matching round satisfied with the ch
 
 [X] APP ICON (512x512)
 [x] FEATURE GRAPHIC (1024x500)
-[ ] PHONE SCREENSHOTS (9:16)
+[X] PHONE SCREENSHOTS (9:16)
 [ ] 7 INCH TABLET SCREENSHOTS
 [ ] 10 INCH TABLET SCREENSHOTS
 [ ] YOUTUBE TRAILER VIDEO

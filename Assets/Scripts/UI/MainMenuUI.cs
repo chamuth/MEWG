@@ -10,7 +10,8 @@ using System;
 using GooglePlayGames;
 using Facebook.Unity;
 using GooglePlayGames.BasicApi;
-// TODO: Stop main menu actions before the player details are loaded
+using GoogleMobileAds.Api;
+
 public class MainMenuUI : MonoBehaviour
 {
     public UITransitionEffect LoginUI;
@@ -25,6 +26,7 @@ public class MainMenuUI : MonoBehaviour
     public GameObject GiftsUI;
     public GameObject SettingsUI;
     public GameObject ShareReferralUI;
+    public GameObject HintsRewardedUI;
 
     [HideInInspector]
     public static MainMenuUI Instance;
@@ -59,8 +61,64 @@ public class MainMenuUI : MonoBehaviour
 
         // Make screen awake
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
+        // Awarded the second time player launched main menu after logging in 
+        if (auth.CurrentUser != null)
+            RewardFreeHints();
+    }   
+
+    RewardedInterstitialAd RewardedInterstitialAd;
+    string MAIN_MENU_REWARD = "ca-app-pub-5103739755612302/9514713545";
+
+    void RewardFreeHints()
+    {
+        var load = false;
+
+        if (!GameInstance.AdRewardTimeSet)
+            load = true;
+        else
+            load = (DateTime.Now - GameInstance.LastAdReward).Minutes > 2;
+
+        if (load)
+        {
+            GameInstance.AdRewardTimeSet = true;
+            GameInstance.LastAdReward = DateTime.Now;
+
+            // Create an empty ad request.
+            AdRequest request = new AdRequest.Builder().Build();
+            // Load the rewarded ad with the request.
+            RewardedInterstitialAd.LoadAd(MAIN_MENU_REWARD, request, adLoadCallback);
+        }
     }
 
+    private void adLoadCallback(RewardedInterstitialAd ad, string error)
+    {
+        if (error == null)
+        {
+            RewardedInterstitialAd = ad;
+            RewardedInterstitialAd.Show(userEarnedRewardCallback);
+        }
+    }
+
+    private void userEarnedRewardCallback(Reward reward)
+    {
+        StartCoroutine(RewardPlayer());
+    }
+
+    IEnumerator RewardPlayer()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        var hintReference = FirebaseDatabase.DefaultInstance.RootReference
+            .Child("user")
+            .Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId)
+            .Child("hints")
+            .Child("count");
+
+        hintReference.SetValueAsync(User.CurrentUser.hints.count + 1).ContinueWith((s) => { });
+
+        HintsRewardedUI.SetActive(true);
+    }
 
     private void Awake()
     {

@@ -167,14 +167,14 @@ public class MatchManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
 
-        if (PlayerPrefs.GetInt("REMOVE_ADS", 0) == 1)
+        //if (PlayerPrefs.GetInt("REMOVE_ADS", 0) == 1)
+        //{
+        // If the admob ad is actually loaded
+        if (MatchEndingInterstitialAd.IsLoaded())
         {
-            // If the admob ad is actually loaded
-            if (MatchEndingInterstitialAd.IsLoaded())
-            {
-                MatchEndingInterstitialAd.Show();
-            }
+            MatchEndingInterstitialAd.Show();
         }
+        //}
     }
 
     void ResetProgressbar()
