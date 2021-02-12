@@ -2256,7 +2256,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'WELCOME TO
 
-    MEWG'
+    Word Binders'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6c62b16e810bf3f4db7bbd8d8d698c96, type: 2}
   m_sharedMaterial: {fileID: -2118643568885268804, guid: 6c62b16e810bf3f4db7bbd8d8d698c96,
@@ -2285,10 +2285,10 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 71.5
+  m_fontSize: 72
   m_fontSizeBase: 71.5
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -2326,10 +2326,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 173921500}
-    characterCount: 15
+    characterCount: 23
     spriteCount: 0
-    spaceCount: 2
-    wordCount: 3
+    spaceCount: 3
+    wordCount: 4
     linkCount: 0
     lineCount: 2
     pageCount: 1
@@ -13366,7 +13366,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 132.30078, y: -98.1}
+  m_AnchoredPosition: {x: 132.30078, y: -119}
   m_SizeDelta: {x: 106.8, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &646626086
@@ -14817,7 +14817,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -130.80078, y: -99}
+  m_AnchoredPosition: {x: -130.80078, y: -119.89999}
   m_SizeDelta: {x: 119.02, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &801444508
@@ -32146,7 +32146,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.6992188, y: -98.99997}
+  m_AnchoredPosition: {x: 1.6992188, y: -119.899956}
   m_SizeDelta: {x: 119.02, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1707347678
