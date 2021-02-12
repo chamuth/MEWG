@@ -260,10 +260,13 @@ public class WordsBlocksContainer : MonoBehaviour
         {
             var onceAnimated = false;
 
-            if (PreviousAnimatedWords.ContainsKey(wordMatch.word))
+            if (PreviousAnimatedWords != null)
             {
-                onceAnimated = PreviousAnimatedWords[wordMatch.word];
-                PreviousAnimatedWords[wordMatch.word] = true; // Set previous animated to true
+                if (PreviousAnimatedWords.ContainsKey(wordMatch.word))
+                {
+                    onceAnimated = PreviousAnimatedWords[wordMatch.word];
+                    PreviousAnimatedWords[wordMatch.word] = true; // Set previous animated to true
+                }
             }
 
             var wItem = Words.Find(x => x.Word == wordMatch.word);

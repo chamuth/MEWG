@@ -96,48 +96,40 @@ public static class Game
         {
             CurrentMatchData = JsonConvert.DeserializeObject<MatchRef>(e.Snapshot.GetRawJsonValue());
 
-            try
+            if (CurrentMatchData.matches != null)
             {
-                if (CurrentMatchData.matches != null)
+                if (previousWordMatch != CurrentMatchData.matches)
                 {
-                    if (previousWordMatch != CurrentMatchData.matches)
-                    {
-                        UpdateMatchedWords();
-                    }
+                    UpdateMatchedWords();
                 }
             }
-            catch (Exception) { }
 
-            try
+            if (CurrentMatchData.status != null)
             {
-                if (CurrentMatchData.status != null)
+                if (CurrentMatchData.status.draw)
                 {
-                    if (CurrentMatchData.status.draw)
+                    OnMatchEnd?.Invoke(MatchState.Draw);
+                }
+
+                if (CurrentMatchData.status.winner != "")
+                {
+                    MatchState state;
+
+                    if (CurrentMatchData.status.draw == true)
                     {
-                        OnMatchEnd?.Invoke(MatchState.Draw);
+                        state = MatchState.Draw;
                     }
-
-                    if (CurrentMatchData.status.winner != "")
+                    else
                     {
-                        MatchState state;
-
-                        if (CurrentMatchData.status.draw == true)
-                        {
-                            state = MatchState.Draw;
-                        }
+                        if (CurrentMatchData.status.winner == FirebaseAuth.DefaultInstance.CurrentUser.UserId)
+                            state = MatchState.Win;
                         else
-                        {
-                            if (CurrentMatchData.status.winner == FirebaseAuth.DefaultInstance.CurrentUser.UserId)
-                                state = MatchState.Win;
-                            else
-                                state = MatchState.Loss;
-                        }
-
-                        OnMatchEnd?.Invoke(state);
+                            state = MatchState.Loss;
                     }
+
+                    OnMatchEnd?.Invoke(state);
                 }
             }
-            catch (Exception) { }
 
             OnMatchDataChanged?.Invoke();
         }

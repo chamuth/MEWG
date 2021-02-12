@@ -29,6 +29,7 @@ IMMEDIATE REQUIREMENTS
 
 LAST PROBLEMS
 =============
+[ ] First time match not loading fix
 [ ] Add more and more word sets
 [ ] Ambient music for the game
 [X] Settings turning music on and off

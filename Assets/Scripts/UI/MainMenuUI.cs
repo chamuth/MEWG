@@ -197,6 +197,8 @@ public class MainMenuUI : MonoBehaviour
         PlayerPrefs.Save();
 
         Application.OpenURL("http://play.google.com/store/apps/details?id=com.ninponix.mewg");
+
+        RatePanel.SetActive(false);
     }
 
     public void OpenLeaderboards()
