@@ -31,9 +31,13 @@ public class LevelUpUI : MonoBehaviour
                 // Level Up
                 AchievementsManager.LevelUp(serverLevel);
 
-                XPProgress.CurrentLevel = serverLevel;
                 LevelUpChild.SetActive(true);
                 LevelUpParticleSystem.Play();
+
+                XPProgress.CurrentLevel = serverLevel;
+                var xpreturner = XP.RemainingXPToLevelUp(User.CurrentUser.xp);
+                XPProgress.CurrentLevelProgress = ((float)xpreturner.RemainingXP / xpreturner.TotalXP);
+                XPProgress.Setup();
 
                 PlayerPrefs.SetInt("PLAYER_XP", User.CurrentUser.xp);
                 PlayerPrefs.Save();

@@ -10,7 +10,7 @@ public class NextLevelXPProgress : MonoBehaviour
     public Image ProgressElement;
     public TMPro.TextMeshProUGUI LevelText;
 
-    private void Start()
+    public void Setup()
     {
         StartCoroutine(AnimateNextLevel());
     }

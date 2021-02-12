@@ -16,12 +16,6 @@
         },
         {
             "deviceId": "LNVW5LK7SKOVGMOB",
-            "name": "com.whatsapp",
-            "processId": 31503,
-            "exited": true
-        },
-        {
-            "deviceId": "LNVW5LK7SKOVGMOB",
             "name": "com.ninponix.mewg",
             "processId": 3473,
             "exited": true

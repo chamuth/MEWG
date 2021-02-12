@@ -38,10 +38,13 @@ public class ConclusionUI : MonoBehaviour
 
             GainedXP.text = string.Format("+{0} XP Gained", myAnswersCount * 25 + ((CurrentMatchState == MatchState.Win) ? 100 : 0));
 
-            NextLevelProgress.CurrentLevel = XP.XPToLevel(User.CurrentUser.xp);
-
-            MatchStatus.SetActive(false);
             Rewards.SetActive(true);
+            MatchStatus.SetActive(false);
+
+            NextLevelProgress.CurrentLevel = XP.XPToLevel(User.CurrentUser.xp);
+            var xpur = XP.RemainingXPToLevelUp(User.CurrentUser.xp);
+            NextLevelProgress.CurrentLevelProgress = ((float)xpur.RemainingXP / xpur.TotalXP);
+            NextLevelProgress.Setup();
         }
         else if (CurrentStep == 1)
         {

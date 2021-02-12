@@ -37,9 +37,17 @@ public static class Game
         // On disconnect save the player disconnected field
         MatchReference.Child("disconnect").OnDisconnect().SetValue(FirebaseAuth.DefaultInstance.CurrentUser.UserId);
 
+        // Get match data for the first time
         MatchReference.GetValueAsync().ContinueWith((snapshot) =>
         {
-            CurrentMatchData = JsonUtility.FromJson<MatchRef>(snapshot.Result.GetRawJsonValue());
+            try
+            {
+                CurrentMatchData = JsonUtility.FromJson<MatchRef>(snapshot.Result.GetRawJsonValue());
+            }
+            catch (Exception)
+            {
+                CurrentMatchData = new MatchRef();
+            }
 
             // Load enemy player details
             User.GetUser(CurrentMatchData.players.First(x => x != FirebaseAuth.DefaultInstance.CurrentUser.UserId)).ContinueWith((x) =>
@@ -94,7 +102,11 @@ public static class Game
     {
         if (e.DatabaseError == null)
         {
-            CurrentMatchData = JsonConvert.DeserializeObject<MatchRef>(e.Snapshot.GetRawJsonValue());
+            try
+            {
+                CurrentMatchData = JsonConvert.DeserializeObject<MatchRef>(e.Snapshot.GetRawJsonValue());
+            }
+            catch (Exception) { }
 
             if (CurrentMatchData.matches != null)
             {

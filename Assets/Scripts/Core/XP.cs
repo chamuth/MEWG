@@ -5,7 +5,7 @@ using UnityEngine;
 public class XP
 {
     const float FIRST_LEVEL_LIMIT = 100;
-    const float XP_LEVEL_MULTIPLIER = 2.5f;
+    const float XP_LEVEL_MULTIPLIER = 1.5f;
 
     /// <summary>
     /// Returns Level number for XP value

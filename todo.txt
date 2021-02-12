@@ -29,7 +29,12 @@ IMMEDIATE REQUIREMENTS
 
 LAST PROBLEMS
 =============
+[ ] WORDS ARE TOO HARD MANUALLY ENTER LATEST WORDS
+
 [ ] First time match not loading fix
+[ ] Circular progressbar isn't working that well
+[ ] Word MASTER like titles testing
+
 [ ] Add more and more word sets
 [ ] Ambient music for the game
 [X] Settings turning music on and off
