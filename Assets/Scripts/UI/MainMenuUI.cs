@@ -63,7 +63,7 @@ public class MainMenuUI : MonoBehaviour
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
         // Awarded the second time player launched main menu after logging in 
-        if (auth.CurrentUser != null)
+        if (auth.CurrentUser != null && UnityEngine.Random.Range(0,10f) > 7f)
             RewardFreeHints();
     }   
 
