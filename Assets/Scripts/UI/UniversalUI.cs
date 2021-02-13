@@ -23,6 +23,7 @@ public class UniversalUI : MonoBehaviour
     bool videoAdLoaded = false;
     bool hideVideoAdButton = false;
     bool hintsRewarded = false;
+    bool loadUpdateUI = false;
 
     private void Start()
     {
@@ -44,8 +45,8 @@ public class UniversalUI : MonoBehaviour
             }
             else
             {
+                loadUpdateUI = true;
                 Debug.LogWarning("App not updated");
-                AppUpdateNotifier.SetActive(true);
             }
         });
 
@@ -79,6 +80,12 @@ public class UniversalUI : MonoBehaviour
         {
             ShowRewardingAdButton.interactable = false;
             hideVideoAdButton = false;
+        }
+
+        if (loadUpdateUI)
+        {
+            AppUpdateNotifier.SetActive(true);
+            loadUpdateUI = false;
         }
 
         if (hintsRewarded)
