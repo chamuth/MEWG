@@ -1,4 +1,6 @@
 ﻿using Firebase.Database;
+using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +13,7 @@ public class AnnouncementManager : MonoBehaviour
     public GameObject UI;
     public Image AnnouncementSprite;
 
-    string currentURL = "";
+    Announcement currentData;
     bool updated = false;
 
     private void Start()
@@ -19,9 +21,15 @@ public class AnnouncementManager : MonoBehaviour
         // Check for announcements
         FirebaseDatabase.DefaultInstance.RootReference.Child("announcement").GetValueAsync().ContinueWith((snapshot) =>
         {
-            var url = snapshot.Result.GetValue(false);
-            currentURL = url.ToString();
-            updated = true;
+            try
+            {
+                currentData = JsonConvert.DeserializeObject<Announcement>(snapshot.Result.GetRawJsonValue());
+                updated = true;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(ex.Message);
+            }
         });
     }
 
@@ -29,11 +37,11 @@ public class AnnouncementManager : MonoBehaviour
     {
         if (updated)
         {
-            if (PlayerPrefs.GetString("ANNOUNCEMENT", "") != currentURL.ToString())
+            if (PlayerPrefs.GetString("ANNOUNCEMENT", "") != currentData.image.ToString())
             {
                 // A new announcement
                 UI.SetActive(true);
-                StartCoroutine(LoadImage(currentURL.ToString()));
+                StartCoroutine(LoadImage(currentData.image.ToString()));
 
                 updated = false;
             }
@@ -55,8 +63,26 @@ public class AnnouncementManager : MonoBehaviour
             var sprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), Vector2.one * 0.5f);
             AnnouncementSprite.sprite = sprite;
 
-            PlayerPrefs.SetString("ANNOUNCEMENT", currentURL);
+            PlayerPrefs.SetString("ANNOUNCEMENT", currentData.image);
             PlayerPrefs.Save();
         }
     }
+
+    public void ImageClicked()
+    {
+        if (currentData != null)
+        {
+            if (currentData.click != "")
+            {
+                Application.OpenURL(currentData.click);
+            }
+        }
+    }
+}
+
+[Serializable]
+public class Announcement
+{
+    public string image;
+    public string click;
 }

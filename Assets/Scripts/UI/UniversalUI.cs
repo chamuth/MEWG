@@ -16,6 +16,7 @@ public class UniversalUI : MonoBehaviour
     public Button ShowRewardingAdButton;
     public GameObject HintsRewardedUI;
     public ParticleSystem HintRewardedParticleSystem;
+    public GameObject AppUpdateNotifier;
 
     private const string RewardedAdUnitID = "ca-app-pub-5103739755612302/8666927502";
     RewardedAd rewardedAd;
@@ -27,6 +28,26 @@ public class UniversalUI : MonoBehaviour
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        
+        var appversion = (Application.version);
+
+        FirebaseDatabase.DefaultInstance.RootReference.Child("version").GetValueAsync().ContinueWith((snapshot) =>
+        {
+            var latest = snapshot.Result.Value.ToString();
+
+            print("Installed app version is " + appversion);
+            print("Latest app version is " + latest);
+
+            if (latest == appversion)
+            {
+                print("Latest app version installed");
+            }
+            else
+            {
+                Debug.LogWarning("App not updated");
+                AppUpdateNotifier.SetActive(true);
+            }
+        });
 
         // Load a video rewarding ad
         rewardedAd = new RewardedAd(RewardedAdUnitID);
