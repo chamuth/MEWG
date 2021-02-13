@@ -60,11 +60,15 @@ public class XP
 
     public static string AttributeCodeForXP(int level)
     {
-        if (level > 50)
+        if (level >= 20)
+        {
+            return "KING_OF_WORDS";
+        }
+        else if (level >= 15)
         {
             return "LOGOPHILE";
         }
-        else if (level > 20)
+        else if (level >= 10)
         {
             return "WORD_MASTER";
         }
